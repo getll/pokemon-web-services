@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 28, 2022 at 04:17 PM
+-- Generation Time: Oct 14, 2022 at 05:42 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.1.1
 
@@ -304,72 +304,6 @@ INSERT INTO `abilities` (`abilityId`, `name`, `description`) VALUES
 (264, 'Wonder Guard', 'Only supereffective moves will hit.'),
 (265, 'Wonder Skin', 'Makes status-changing moves more likely to miss.'),
 (266, 'Zen Mode', 'Changes form when HP drops below half.');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `game`
---
-
-CREATE TABLE `game` (
-  `gameId` int(11) NOT NULL,
-  `name` varchar(30) NOT NULL,
-  `generationId` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `generation`
---
-
-CREATE TABLE `generation` (
-  `generationId` int(11) NOT NULL,
-  `pokemonNumber` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `generation`
---
-
-INSERT INTO `generation` (`generationId`, `pokemonNumber`) VALUES
-(1, 1),
-(2, 2),
-(3, 3),
-(4, 4),
-(5, 5),
-(6, 6),
-(7, 7),
-(8, 8);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `gyms`
---
-
-CREATE TABLE `gyms` (
-  `gymId` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `type` varchar(255) NOT NULL,
-  `badge` varchar(255) NOT NULL,
-  `gymLeader` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `locations`
---
-
-CREATE TABLE `locations` (
-  `locationId` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `location` varchar(255) NOT NULL,
-  `musicName` varchar(255) NOT NULL,
-  `gymId` int(11) NOT NULL,
-  `gameId` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -744,33 +678,6 @@ ALTER TABLE `abilities`
   ADD PRIMARY KEY (`abilityId`);
 
 --
--- Indexes for table `game`
---
-ALTER TABLE `game`
-  ADD PRIMARY KEY (`gameId`),
-  ADD KEY `generationId` (`generationId`);
-
---
--- Indexes for table `generation`
---
-ALTER TABLE `generation`
-  ADD PRIMARY KEY (`generationId`);
-
---
--- Indexes for table `gyms`
---
-ALTER TABLE `gyms`
-  ADD PRIMARY KEY (`gymId`);
-
---
--- Indexes for table `locations`
---
-ALTER TABLE `locations`
-  ADD PRIMARY KEY (`locationId`),
-  ADD KEY `gameId` (`gameId`),
-  ADD KEY `gymId` (`gymId`);
-
---
 -- Indexes for table `pokemon`
 --
 ALTER TABLE `pokemon`
@@ -795,30 +702,6 @@ ALTER TABLE `abilities`
   MODIFY `abilityId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=267;
 
 --
--- AUTO_INCREMENT for table `game`
---
-ALTER TABLE `game`
-  MODIFY `gameId` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `generation`
---
-ALTER TABLE `generation`
-  MODIFY `generationId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
-
---
--- AUTO_INCREMENT for table `gyms`
---
-ALTER TABLE `gyms`
-  MODIFY `gymId` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `locations`
---
-ALTER TABLE `locations`
-  MODIFY `locationId` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `pokemon`
 --
 ALTER TABLE `pokemon`
@@ -833,19 +716,6 @@ ALTER TABLE `pokemonabilityrelation`
 --
 -- Constraints for dumped tables
 --
-
---
--- Constraints for table `game`
---
-ALTER TABLE `game`
-  ADD CONSTRAINT `game_ibfk_1` FOREIGN KEY (`generationId`) REFERENCES `generation` (`generationId`);
-
---
--- Constraints for table `locations`
---
-ALTER TABLE `locations`
-  ADD CONSTRAINT `locations_ibfk_1` FOREIGN KEY (`gameId`) REFERENCES `game` (`gameId`),
-  ADD CONSTRAINT `locations_ibfk_2` FOREIGN KEY (`gymId`) REFERENCES `gyms` (`gymId`);
 
 --
 -- Constraints for table `pokemonabilityrelation`
