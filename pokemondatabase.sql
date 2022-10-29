@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 28, 2022 at 04:17 PM
+-- Generation Time: Oct 28, 2022 at 08:27 PM
 -- Server version: 10.4.22-MariaDB
--- PHP Version: 8.1.1
+-- PHP Version: 8.1.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -317,6 +317,20 @@ CREATE TABLE `game` (
   `generationId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `game`
+--
+
+INSERT INTO `game` (`gameId`, `name`, `generationId`) VALUES
+(1, 'Pokemon Red', 1),
+(2, 'Pokemon Silver', 2),
+(3, 'Pokemon Emrerald', 3),
+(4, 'Pokemon Pearl', 4),
+(5, 'Pokemon White', 5),
+(6, 'Pokemon X', 6),
+(7, 'Pokemon Sun', 7),
+(8, 'Pokemon Sword', 8);
+
 -- --------------------------------------------------------
 
 --
@@ -333,14 +347,14 @@ CREATE TABLE `generation` (
 --
 
 INSERT INTO `generation` (`generationId`, `pokemonNumber`) VALUES
-(1, 1),
-(2, 2),
-(3, 3),
-(4, 4),
-(5, 5),
-(6, 6),
-(7, 7),
-(8, 8);
+(1, 151),
+(2, 251),
+(3, 386),
+(4, 493),
+(5, 649),
+(6, 721),
+(7, 809),
+(8, 905);
 
 -- --------------------------------------------------------
 
@@ -356,6 +370,22 @@ CREATE TABLE `gyms` (
   `gymLeader` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `gyms`
+--
+
+INSERT INTO `gyms` (`gymId`, `name`, `type`, `badge`, `gymLeader`) VALUES
+(1, 'Pewter Gym', 'Rock', 'Boulder Badge', 0),
+(2, 'Cerulean Gym', 'Water', 'Cascade Badge', 0),
+(3, 'Violet Gym', 'Flying', 'Zephyr Badge', 0),
+(4, 'Lavaridge Gym', 'Fire', 'Heat Badge', 0),
+(5, 'Eterna Gym', 'Grass', 'Forest Badge', 0),
+(6, 'Nimbasa Gym', 'Electric', 'Bolt Badge', 0),
+(7, 'Laverre Gym', 'Fairy', 'Fairy Badge', 0),
+(8, 'Santalune Gym', 'Bug', 'Bug Badge', 0),
+(9, 'Stow-on-Side Stadium', 'Ghost', 'Ghost Badge', 0),
+(10, 'Hammerlocke Gym', 'Dragon', 'Dragon Badge', 0);
+
 -- --------------------------------------------------------
 
 --
@@ -370,6 +400,21 @@ CREATE TABLE `locations` (
   `gymId` int(11) NOT NULL,
   `gameId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `locations`
+--
+
+INSERT INTO `locations` (`locationId`, `name`, `location`, `musicName`, `gymId`, `gameId`) VALUES
+(21, 'Pewter City', 'North-West Kanto region', 'Pewter city theme', 1, 1),
+(22, 'Cerulean City', 'Northern Kanto', 'Cerulean city theme', 2, 1),
+(23, 'Violet City', 'Central Johto', 'Violet city theme', 3, 2),
+(24, 'Lavaridge Town', 'Central Western Hoenn', 'Lavaridge Town Theme', 4, 3),
+(25, 'Eterna City', 'Sinnoh', 'Eterna City theme', 5, 4),
+(26, 'Nimbasa City', 'Central Unova', 'Nimbasa City theme', 6, 5),
+(27, 'Santalune City', 'Central Santalune', 'Santalune City theme', 8, 7),
+(28, 'Stow-on-Side', 'West-Center Galar', 'Stow-on-Side theme', 9, 8),
+(29, 'Hammerlocke', 'Galar', 'Hammerlocke theme', 10, 8);
 
 -- --------------------------------------------------------
 
@@ -798,7 +843,7 @@ ALTER TABLE `abilities`
 -- AUTO_INCREMENT for table `game`
 --
 ALTER TABLE `game`
-  MODIFY `gameId` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `gameId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `generation`
@@ -810,13 +855,13 @@ ALTER TABLE `generation`
 -- AUTO_INCREMENT for table `gyms`
 --
 ALTER TABLE `gyms`
-  MODIFY `gymId` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `gymId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `locations`
 --
 ALTER TABLE `locations`
-  MODIFY `locationId` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `locationId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `pokemon`
