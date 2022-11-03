@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 28, 2022 at 08:27 PM
+-- Generation Time: Nov 03, 2022 at 02:03 AM
 -- Server version: 10.4.22-MariaDB
--- PHP Version: 8.1.2
+-- PHP Version: 8.1.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -419,6 +419,23 @@ INSERT INTO `locations` (`locationId`, `name`, `location`, `musicName`, `gymId`,
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `pokedex`
+--
+
+CREATE TABLE `pokedex` (
+  `pokedexId` int(11) NOT NULL,
+  `nickname` varchar(255) DEFAULT NULL,
+  `level` tinyint(4) NOT NULL,
+  `friendshipLevel` smallint(6) NOT NULL,
+  `nature` varchar(255) NOT NULL,
+  `gender` char(1) NOT NULL,
+  `trainerId` int(11) NOT NULL,
+  `pokemonId` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `pokemon`
 --
 
@@ -778,6 +795,21 @@ INSERT INTO `pokemonabilityrelation` (`pokemonAbilityRelationId`, `pokemonId`, `
 (223, 95, 31, 1),
 (224, 96, 23, 0);
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `trainer`
+--
+
+CREATE TABLE `trainer` (
+  `trainerId` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `gender` char(1) NOT NULL,
+  `trainerClass` varchar(255) NOT NULL,
+  `quote` varchar(255) NOT NULL,
+  `money` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 --
 -- Indexes for dumped tables
 --
@@ -816,6 +848,14 @@ ALTER TABLE `locations`
   ADD KEY `gymId` (`gymId`);
 
 --
+-- Indexes for table `pokedex`
+--
+ALTER TABLE `pokedex`
+  ADD PRIMARY KEY (`pokedexId`),
+  ADD KEY `fk_pokedex_trainer` (`trainerId`),
+  ADD KEY `fk_pokedex_pokemon` (`pokemonId`);
+
+--
 -- Indexes for table `pokemon`
 --
 ALTER TABLE `pokemon`
@@ -828,6 +868,12 @@ ALTER TABLE `pokemonabilityrelation`
   ADD PRIMARY KEY (`pokemonAbilityRelationId`),
   ADD KEY `abilityId` (`abilityId`),
   ADD KEY `pokemonId` (`pokemonId`);
+
+--
+-- Indexes for table `trainer`
+--
+ALTER TABLE `trainer`
+  ADD PRIMARY KEY (`trainerId`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -864,6 +910,12 @@ ALTER TABLE `locations`
   MODIFY `locationId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
+-- AUTO_INCREMENT for table `pokedex`
+--
+ALTER TABLE `pokedex`
+  MODIFY `pokedexId` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `pokemon`
 --
 ALTER TABLE `pokemon`
@@ -874,6 +926,12 @@ ALTER TABLE `pokemon`
 --
 ALTER TABLE `pokemonabilityrelation`
   MODIFY `pokemonAbilityRelationId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=225;
+
+--
+-- AUTO_INCREMENT for table `trainer`
+--
+ALTER TABLE `trainer`
+  MODIFY `trainerId` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
@@ -891,6 +949,13 @@ ALTER TABLE `game`
 ALTER TABLE `locations`
   ADD CONSTRAINT `locations_ibfk_1` FOREIGN KEY (`gameId`) REFERENCES `game` (`gameId`),
   ADD CONSTRAINT `locations_ibfk_2` FOREIGN KEY (`gymId`) REFERENCES `gyms` (`gymId`);
+
+--
+-- Constraints for table `pokedex`
+--
+ALTER TABLE `pokedex`
+  ADD CONSTRAINT `fk_pokedex_pokemon` FOREIGN KEY (`pokemonId`) REFERENCES `pokemon` (`pokemonId`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_pokedex_trainer` FOREIGN KEY (`trainerId`) REFERENCES `trainer` (`trainerId`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `pokemonabilityrelation`
