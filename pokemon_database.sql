@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 14, 2022 at 05:42 AM
--- Server version: 10.4.22-MariaDB
--- PHP Version: 8.1.1
+-- Generation Time: Nov 04, 2022 at 04:10 PM
+-- Server version: 10.4.24-MariaDB
+-- PHP Version: 8.1.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `pokemondatabase`
+-- Database: `pokemon_database`
 --
 
 -- --------------------------------------------------------
@@ -28,7 +28,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `abilities` (
-  `abilityId` int(11) NOT NULL,
+  `ability_id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
   `description` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -37,7 +37,7 @@ CREATE TABLE `abilities` (
 -- Dumping data for table `abilities`
 --
 
-INSERT INTO `abilities` (`abilityId`, `name`, `description`) VALUES
+INSERT INTO `abilities` (`ability_id`, `name`, `description`) VALUES
 (1, 'Adaptability', 'Powers up moves of the same type.'),
 (2, 'Aerilate', 'Turns Normal-type moves into Flying-type moves.'),
 (3, 'Aftermath', 'Damages the attacker landing the finishing hit.'),
@@ -308,140 +308,268 @@ INSERT INTO `abilities` (`abilityId`, `name`, `description`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `game`
+--
+
+CREATE TABLE `game` (
+  `game_id` int(11) NOT NULL,
+  `name` varchar(30) NOT NULL,
+  `generation_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `game`
+--
+
+INSERT INTO `game` (`game_id`, `name`, `generation_id`) VALUES
+(1, 'Pokemon Red', 1),
+(2, 'Pokemon Silver', 2),
+(3, 'Pokemon Emerald', 3),
+(4, 'Pokemon Pearl', 4),
+(5, 'Pokemon White', 5),
+(6, 'Pokemon X', 6),
+(7, 'Pokemon Sun', 7),
+(8, 'Pokemon Sword', 8);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `generation`
+--
+
+CREATE TABLE `generation` (
+  `generation_id` int(11) NOT NULL,
+  `pokemon_number` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `generation`
+--
+
+INSERT INTO `generation` (`generation_id`, `pokemon_number`) VALUES
+(1, 151),
+(2, 251),
+(3, 386),
+(4, 493),
+(5, 649),
+(6, 721),
+(7, 809),
+(8, 905);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `gyms`
+--
+
+CREATE TABLE `gyms` (
+  `gym_id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `type` varchar(255) NOT NULL,
+  `badge` varchar(255) NOT NULL,
+  `gym_leader` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `gyms`
+--
+
+INSERT INTO `gyms` (`gym_id`, `name`, `type`, `badge`, `gym_leader`) VALUES
+(1, 'Pewter Gym', 'Rock', 'Boulder Badge', 0),
+(2, 'Cerulean Gym', 'Water', 'Cascade Badge', 0),
+(3, 'Violet Gym', 'Flying', 'Zephyr Badge', 0),
+(4, 'Lavaridge Gym', 'Fire', 'Heat Badge', 0),
+(5, 'Eterna Gym', 'Grass', 'Forest Badge', 0),
+(6, 'Nimbasa Gym', 'Electric', 'Bolt Badge', 0),
+(7, 'Laverre Gym', 'Fairy', 'Fairy Badge', 0),
+(8, 'Santalune Gym', 'Bug', 'Bug Badge', 0),
+(9, 'Stow-on-Side Stadium', 'Ghost', 'Ghost Badge', 0),
+(10, 'Hammerlocke Gym', 'Dragon', 'Dragon Badge', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `locations`
+--
+
+CREATE TABLE `locations` (
+  `location_id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `location` varchar(255) NOT NULL,
+  `music_name` varchar(255) NOT NULL,
+  `gym_id` int(11) NOT NULL,
+  `game_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `locations`
+--
+
+INSERT INTO `locations` (`location_id`, `name`, `location`, `music_name`, `gym_id`, `game_id`) VALUES
+(21, 'Pewter City', 'North-West Kanto region', 'Pewter city theme', 1, 1),
+(22, 'Cerulean City', 'Northern Kanto', 'Cerulean city theme', 2, 1),
+(23, 'Violet City', 'Central Johto', 'Violet city theme', 3, 2),
+(24, 'Lavaridge Town', 'Central Western Hoenn', 'Lavaridge Town Theme', 4, 3),
+(25, 'Eterna City', 'Sinnoh', 'Eterna City theme', 5, 4),
+(26, 'Nimbasa City', 'Central Unova', 'Nimbasa City theme', 6, 5),
+(27, 'Santalune City', 'Central Santalune', 'Santalune City theme', 8, 7),
+(28, 'Stow-on-Side', 'West-Center Galar', 'Stow-on-Side theme', 9, 8),
+(29, 'Hammerlocke', 'Galar', 'Hammerlocke theme', 10, 8);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `pokedex`
+--
+
+CREATE TABLE `pokedex` (
+  `pokedex_id` int(11) NOT NULL,
+  `nickname` varchar(255) DEFAULT NULL,
+  `level` tinyint(4) NOT NULL,
+  `friendship_level` smallint(6) NOT NULL,
+  `nature` varchar(255) NOT NULL,
+  `gender` char(1) NOT NULL,
+  `trainer_id` int(11) NOT NULL,
+  `pokemon_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `pokemon`
 --
 
 CREATE TABLE `pokemon` (
-  `pokemonId` int(11) NOT NULL,
+  `pokemon_id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
   `uri` varchar(255) NOT NULL,
   `height` varchar(255) NOT NULL,
   `weight` varchar(255) NOT NULL,
-  `primaryType` varchar(255) NOT NULL,
-  `secondaryType` varchar(255) DEFAULT NULL,
-  `introductionGeneration` int(11) NOT NULL
+  `primary_type` varchar(255) NOT NULL,
+  `secondary_type` varchar(255) DEFAULT NULL,
+  `intro_gen` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `pokemon`
 --
 
-INSERT INTO `pokemon` (`pokemonId`, `name`, `uri`, `height`, `weight`, `primaryType`, `secondaryType`, `introductionGeneration`) VALUES
-(1, 'Bulbasaur', 'https://den-cards.pokellector.com/346/Bulbasaur.POGO.1.44077.png', '0.7m', '15.2 lbs', 'Grass', 'Poison', 1),
-(2, 'Pikachu', 'https://den-cards.pokellector.com/325/Pikachu.SWSH7.49.39918.png', '0.4m', '13.2 lbs', 'Electric', '', 1),
-(3, 'Diglett', 'https://den-cards.pokellector.com/296/Diglett.SWSH3.84.35193.png', '0.2m', '2.2 lbs', 'Ground', 'Steel', 1),
-(4, 'Meowth', 'https://den-cards.pokellector.com/269/Meowth.UNB.147.28242.png', '0.4m', '9.3 lbs', 'Steel', 'Ground', 1),
-(5, 'Magnemite', 'https://den-cards.pokellector.com/275/Magnemite.UMI.58.29087.png', '0.3m', '13.2 lbs', 'Electric', 'Steel', 1),
-(6, 'Gastly', 'https://den-cards.pokellector.com/320/Gastly.CRE.55.39055.png', '1.3m', '0.2 lbs', 'Ghost', 'Poison', 1),
-(7, 'Voltorb', 'https://den-cards.pokellector.com/299/Voltorb.SWSH0.45.35984.png', '0.5m', '22.9 lbs', 'Electric', '', 1),
-(8, 'Staryu', 'https://den-cards.pokellector.com/197/Staryu.EVO.30.png', '0.8m', '76.1 lbs', 'Water', '', 1),
-(9, 'Dragonite', 'https://den-cards.pokellector.com/261/Dragonite.SM9.119.26610.png', '2.2m', '463.0 lbs', 'Dragon', 'Flying', 1),
-(10, 'Gyarados', 'https://den-cards.pokellector.com/59/Gyarados.DX.8.png', '6.5m', '518.1 lbs', 'Water', 'Flying', 1),
-(11, 'Onix', 'https://den-cards.pokellector.com/346/Onix.POGO.36.44179.png', '8.8m', '463.0 lbs', 'Rock', 'Ground', 1),
-(12, 'Growlithe', 'https://den-cards.pokellector.com/353/Growlithe.MCD22.4.44479.png', '0.7m', '41.9 lbs', 'Fire', '', 1),
-(13, 'Totodile', 'https://den-cards.pokellector.com/335/Totodile.SWSH8.55.40727.png', '0.6m', '20.9 lbs', 'Water', '', 2),
-(14, 'Sentret', 'https://den-cards.pokellector.com/296/Sentret.SWSH3.135.35242.png', '0.8m', '13.2 lbs', 'Normal', '', 2),
-(15, 'Spinarak', 'https://den-cards.pokellector.com/244/Spinarak.CES.5.22617.png', '0.5m', '18.7 lbs', 'Bug', 'Poison', 2),
-(16, 'Togepi', 'https://den-cards.pokellector.com/345/Togepi.SWSH10.55.43723.png', '0.3m', '3.3 lbs', 'Fairy', '', 2),
-(17, 'Espeon', 'https://den-cards.pokellector.com/259/Espeon.LOT.89.24669.png', '0.9m', '58.9 lbs', 'Psychic', '', 2),
-(18, 'Scizor', 'https://den-cards.pokellector.com/7/Scizor.BCR.94.png', '1.8m', '260.1 lbs', 'Bug', 'Steel', 2),
-(19, 'Sneasel', 'https://den-cards.pokellector.com/340/Sneasel.SWSH09.86.42790.png', '0.9m', '61.7 lbs', 'Dark', 'Ice', 2),
-(20, 'Houndoom', 'https://den-cards.pokellector.com/110/Houndoom.AQ.14.png', '1.4m', '77.2 lbs', 'Dark', 'Fire', 2),
-(21, 'Sudowoodo', 'https://den-cards.pokellector.com/279/Sudowoodo.HIF.SV20.29873.png', '1.2m', '83.8 lbs', 'Rock', '', 2),
-(22, 'Skarmory', 'https://den-cards.pokellector.com/296/Skarmory.SWSH3.120.35227.png', '1.7m', '111.3 lbs', 'Steel', 'Flying', 2),
-(23, 'Entei', 'https://den-cards.pokellector.com/280/Entei.CEC.28.30748.png', '2.1m', '436.5 lbs', 'Fire', '', 2),
-(24, 'Tyranitar', 'https://den-cards.pokellector.com/261/Tyranitar.SM9.85.26578.png', '2.0m', '445.3 lbs', 'Rock', 'Dark', 2),
-(25, 'Absol', 'https://den-cards.pokellector.com/345/Absol.SWSH10.97.43765.png', '1.2m', '103.6 lbs', 'Dark', '', 3),
-(26, 'Grovyle', 'https://den-cards.pokellector.com/166/Grovyle.PCL.7.png', '0.9m', '47.6 lbs', 'Grass', '', 3),
-(27, 'Mightyena', 'https://den-cards.pokellector.com/345/Mightyena.SWSH10.96.43764.png', '1.0m', '81.6 lbs', 'Dark', '', 3),
-(28, 'Lotad', 'https://den-cards.pokellector.com/292/Lotad.SWSH2.7.34438.png', '0.5m', '5.7 lbs', 'Water', 'Grass', 3),
-(29, 'Gardevoir', 'https://den-cards.pokellector.com/320/Gardevoir.CRE.61.39060.png', '1.6m', '106.7 lbs', 'Psychic', 'Fairy', 3),
-(30, 'Shedinja', 'https://den-cards.pokellector.com/259/Shedinja.LOT.95.24675.png', '0.8m', '2.6 lbs', 'Bug', 'Ghost', 3),
-(31, 'Aggron', 'https://den-cards.pokellector.com/320/Aggron.CRE.111.39107.png', '2.1m', '793.7 lbs', 'Steel', 'Rock', 3),
-(32, 'Altaria', 'https://den-cards.pokellector.com/298/Altaria.SWSH3.49.35748.png', '1.1m', '45.4 lbs', 'Dragon', 'Flying', 3),
-(33, 'Armaldo', 'https://den-cards.pokellector.com/67/Armaldo.PK.3.png', '1.5m', '150.4 lbs', 'Rock', 'Bug', 3),
-(34, 'Tropius', 'https://den-cards.pokellector.com/280/Tropius.CEC.12.30733.png', '2.0m', '220.5 lbs', 'Grass', 'Flying', 3),
-(35, 'Groudon', 'https://den-cards.pokellector.com/143/Groudon.XY.52.png', '3.5m', '2094.4 lbs', 'Fire', '', 3),
-(36, 'Milotic', 'https://den-cards.pokellector.com/296/Milotic.SWSH3.39.35149.png', '6.2m', '357.1 lbs', 'Water', '', 3),
-(37, 'Torterra', 'https://den-cards.pokellector.com/340/Torterra.SWSH09.8.42721.png', '2.2m', '683.4 lbs', 'Grass', 'Ground', 4),
-(38, 'Monferno', 'https://den-cards.pokellector.com/38/Monferno.PL.56.png', '0.9m', '48.5 lbs', 'Fire', 'Fighting', 4),
-(39, 'Piplup', 'https://den-cards.pokellector.com/340/Piplup.SWSH09.35.42741.png', '0.4m', '11.5 lbs', 'Water', '', 4),
-(40, 'Roserade', 'https://den-cards.pokellector.com/286/Roserade.SH01.4.31429.png', '0.9m', '32.0 lbs', 'Grass', 'Poison', 4),
-(41, 'Lopunny', 'https://den-cards.pokellector.com/40/Lopunny.SV.63.png', '1.2m', '73.4 lbs', 'Normal', '', 4),
-(42, 'Garchomp', 'https://den-cards.pokellector.com/340/Garchomp.SWSH09.109.42813.png', '1.9m', '209.4 lbs', 'Dragon', 'Ground', 4),
-(43, 'Lucario', 'https://den-cards.pokellector.com/340/Lucario.SWSH09.79.42783.png', '1.2m', '119.0 lbs', 'Fighting', 'Steel', 4),
-(44, 'Snover', 'https://den-cards.pokellector.com/48/Snover.SF.74.png', '1.0m', '111.3 lbs', 'Grass', 'Ice', 4),
-(45, 'Magmortar', 'https://den-cards.pokellector.com/292/Magmortar.SWSH2.30.34456.png', '1.6m', '149.9 lbs', 'Fire', '', 4),
-(46, 'Darkrai', 'https://den-cards.pokellector.com/350/Darkrai.SWSH10.120.44779.png', '1.5m', '111.3 lbs', 'Dark', '', 4),
-(47, 'Buizel', 'https://den-cards.pokellector.com/340/Buizel.SWSH09.38.42744.png', '0.7m', '65.0 lbs', 'Water', '', 4),
-(48, 'Bidoof', 'https://den-cards.pokellector.com/166/Bidoof.PCL.116.png', '0.5m', '44.1 lbs', 'Normal', '', 4),
-(49, 'Dewott', 'https://den-cards.pokellector.com/299/Dewott.SWSH0.34.35973.png', '0.8m', '54.0 lbs', 'Water', '', 5),
-(50, 'Timburr', 'https://den-cards.pokellector.com/6/Timburr.DEX.58.png', '0.6m', '27.6 lbs', 'Fighting', '', 5),
-(51, 'Zoroark', 'https://den-cards.pokellector.com/325/Zoroark.SWSH7.103.39869.png', '1.6m', '178.8 lbs', 'Dark', '', 5),
-(52, 'Amoonguss', 'https://den-cards.pokellector.com/275/Amoonguss.UMI.14.29045.png', '0.6m', '23.1 lbs', 'Grass', 'Poison', 5),
-(53, 'Klang', 'https://den-cards.pokellector.com/296/Klang.SWSH3.126.35233.png', '0.6m', '112.6 lbs', 'Steel', '', 5),
-(54, 'Axew', 'https://den-cards.pokellector.com/8/Axew.DRV.13.png', '0.6m', '39.7 lbs', 'Dragon', '', 5),
-(55, 'Bisharp', 'https://den-cards.pokellector.com/345/Bisharp.SWSH10.116.43783.png', '1.6m', '154.3 lbs', 'Dark', 'Steel', 5),
-(56, 'Tornadus', 'https://den-cards.pokellector.com/275/Tornadus.UMI.178.29199.png', '1.5m', '138.9 lbs', 'Flying', '', 5),
-(57, 'Keldeo', 'https://den-cards.pokellector.com/345/Keldeo.SWSH10.45.43713.png', '1.4m', '106.9 lbs', 'Water', 'Fighting', 5),
-(58, 'Minccino', 'https://den-cards.pokellector.com/286/Minccino.SH01.146.31553.png', '0.4m', '12.8 lbs', 'Normal', '', 5),
-(59, 'Crustle', 'https://den-cards.pokellector.com/325/Crustle.SWSH7.12.39882.png', '1.4m', '440.9 lbs', 'Bug', 'Rock', 5),
-(60, 'Seismitoad', 'https://den-cards.pokellector.com/292/Seismitoad.SWSH2.46.34466.png', '1.5m', '136.7 lbs', 'Water', 'Ground', 5),
-(61, 'Frogadier', 'https://den-cards.pokellector.com/183/Frogadier.BPT.39.png', '0.6m', '24.0 lbs', 'Water', '', 6),
-(62, 'Floette', 'https://den-cards.pokellector.com/179/Floette.BKT.102.png', '0.2m', '2.0 lbs', 'Fairy', '', 6),
-(63, 'Pangoro', 'https://den-cards.pokellector.com/183/Pangoro.BPT.75.png', '2.1m', '299.8 lbs', 'Fighting', 'Dark', 6),
-(64, 'Honedge', 'https://den-cards.pokellector.com/142/Honedge.XY.83.png', '0.8m', '4.4 lbs', 'Steel', 'Ghost', 6),
-(65, 'Skrelp', 'https://den-cards.pokellector.com/239/Skrelp.FLI.52.20756.png', '0.5m', '16.1 lbs', 'Poison', 'Water', 6),
-(66, 'Tyrunt', 'https://den-cards.pokellector.com/239/Tyrunt.FLI.68.20771.png', '0.8m', '57.3 lbs', 'Rock', 'Dragon', 6),
-(67, 'Dedenne', 'https://den-cards.pokellector.com/296/Dedenne.SWSH3.78.35187.png', '0.2m', '4.9 lbs', 'Electric', 'Fairy', 6),
-(68, 'Avalugg', 'https://den-cards.pokellector.com/325/Avalugg.SWSH7.45.39914.png', '2.0m', '1113.3 lbs', 'Ice', '', 6),
-(69, 'Trevenant', 'https://den-cards.pokellector.com/335/Trevenant.SWSH8.17.40689.png', '1.5m', '156.6 lbs', 'Ghost', 'Grass', 6),
-(70, 'Noivern', 'https://den-cards.pokellector.com/159/Noivern.FF.77.png', '1.5m', '187.6 lbs', 'Fighting', 'Dragon', 6),
-(71, 'Xerneas', 'https://den-cards.pokellector.com/299/Xerneas.SWSH0.78.36017.png', '3.0m', '474.0 lbs', 'Fairy', '', 6),
-(72, 'Zygarde', 'https://den-cards.pokellector.com/239/Zygarde.FLI.72.20775.png', '5.0m', '672.4 lbs', 'Dragon', 'Ground', 6),
-(73, 'Dartrix', 'https://den-cards.pokellector.com/304/Dartrix.SWSH45.7.36965.png', '0.7m', '35.3 lbs', 'Grass', 'Flying', 7),
-(74, 'Toucannon', 'https://den-cards.pokellector.com/259/Toucannon.LOT.166.24741.png', '1.1m', '57.3 lbs', 'Normal', 'Flying', 7),
-(75, 'Lycanroc', 'https://den-cards.pokellector.com/298/Lycanroc.SWSH3.30.35729.png', '0.8m', '55.1 lbs', 'Rock', '', 7),
-(76, 'Salandit', 'https://den-cards.pokellector.com/269/Salandit.UNB.30.28135.png', '0.6m', '10.6 lbs', 'Poison', 'Fire', 7),
-(77, 'Bewear', 'https://den-cards.pokellector.com/353/Bewear.MCD22.12.44484.png', '2.1m', '297.6 lbs', 'Normal', 'Fighting', 7),
-(78, 'Minior', 'https://den-cards.pokellector.com/244/Minior.CES.83.22692.png', '0.3m', '88.2 lbs', 'Rock', 'Flying', 7),
-(79, 'Mimikyu', 'https://den-cards.pokellector.com/350/Mimikyu.SWSH10.80.44740.png', '0.2m', '1.5 lbs', 'Ghost', 'Fairy', 7),
-(80, 'Cosmoem', 'https://den-cards.pokellector.com/261/Cosmoem.SM9.70.26563.png', '0.1m', '2204.4 lbs', 'Psychic', '', 7),
-(81, 'Lunala', 'https://den-cards.pokellector.com/244/Lunala.CES.70.22679.png', '4.0m', '264.6 lbs', 'Psychic', 'Ghost', 7),
-(82, 'Stakataka', 'https://den-cards.pokellector.com/269/Stakataka.UNB.106.28206.png', '5.5m', '1807.8 lbs', 'Rock', 'Steel', 7),
-(83, 'Naganadel', 'https://den-cards.pokellector.com/259/Naganadel.LOT.108.24688.png', '3.6m', '330.7 lbs', 'Poison', 'Dragon', 7),
-(84, 'Guzzlord', 'https://den-cards.pokellector.com/239/Guzzlord.FLI.80.20598.png', '5.5m', '1957.7 lbs', 'Dark', 'Dragon', 7),
-(85, 'Rillaboom', 'https://den-cards.pokellector.com/304/Rillaboom.SWSH45.SV6.37089.png', '2.1m', '198.4 lbs', 'Grass', '', 8),
-(86, 'Raboot', 'https://den-cards.pokellector.com/304/Raboot.SWSH45.SV16.37099.png', '0.6m', '19.8 lbs', 'Fire', '', 8),
-(87, 'Dottler', 'https://den-cards.pokellector.com/304/Dottler.SWSH45.SV8.37091.png', '0.4m', '43.0 lbs', 'Bug', 'Psychic', 8),
-(88, 'Thievul', 'https://den-cards.pokellector.com/325/Thievul.SWSH7.105.39972.png', '1.2m', '43.9 lbs', 'Dark', '', 8),
-(89, 'Drednaw', 'https://den-cards.pokellector.com/335/Drednaw.SWSH8.81.40751.png', '1.0m', '254.6 lbs', 'Water', 'Rock', 8),
-(90, 'Carkol', 'https://den-cards.pokellector.com/305/Carkol.SWSH05.79.37602.png', '1.1m', '172.0 lbs', 'Rock', 'Fire', 8),
-(91, 'Sandaconda', 'https://den-cards.pokellector.com/305/Sandaconda.SWSH05.82.37605.png', '3.8m', '144.4 lbs', 'Ground', '', 8),
-(92, 'Toxel', 'https://den-cards.pokellector.com/335/Toxel.SWSH8.106.40776.png', '0.4m', '24.3 lbs', 'Electric', 'Poison', 8),
-(93, 'Grapploct', 'https://den-cards.pokellector.com/299/Grapploct.SWSH0.101.36040.png', '1.6m', '86.0 lbs', 'Fighting', '', 8),
-(94, 'Sirfetch\'d', 'https://den-cards.pokellector.com/292/Galarian-Sirfetchd.SWSH2.95.34504.png', '0.8m', '257.9 lbs', 'Fighting', '', 8),
-(95, 'Enamorus', 'https://den-cards.pokellector.com/350/Enamorus-V.SWSH10.82.44742.png', '1.6m', '105.8 lbs', 'Flying', 'Fairy', 8),
-(96, 'Glastrier', 'https://den-cards.pokellector.com/350/Glastrier.SWSH10.51.44711.png', '2.2m', '1763.7 lbs', 'Ice', '', 8);
+INSERT INTO `pokemon` (`pokemon_id`, `name`, `uri`, `height`, `weight`, `primary_type`, `secondary_type`, `intro_gen`) VALUES
+(1, 'Bulbasaur', 'https://den-cards.pokellector.com/346/Bulbasaur.POGO.1.44077.png', '0.7', '15.2', 'Grass', 'Poison', 1),
+(2, 'Pikachu', 'https://den-cards.pokellector.com/325/Pikachu.SWSH7.49.39918.png', '0.4', '13.2', 'Electric', '', 1),
+(3, 'Diglett', 'https://den-cards.pokellector.com/296/Diglett.SWSH3.84.35193.png', '0.2', '2.2', 'Ground', 'Steel', 1),
+(4, 'Meowth', 'https://den-cards.pokellector.com/269/Meowth.UNB.147.28242.png', '0.4', '9.3', 'Steel', 'Ground', 1),
+(5, 'Magnemite', 'https://den-cards.pokellector.com/275/Magnemite.UMI.58.29087.png', '0.3', '13.2', 'Electric', 'Steel', 1),
+(6, 'Gastly', 'https://den-cards.pokellector.com/320/Gastly.CRE.55.39055.png', '1.3', '0.2', 'Ghost', 'Poison', 1),
+(7, 'Voltorb', 'https://den-cards.pokellector.com/299/Voltorb.SWSH0.45.35984.png', '0.5', '22.9', 'Electric', '', 1),
+(8, 'Staryu', 'https://den-cards.pokellector.com/197/Staryu.EVO.30.png', '0.8', '76.1', 'Water', '', 1),
+(9, 'Dragonite', 'https://den-cards.pokellector.com/261/Dragonite.SM9.119.26610.png', '2.2', '463.0', 'Dragon', 'Flying', 1),
+(10, 'Gyarados', 'https://den-cards.pokellector.com/59/Gyarados.DX.8.png', '6.5', '518.1', 'Water', 'Flying', 1),
+(11, 'Onix', 'https://den-cards.pokellector.com/346/Onix.POGO.36.44179.png', '8.8', '463.0', 'Rock', 'Ground', 1),
+(12, 'Growlithe', 'https://den-cards.pokellector.com/353/Growlithe.MCD22.4.44479.png', '0.7', '41.9', 'Fire', '', 1),
+(13, 'Totodile', 'https://den-cards.pokellector.com/335/Totodile.SWSH8.55.40727.png', '0.6', '20.9', 'Water', '', 2),
+(14, 'Sentret', 'https://den-cards.pokellector.com/296/Sentret.SWSH3.135.35242.png', '0.8', '13.2', 'Normal', '', 2),
+(15, 'Spinarak', 'https://den-cards.pokellector.com/244/Spinarak.CES.5.22617.png', '0.5', '18.7', 'Bug', 'Poison', 2),
+(16, 'Togepi', 'https://den-cards.pokellector.com/345/Togepi.SWSH10.55.43723.png', '0.3', '3.3', 'Fairy', '', 2),
+(17, 'Espeon', 'https://den-cards.pokellector.com/259/Espeon.LOT.89.24669.png', '0.9', '58.9', 'Psychic', '', 2),
+(18, 'Scizor', 'https://den-cards.pokellector.com/7/Scizor.BCR.94.png', '1.8', '260.1', 'Bug', 'Steel', 2),
+(19, 'Sneasel', 'https://den-cards.pokellector.com/340/Sneasel.SWSH09.86.42790.png', '0.9', '61.7', 'Dark', 'Ice', 2),
+(20, 'Houndoom', 'https://den-cards.pokellector.com/110/Houndoom.AQ.14.png', '1.4', '77.2', 'Dark', 'Fire', 2),
+(21, 'Sudowoodo', 'https://den-cards.pokellector.com/279/Sudowoodo.HIF.SV20.29873.png', '1.2', '83.8', 'Rock', '', 2),
+(22, 'Skarmory', 'https://den-cards.pokellector.com/296/Skarmory.SWSH3.120.35227.png', '1.7', '111.3', 'Steel', 'Flying', 2),
+(23, 'Entei', 'https://den-cards.pokellector.com/280/Entei.CEC.28.30748.png', '2.1', '436.5', 'Fire', '', 2),
+(24, 'Tyranitar', 'https://den-cards.pokellector.com/261/Tyranitar.SM9.85.26578.png', '2.0', '445.3', 'Rock', 'Dark', 2),
+(25, 'Absol', 'https://den-cards.pokellector.com/345/Absol.SWSH10.97.43765.png', '1.2', '103.6', 'Dark', '', 3),
+(26, 'Grovyle', 'https://den-cards.pokellector.com/166/Grovyle.PCL.7.png', '0.9', '47.6', 'Grass', '', 3),
+(27, 'Mightyena', 'https://den-cards.pokellector.com/345/Mightyena.SWSH10.96.43764.png', '1.0', '81.6', 'Dark', '', 3),
+(28, 'Lotad', 'https://den-cards.pokellector.com/292/Lotad.SWSH2.7.34438.png', '0.5', '5.7', 'Water', 'Grass', 3),
+(29, 'Gardevoir', 'https://den-cards.pokellector.com/320/Gardevoir.CRE.61.39060.png', '1.6', '106.7', 'Psychic', 'Fairy', 3),
+(30, 'Shedinja', 'https://den-cards.pokellector.com/259/Shedinja.LOT.95.24675.png', '0.8', '2.6', 'Bug', 'Ghost', 3),
+(31, 'Aggron', 'https://den-cards.pokellector.com/320/Aggron.CRE.111.39107.png', '2.1', '793.7', 'Steel', 'Rock', 3),
+(32, 'Altaria', 'https://den-cards.pokellector.com/298/Altaria.SWSH3.49.35748.png', '1.1', '45.4', 'Dragon', 'Flying', 3),
+(33, 'Armaldo', 'https://den-cards.pokellector.com/67/Armaldo.PK.3.png', '1.5', '150.4', 'Rock', 'Bug', 3),
+(34, 'Tropius', 'https://den-cards.pokellector.com/280/Tropius.CEC.12.30733.png', '2.0', '220.5', 'Grass', 'Flying', 3),
+(35, 'Groudon', 'https://den-cards.pokellector.com/143/Groudon.XY.52.png', '3.5', '2094.4', 'Fire', '', 3),
+(36, 'Milotic', 'https://den-cards.pokellector.com/296/Milotic.SWSH3.39.35149.png', '6.2', '357.1', 'Water', '', 3),
+(37, 'Torterra', 'https://den-cards.pokellector.com/340/Torterra.SWSH09.8.42721.png', '2.2', '683.4', 'Grass', 'Ground', 4),
+(38, 'Monferno', 'https://den-cards.pokellector.com/38/Monferno.PL.56.png', '0.9', '48.5', 'Fire', 'Fighting', 4),
+(39, 'Piplup', 'https://den-cards.pokellector.com/340/Piplup.SWSH09.35.42741.png', '0.4', '11.5', 'Water', '', 4),
+(40, 'Roserade', 'https://den-cards.pokellector.com/286/Roserade.SH01.4.31429.png', '0.9', '32.0', 'Grass', 'Poison', 4),
+(41, 'Lopunny', 'https://den-cards.pokellector.com/40/Lopunny.SV.63.png', '1.2', '73.4', 'Normal', '', 4),
+(42, 'Garchomp', 'https://den-cards.pokellector.com/340/Garchomp.SWSH09.109.42813.png', '1.9', '209.4', 'Dragon', 'Ground', 4),
+(43, 'Lucario', 'https://den-cards.pokellector.com/340/Lucario.SWSH09.79.42783.png', '1.2', '119.0', 'Fighting', 'Steel', 4),
+(44, 'Snover', 'https://den-cards.pokellector.com/48/Snover.SF.74.png', '1.0', '111.3', 'Grass', 'Ice', 4),
+(45, 'Magmortar', 'https://den-cards.pokellector.com/292/Magmortar.SWSH2.30.34456.png', '1.6', '149.9', 'Fire', '', 4),
+(46, 'Darkrai', 'https://den-cards.pokellector.com/350/Darkrai.SWSH10.120.44779.png', '1.5', '111.3', 'Dark', '', 4),
+(47, 'Buizel', 'https://den-cards.pokellector.com/340/Buizel.SWSH09.38.42744.png', '0.7', '65.0', 'Water', '', 4),
+(48, 'Bidoof', 'https://den-cards.pokellector.com/166/Bidoof.PCL.116.png', '0.5', '44.1', 'Normal', '', 4),
+(49, 'Dewott', 'https://den-cards.pokellector.com/299/Dewott.SWSH0.34.35973.png', '0.8', '54.0', 'Water', '', 5),
+(50, 'Timburr', 'https://den-cards.pokellector.com/6/Timburr.DEX.58.png', '0.6', '27.6', 'Fighting', '', 5),
+(51, 'Zoroark', 'https://den-cards.pokellector.com/325/Zoroark.SWSH7.103.39869.png', '1.6', '178.8', 'Dark', '', 5),
+(52, 'Amoonguss', 'https://den-cards.pokellector.com/275/Amoonguss.UMI.14.29045.png', '0.6', '23.1', 'Grass', 'Poison', 5),
+(53, 'Klang', 'https://den-cards.pokellector.com/296/Klang.SWSH3.126.35233.png', '0.6', '112.6', 'Steel', '', 5),
+(54, 'Axew', 'https://den-cards.pokellector.com/8/Axew.DRV.13.png', '0.6', '39.7', 'Dragon', '', 5),
+(55, 'Bisharp', 'https://den-cards.pokellector.com/345/Bisharp.SWSH10.116.43783.png', '1.6', '154.3', 'Dark', 'Steel', 5),
+(56, 'Tornadus', 'https://den-cards.pokellector.com/275/Tornadus.UMI.178.29199.png', '1.5', '138.9', 'Flying', '', 5),
+(57, 'Keldeo', 'https://den-cards.pokellector.com/345/Keldeo.SWSH10.45.43713.png', '1.4', '106.9', 'Water', 'Fighting', 5),
+(58, 'Minccino', 'https://den-cards.pokellector.com/286/Minccino.SH01.146.31553.png', '0.4', '12.8', 'Normal', '', 5),
+(59, 'Crustle', 'https://den-cards.pokellector.com/325/Crustle.SWSH7.12.39882.png', '1.4', '440.9', 'Bug', 'Rock', 5),
+(60, 'Seismitoad', 'https://den-cards.pokellector.com/292/Seismitoad.SWSH2.46.34466.png', '1.5', '136.7', 'Water', 'Ground', 5),
+(61, 'Frogadier', 'https://den-cards.pokellector.com/183/Frogadier.BPT.39.png', '0.6', '24.0', 'Water', '', 6),
+(62, 'Floette', 'https://den-cards.pokellector.com/179/Floette.BKT.102.png', '0.2', '2.0', 'Fairy', '', 6),
+(63, 'Pangoro', 'https://den-cards.pokellector.com/183/Pangoro.BPT.75.png', '2.1', '299.8', 'Fighting', 'Dark', 6),
+(64, 'Honedge', 'https://den-cards.pokellector.com/142/Honedge.XY.83.png', '0.8', '4.4', 'Steel', 'Ghost', 6),
+(65, 'Skrelp', 'https://den-cards.pokellector.com/239/Skrelp.FLI.52.20756.png', '0.5', '16.1', 'Poison', 'Water', 6),
+(66, 'Tyrunt', 'https://den-cards.pokellector.com/239/Tyrunt.FLI.68.20771.png', '0.8', '57.3', 'Rock', 'Dragon', 6),
+(67, 'Dedenne', 'https://den-cards.pokellector.com/296/Dedenne.SWSH3.78.35187.png', '0.2', '4.9', 'Electric', 'Fairy', 6),
+(68, 'Avalugg', 'https://den-cards.pokellector.com/325/Avalugg.SWSH7.45.39914.png', '2.0', '1113.3', 'Ice', '', 6),
+(69, 'Trevenant', 'https://den-cards.pokellector.com/335/Trevenant.SWSH8.17.40689.png', '1.5', '156.6', 'Ghost', 'Grass', 6),
+(70, 'Noivern', 'https://den-cards.pokellector.com/159/Noivern.FF.77.png', '1.5', '187.6', 'Fighting', 'Dragon', 6),
+(71, 'Xerneas', 'https://den-cards.pokellector.com/299/Xerneas.SWSH0.78.36017.png', '3.0', '474.0', 'Fairy', '', 6),
+(72, 'Zygarde', 'https://den-cards.pokellector.com/239/Zygarde.FLI.72.20775.png', '5.0', '672.4', 'Dragon', 'Ground', 6),
+(73, 'Dartrix', 'https://den-cards.pokellector.com/304/Dartrix.SWSH45.7.36965.png', '0.7', '35.3', 'Grass', 'Flying', 7),
+(74, 'Toucannon', 'https://den-cards.pokellector.com/259/Toucannon.LOT.166.24741.png', '1.1', '57.3', 'Normal', 'Flying', 7),
+(75, 'Lycanroc', 'https://den-cards.pokellector.com/298/Lycanroc.SWSH3.30.35729.png', '0.8', '55.1', 'Rock', '', 7),
+(76, 'Salandit', 'https://den-cards.pokellector.com/269/Salandit.UNB.30.28135.png', '0.6', '10.6', 'Poison', 'Fire', 7),
+(77, 'Bewear', 'https://den-cards.pokellector.com/353/Bewear.MCD22.12.44484.png', '2.1', '297.6', 'Normal', 'Fighting', 7),
+(78, 'Minior', 'https://den-cards.pokellector.com/244/Minior.CES.83.22692.png', '0.3', '88.2', 'Rock', 'Flying', 7),
+(79, 'Mimikyu', 'https://den-cards.pokellector.com/350/Mimikyu.SWSH10.80.44740.png', '0.2', '1.5', 'Ghost', 'Fairy', 7),
+(80, 'Cosmoem', 'https://den-cards.pokellector.com/261/Cosmoem.SM9.70.26563.png', '0.1', '2204.4', 'Psychic', '', 7),
+(81, 'Lunala', 'https://den-cards.pokellector.com/244/Lunala.CES.70.22679.png', '4.0', '264.6', 'Psychic', 'Ghost', 7),
+(82, 'Stakataka', 'https://den-cards.pokellector.com/269/Stakataka.UNB.106.28206.png', '5.5', '1807.8', 'Rock', 'Steel', 7),
+(83, 'Naganadel', 'https://den-cards.pokellector.com/259/Naganadel.LOT.108.24688.png', '3.6', '330.7', 'Poison', 'Dragon', 7),
+(84, 'Guzzlord', 'https://den-cards.pokellector.com/239/Guzzlord.FLI.80.20598.png', '5.5', '1957.7', 'Dark', 'Dragon', 7),
+(85, 'Rillaboom', 'https://den-cards.pokellector.com/304/Rillaboom.SWSH45.SV6.37089.png', '2.1', '198.4', 'Grass', '', 8),
+(86, 'Raboot', 'https://den-cards.pokellector.com/304/Raboot.SWSH45.SV16.37099.png', '0.6', '19.8', 'Fire', '', 8),
+(87, 'Dottler', 'https://den-cards.pokellector.com/304/Dottler.SWSH45.SV8.37091.png', '0.4', '43.0', 'Bug', 'Psychic', 8),
+(88, 'Thievul', 'https://den-cards.pokellector.com/325/Thievul.SWSH7.105.39972.png', '1.2', '43.9', 'Dark', '', 8),
+(89, 'Drednaw', 'https://den-cards.pokellector.com/335/Drednaw.SWSH8.81.40751.png', '1.0', '254.6', 'Water', 'Rock', 8),
+(90, 'Carkol', 'https://den-cards.pokellector.com/305/Carkol.SWSH05.79.37602.png', '1.1', '172.0', 'Rock', 'Fire', 8),
+(91, 'Sandaconda', 'https://den-cards.pokellector.com/305/Sandaconda.SWSH05.82.37605.png', '3.8', '144.4', 'Ground', '', 8),
+(92, 'Toxel', 'https://den-cards.pokellector.com/335/Toxel.SWSH8.106.40776.png', '0.4', '24.3', 'Electric', 'Poison', 8),
+(93, 'Grapploct', 'https://den-cards.pokellector.com/299/Grapploct.SWSH0.101.36040.png', '1.6', '86.0', 'Fighting', '', 8),
+(94, 'Sirfetch\'d', 'https://den-cards.pokellector.com/292/Galarian-Sirfetchd.SWSH2.95.34504.png', '0.8', '257.9', 'Fighting', '', 8),
+(95, 'Enamorus', 'https://den-cards.pokellector.com/350/Enamorus-V.SWSH10.82.44742.png', '1.6', '105.8', 'Flying', 'Fairy', 8),
+(96, 'Glastrier', 'https://den-cards.pokellector.com/350/Glastrier.SWSH10.51.44711.png', '2.2', '1763.7', 'Ice', '', 8);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `pokemonabilityrelation`
+-- Table structure for table `pokemon_ability`
 --
 
-CREATE TABLE `pokemonabilityrelation` (
-  `pokemonAbilityRelationId` int(11) NOT NULL,
-  `pokemonId` int(11) NOT NULL,
-  `abilityId` int(11) NOT NULL,
-  `isHidden` tinyint(1) NOT NULL
+CREATE TABLE `pokemon_ability` (
+  `pokemon_ability_id` int(11) NOT NULL,
+  `pokemon_id` int(11) NOT NULL,
+  `ability_id` int(11) NOT NULL,
+  `is_hidden` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `pokemonabilityrelation`
+-- Dumping data for table `pokemon_ability`
 --
 
-INSERT INTO `pokemonabilityrelation` (`pokemonAbilityRelationId`, `pokemonId`, `abilityId`, `isHidden`) VALUES
+INSERT INTO `pokemon_ability` (`pokemon_ability_id`, `pokemon_id`, `ability_id`, `is_hidden`) VALUES
 (1, 1, 143, 0),
 (2, 1, 24, 1),
 (3, 2, 216, 0),
@@ -667,6 +795,21 @@ INSERT INTO `pokemonabilityrelation` (`pokemonAbilityRelationId`, `pokemonId`, `
 (223, 95, 31, 1),
 (224, 96, 23, 0);
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `trainer`
+--
+
+CREATE TABLE `trainer` (
+  `trainer_id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `gender` char(1) NOT NULL,
+  `trainer_class` varchar(255) NOT NULL,
+  `quote` varchar(255) NOT NULL,
+  `money` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 --
 -- Indexes for dumped tables
 --
@@ -675,21 +818,63 @@ INSERT INTO `pokemonabilityrelation` (`pokemonAbilityRelationId`, `pokemonId`, `
 -- Indexes for table `abilities`
 --
 ALTER TABLE `abilities`
-  ADD PRIMARY KEY (`abilityId`);
+  ADD PRIMARY KEY (`ability_id`);
+
+--
+-- Indexes for table `game`
+--
+ALTER TABLE `game`
+  ADD PRIMARY KEY (`game_id`),
+  ADD KEY `generation_id` (`generation_id`);
+
+--
+-- Indexes for table `generation`
+--
+ALTER TABLE `generation`
+  ADD PRIMARY KEY (`generation_id`);
+
+--
+-- Indexes for table `gyms`
+--
+ALTER TABLE `gyms`
+  ADD PRIMARY KEY (`gym_id`);
+
+--
+-- Indexes for table `locations`
+--
+ALTER TABLE `locations`
+  ADD PRIMARY KEY (`location_id`),
+  ADD KEY `game_id` (`game_id`),
+  ADD KEY `gym_id` (`gym_id`);
+
+--
+-- Indexes for table `pokedex`
+--
+ALTER TABLE `pokedex`
+  ADD PRIMARY KEY (`pokedex_id`),
+  ADD KEY `fk_pokedex_trainer` (`trainer_id`),
+  ADD KEY `fk_pokedex_pokemon` (`pokemon_id`);
 
 --
 -- Indexes for table `pokemon`
 --
 ALTER TABLE `pokemon`
-  ADD PRIMARY KEY (`pokemonId`);
+  ADD PRIMARY KEY (`pokemon_id`),
+  ADD KEY `fk_pokemon_gen` (`intro_gen`);
 
 --
--- Indexes for table `pokemonabilityrelation`
+-- Indexes for table `pokemon_ability`
 --
-ALTER TABLE `pokemonabilityrelation`
-  ADD PRIMARY KEY (`pokemonAbilityRelationId`),
-  ADD KEY `abilityId` (`abilityId`),
-  ADD KEY `pokemonId` (`pokemonId`);
+ALTER TABLE `pokemon_ability`
+  ADD PRIMARY KEY (`pokemon_ability_id`),
+  ADD KEY `ability_id` (`ability_id`),
+  ADD KEY `pokemon_id` (`pokemon_id`);
+
+--
+-- Indexes for table `trainer`
+--
+ALTER TABLE `trainer`
+  ADD PRIMARY KEY (`trainer_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -699,30 +884,92 @@ ALTER TABLE `pokemonabilityrelation`
 -- AUTO_INCREMENT for table `abilities`
 --
 ALTER TABLE `abilities`
-  MODIFY `abilityId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=267;
+  MODIFY `ability_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=267;
+
+--
+-- AUTO_INCREMENT for table `game`
+--
+ALTER TABLE `game`
+  MODIFY `game_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT for table `generation`
+--
+ALTER TABLE `generation`
+  MODIFY `generation_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT for table `gyms`
+--
+ALTER TABLE `gyms`
+  MODIFY `gym_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+
+--
+-- AUTO_INCREMENT for table `locations`
+--
+ALTER TABLE `locations`
+  MODIFY `location_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+
+--
+-- AUTO_INCREMENT for table `pokedex`
+--
+ALTER TABLE `pokedex`
+  MODIFY `pokedex_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `pokemon`
 --
 ALTER TABLE `pokemon`
-  MODIFY `pokemonId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
+  MODIFY `pokemon_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
 
 --
--- AUTO_INCREMENT for table `pokemonabilityrelation`
+-- AUTO_INCREMENT for table `pokemon_ability`
 --
-ALTER TABLE `pokemonabilityrelation`
-  MODIFY `pokemonAbilityRelationId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=225;
+ALTER TABLE `pokemon_ability`
+  MODIFY `pokemon_ability_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=225;
+
+--
+-- AUTO_INCREMENT for table `trainer`
+--
+ALTER TABLE `trainer`
+  MODIFY `trainer_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
 --
 
 --
--- Constraints for table `pokemonabilityrelation`
+-- Constraints for table `game`
 --
-ALTER TABLE `pokemonabilityrelation`
-  ADD CONSTRAINT `pokemonabilityrelation_ibfk_1` FOREIGN KEY (`abilityId`) REFERENCES `abilities` (`abilityId`),
-  ADD CONSTRAINT `pokemonabilityrelation_ibfk_2` FOREIGN KEY (`pokemonId`) REFERENCES `pokemon` (`pokemonId`);
+ALTER TABLE `game`
+  ADD CONSTRAINT `fk_game_gen` FOREIGN KEY (`generation_id`) REFERENCES `generation` (`generation_id`);
+
+--
+-- Constraints for table `locations`
+--
+ALTER TABLE `locations`
+  ADD CONSTRAINT `fk_location_game` FOREIGN KEY (`game_id`) REFERENCES `game` (`game_id`),
+  ADD CONSTRAINT `fk_location_gym` FOREIGN KEY (`gym_id`) REFERENCES `gyms` (`gym_id`);
+
+--
+-- Constraints for table `pokedex`
+--
+ALTER TABLE `pokedex`
+  ADD CONSTRAINT `fk_pokedex_pokemon` FOREIGN KEY (`pokemon_id`) REFERENCES `pokemon` (`pokemon_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_pokedex_trainer` FOREIGN KEY (`trainer_id`) REFERENCES `trainer` (`trainer_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `pokemon`
+--
+ALTER TABLE `pokemon`
+  ADD CONSTRAINT `fk_pokemon_gen` FOREIGN KEY (`intro_gen`) REFERENCES `generation` (`generation_id`);
+
+--
+-- Constraints for table `pokemon_ability`
+--
+ALTER TABLE `pokemon_ability`
+  ADD CONSTRAINT `fk_ability_pokemon` FOREIGN KEY (`pokemon_id`) REFERENCES `pokemon` (`pokemon_id`),
+  ADD CONSTRAINT `fk_pokemon_abilities` FOREIGN KEY (`ability_id`) REFERENCES `abilities` (`ability_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
