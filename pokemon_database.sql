@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 04, 2022 at 04:10 PM
+-- Generation Time: Nov 07, 2022 at 05:26 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -308,20 +308,20 @@ INSERT INTO `abilities` (`ability_id`, `name`, `description`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `game`
+-- Table structure for table `games`
 --
 
-CREATE TABLE `game` (
+CREATE TABLE `games` (
   `game_id` int(11) NOT NULL,
   `name` varchar(30) NOT NULL,
   `generation_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `game`
+-- Dumping data for table `games`
 --
 
-INSERT INTO `game` (`game_id`, `name`, `generation_id`) VALUES
+INSERT INTO `games` (`game_id`, `name`, `generation_id`) VALUES
 (1, 'Pokemon Red', 1),
 (2, 'Pokemon Silver', 2),
 (3, 'Pokemon Emerald', 3),
@@ -334,19 +334,19 @@ INSERT INTO `game` (`game_id`, `name`, `generation_id`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `generation`
+-- Table structure for table `generations`
 --
 
-CREATE TABLE `generation` (
+CREATE TABLE `generations` (
   `generation_id` int(11) NOT NULL,
   `pokemon_number` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `generation`
+-- Dumping data for table `generations`
 --
 
-INSERT INTO `generation` (`generation_id`, `pokemon_number`) VALUES
+INSERT INTO `generations` (`generation_id`, `pokemon_number`) VALUES
 (1, 151),
 (2, 251),
 (3, 386),
@@ -798,10 +798,10 @@ INSERT INTO `pokemon_ability` (`pokemon_ability_id`, `pokemon_id`, `ability_id`,
 -- --------------------------------------------------------
 
 --
--- Table structure for table `trainer`
+-- Table structure for table `trainers`
 --
 
-CREATE TABLE `trainer` (
+CREATE TABLE `trainers` (
   `trainer_id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
   `gender` char(1) NOT NULL,
@@ -821,16 +821,16 @@ ALTER TABLE `abilities`
   ADD PRIMARY KEY (`ability_id`);
 
 --
--- Indexes for table `game`
+-- Indexes for table `games`
 --
-ALTER TABLE `game`
+ALTER TABLE `games`
   ADD PRIMARY KEY (`game_id`),
   ADD KEY `generation_id` (`generation_id`);
 
 --
--- Indexes for table `generation`
+-- Indexes for table `generations`
 --
-ALTER TABLE `generation`
+ALTER TABLE `generations`
   ADD PRIMARY KEY (`generation_id`);
 
 --
@@ -871,9 +871,9 @@ ALTER TABLE `pokemon_ability`
   ADD KEY `pokemon_id` (`pokemon_id`);
 
 --
--- Indexes for table `trainer`
+-- Indexes for table `trainers`
 --
-ALTER TABLE `trainer`
+ALTER TABLE `trainers`
   ADD PRIMARY KEY (`trainer_id`);
 
 --
@@ -887,15 +887,15 @@ ALTER TABLE `abilities`
   MODIFY `ability_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=267;
 
 --
--- AUTO_INCREMENT for table `game`
+-- AUTO_INCREMENT for table `games`
 --
-ALTER TABLE `game`
+ALTER TABLE `games`
   MODIFY `game_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
--- AUTO_INCREMENT for table `generation`
+-- AUTO_INCREMENT for table `generations`
 --
-ALTER TABLE `generation`
+ALTER TABLE `generations`
   MODIFY `generation_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
@@ -929,9 +929,9 @@ ALTER TABLE `pokemon_ability`
   MODIFY `pokemon_ability_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=225;
 
 --
--- AUTO_INCREMENT for table `trainer`
+-- AUTO_INCREMENT for table `trainers`
 --
-ALTER TABLE `trainer`
+ALTER TABLE `trainers`
   MODIFY `trainer_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -939,16 +939,16 @@ ALTER TABLE `trainer`
 --
 
 --
--- Constraints for table `game`
+-- Constraints for table `games`
 --
-ALTER TABLE `game`
-  ADD CONSTRAINT `fk_game_gen` FOREIGN KEY (`generation_id`) REFERENCES `generation` (`generation_id`);
+ALTER TABLE `games`
+  ADD CONSTRAINT `fk_game_gen` FOREIGN KEY (`generation_id`) REFERENCES `generations` (`generation_id`);
 
 --
 -- Constraints for table `locations`
 --
 ALTER TABLE `locations`
-  ADD CONSTRAINT `fk_location_game` FOREIGN KEY (`game_id`) REFERENCES `game` (`game_id`),
+  ADD CONSTRAINT `fk_location_game` FOREIGN KEY (`game_id`) REFERENCES `games` (`game_id`),
   ADD CONSTRAINT `fk_location_gym` FOREIGN KEY (`gym_id`) REFERENCES `gyms` (`gym_id`);
 
 --
@@ -956,13 +956,13 @@ ALTER TABLE `locations`
 --
 ALTER TABLE `pokedex`
   ADD CONSTRAINT `fk_pokedex_pokemon` FOREIGN KEY (`pokemon_id`) REFERENCES `pokemon` (`pokemon_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_pokedex_trainer` FOREIGN KEY (`trainer_id`) REFERENCES `trainer` (`trainer_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_pokedex_trainer` FOREIGN KEY (`trainer_id`) REFERENCES `trainers` (`trainer_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `pokemon`
 --
 ALTER TABLE `pokemon`
-  ADD CONSTRAINT `fk_pokemon_gen` FOREIGN KEY (`intro_gen`) REFERENCES `generation` (`generation_id`);
+  ADD CONSTRAINT `fk_pokemon_gen` FOREIGN KEY (`intro_gen`) REFERENCES `generations` (`generation_id`);
 
 --
 -- Constraints for table `pokemon_ability`
