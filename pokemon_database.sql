@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 14, 2022 at 04:46 PM
+-- Generation Time: Nov 14, 2022 at 05:28 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -365,7 +365,7 @@ INSERT INTO `generations` (`generation_id`, `pokemon_number`) VALUES
 CREATE TABLE `gyms` (
   `gym_id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
-  `type` varchar(255) NOT NULL,
+  `type` enum('Normal','Fire','Fighting','Water','Flying','Grass','Poison','Electric','Ground','Psychic','Rock','Ice','Bug','Dragon','Ghost','Dark','Steel','Fairy') NOT NULL,
   `badge` varchar(255) NOT NULL,
   `gym_leader` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -427,8 +427,8 @@ CREATE TABLE `pokedex` (
   `nickname` varchar(255) DEFAULT NULL,
   `level` tinyint(4) NOT NULL,
   `friendship_level` smallint(6) NOT NULL,
-  `nature` varchar(255) NOT NULL,
-  `gender` char(1) NOT NULL,
+  `nature` enum('Hardy','Lonely','Brave','Adamant','Naughty','Bold','Docile','Relaxed','Impish','Lax','Timid','Hasty','Serious','Jolly','Naive','Modest','Mild','Quiet','Bashful','Rash','Calm','Gentle','Sassy','Careful','Quirky') NOT NULL,
+  `gender` enum('M','F','O') NOT NULL,
   `trainer_id` int(11) NOT NULL,
   `pokemon_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -452,8 +452,8 @@ CREATE TABLE `pokemon` (
   `uri` varchar(255) NOT NULL,
   `height` varchar(255) NOT NULL,
   `weight` varchar(255) NOT NULL,
-  `primary_type` varchar(255) NOT NULL,
-  `secondary_type` varchar(255) DEFAULT NULL,
+  `primary_type` enum('Normal','Fire','Fighting','Water','Flying','Grass','Poison','Electric','Ground','Psychic','Rock','Ice','Bug','Dragon','Ghost','Dark','Steel','Fairy') NOT NULL,
+  `secondary_type` enum('Normal','Fire','Fighting','Water','Flying','Grass','Poison','Electric','Ground','Psychic','Rock','Ice','Bug','Dragon','Ghost','Dark','Steel','Fairy') DEFAULT NULL,
   `intro_gen` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -830,7 +830,7 @@ INSERT INTO `pokemon_ability` (`pokemon_ability_id`, `pokemon_id`, `ability_id`,
 CREATE TABLE `trainers` (
   `trainer_id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
-  `gender` char(1) NOT NULL,
+  `gender` enum('M','F','O') NOT NULL,
   `trainer_class` varchar(255) NOT NULL,
   `quote` varchar(255) NOT NULL,
   `money` int(11) NOT NULL
