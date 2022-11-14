@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 07, 2022 at 05:26 PM
+-- Generation Time: Nov 14, 2022 at 07:16 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -375,16 +375,16 @@ CREATE TABLE `gyms` (
 --
 
 INSERT INTO `gyms` (`gym_id`, `name`, `type`, `badge`, `gym_leader`) VALUES
-(1, 'Pewter Gym', 'Rock', 'Boulder Badge', 0),
-(2, 'Cerulean Gym', 'Water', 'Cascade Badge', 0),
-(3, 'Violet Gym', 'Flying', 'Zephyr Badge', 0),
-(4, 'Lavaridge Gym', 'Fire', 'Heat Badge', 0),
-(5, 'Eterna Gym', 'Grass', 'Forest Badge', 0),
-(6, 'Nimbasa Gym', 'Electric', 'Bolt Badge', 0),
-(7, 'Laverre Gym', 'Fairy', 'Fairy Badge', 0),
-(8, 'Santalune Gym', 'Bug', 'Bug Badge', 0),
-(9, 'Stow-on-Side Stadium', 'Ghost', 'Ghost Badge', 0),
-(10, 'Hammerlocke Gym', 'Dragon', 'Dragon Badge', 0);
+(1, 'Pewter Gym', 'Rock', 'Boulder Badge', 1),
+(2, 'Cerulean Gym', 'Water', 'Cascade Badge', 2),
+(3, 'Violet Gym', 'Flying', 'Zephyr Badge', 3),
+(4, 'Lavaridge Gym', 'Fire', 'Heat Badge', 4),
+(5, 'Eterna Gym', 'Grass', 'Forest Badge', 5),
+(6, 'Nimbasa Gym', 'Electric', 'Bolt Badge', 6),
+(7, 'Laverre Gym', 'Fairy', 'Fairy Badge', 7),
+(8, 'Santalune Gym', 'Bug', 'Bug Badge', 8),
+(9, 'Stow-on-Side Stadium', 'Ghost', 'Ghost Badge', 9),
+(10, 'Hammerlocke Gym', 'Dragon', 'Dragon Badge', 10);
 
 -- --------------------------------------------------------
 
@@ -811,6 +811,27 @@ CREATE TABLE `trainers` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
+-- Dumping data for table `trainers`
+--
+
+INSERT INTO `trainers` (`trainer_id`, `name`, `gender`, `trainer_class`, `quote`, `money`) VALUES
+(1, 'Brock', 'M', 'Gym Leader', 'I took you for granted. As proof of your victory, here\'s the BoulderBadge!', 1386),
+(2, 'Misty', 'F', 'Gym Leader', 'Wow! You\'re too much! All right! You can have the CascadeBadge to show you beat me!', 4700),
+(3, 'Falkner', 'M', 'Gym Leader', '...Darn! My Dad\'s cherished bird Pokémon... All right. Take this. It\'s the official Pokémon League ZephyrBadge.', 900),
+(4, 'Flannery', 'F', 'Gym Leader', 'Oh... I guess I was trying too hard... I... I\'ve only recently become a Gym Leader. I tried too hard to be someone I\'m not. I have to do things my natural way. If I don\'t, my Pokémon will be confused. Thanks for teaching me that. For that, you deserve this.', 2900),
+(5, 'Gardenia', 'F', 'Gym Leader', 'Amazing! You\'re very good, aren\'t you?', 2640),
+(6, 'Elesa', 'F', 'Gym Leader', 'I meant to make your head spin, but you shocked me instead.', 3240),
+(7, 'Valerie', 'F', 'Gym Leader', 'I hope the sun is shining tomorrow... That would be reason enough to smile.', 6720),
+(8, 'Viola', 'F', 'Gym Leader', 'You and your Pokémon have shown me a whole new depth of field! Fantastic! Just fantastic!', 1920),
+(9, 'Bea', 'F', 'Gym Leader', 'I felt the fighting spirit of your Pokémon as you led them in battle.', 5760),
+(10, 'Raihan', 'M', 'Gym Leader', 'I might have lost, but I still look good. Maybe I should snap a quick selfie...', 7680),
+(11, 'Lance', 'M', 'Champion', 'That\'s it! I hate to admit it, but you are a Pokémon master!', 6138),
+(12, 'Dana', 'F', 'Ace Trainer', 'Your love of Pokémon really shows!', 3300),
+(13, 'Cynthia', 'F', 'Champion', 'Just a few moments ago, you were the most powerful challenger. And just now, you became the most powerful of all the Trainers. You are now our newest Champion!', 13200),
+(14, 'Yanis', 'M', 'Black Belt', NULL, 2400),
+(15, 'Bianca', 'F', 'Pokémon Trainer', 'I trained with Iris... But I still couldn\'t win...', 2000);
+
+--
 -- Indexes for dumped tables
 --
 
@@ -932,7 +953,7 @@ ALTER TABLE `pokemon_ability`
 -- AUTO_INCREMENT for table `trainers`
 --
 ALTER TABLE `trainers`
-  MODIFY `trainer_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `trainer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Constraints for dumped tables
