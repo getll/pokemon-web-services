@@ -430,7 +430,9 @@ CREATE TABLE `pokedex` (
   `nature` enum('Hardy','Lonely','Brave','Adamant','Naughty','Bold','Docile','Relaxed','Impish','Lax','Timid','Hasty','Serious','Jolly','Naive','Modest','Mild','Quiet','Bashful','Rash','Calm','Gentle','Sassy','Careful','Quirky') NOT NULL,
   `gender` enum('M','F','O') NOT NULL,
   `trainer_id` int(11) NOT NULL,
-  `pokemon_id` int(11) NOT NULL
+  `pokemon_id` int(11) NOT NULL,
+  CONSTRAINT check_level CHECK (level >= 1 AND level <= 100),
+  CONSTRAINT check_friendship_level CHECK (friendship_level >= 0 AND friendship_level <= 255)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -833,7 +835,8 @@ CREATE TABLE `trainers` (
   `gender` enum('M','F','O') NOT NULL,
   `trainer_class` varchar(255) NOT NULL,
   `quote` varchar(255) NOT NULL,
-  `money` int(11) NOT NULL
+  `money` int(11) NOT NULL,
+  CONSTRAINT check_money CHECK (money >= 0)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
