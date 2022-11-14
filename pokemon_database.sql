@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 14, 2022 at 07:33 AM
+-- Generation Time: Nov 14, 2022 at 04:46 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -557,7 +557,12 @@ INSERT INTO `pokemon` (`pokemon_id`, `name`, `uri`, `height`, `weight`, `primary
 (93, 'Grapploct', 'https://den-cards.pokellector.com/299/Grapploct.SWSH0.101.36040.png', '1.6', '86.0', 'Fighting', '', 8),
 (94, 'Sirfetch\'d', 'https://den-cards.pokellector.com/292/Galarian-Sirfetchd.SWSH2.95.34504.png', '0.8', '257.9', 'Fighting', '', 8),
 (95, 'Enamorus', 'https://den-cards.pokellector.com/350/Enamorus-V.SWSH10.82.44742.png', '1.6', '105.8', 'Flying', 'Fairy', 8),
-(96, 'Glastrier', 'https://den-cards.pokellector.com/350/Glastrier.SWSH10.51.44711.png', '2.2', '1763.7', 'Ice', '', 8);
+(96, 'Glastrier', 'https://den-cards.pokellector.com/350/Glastrier.SWSH10.51.44711.png', '2.2', '1763.7', 'Ice', '', 8),
+(97, 'Pidgey', 'https://den-cards.pokellector.com/155/Pidgey.FLF.75.png', '0.3', '4.0', 'Normal', 'Flying', 1),
+(98, 'Slugma', 'https://den-cards.pokellector.com/350/Slugma.SWSH10.21.44682.png', '0.6', '77.2', 'Fire', '', 2),
+(99, 'Torkoal', 'https://den-cards.pokellector.com/350/Torkoal.SWSH10.23.44684.png', '0.5', '177.3', 'Fire', '', 3),
+(100, 'Sylveon', 'https://den-cards.pokellector.com/346/Sylveon.POGO.35.44178.png', '1.0', '51.8', 'Fairy', '', 6),
+(101, 'Vivillon', 'https://den-cards.pokellector.com/239/Vivillon.FLI.8.20714.png', '1.2', '37.5', 'Bug', 'Flying', 6);
 
 -- --------------------------------------------------------
 
@@ -800,7 +805,21 @@ INSERT INTO `pokemon_ability` (`pokemon_ability_id`, `pokemon_id`, `ability_id`,
 (221, 94, 189, 1),
 (222, 95, 81, 0),
 (223, 95, 31, 1),
-(224, 96, 23, 0);
+(224, 96, 23, 0),
+(226, 97, 106, 0),
+(227, 97, 234, 0),
+(228, 97, 19, 1),
+(230, 98, 120, 0),
+(231, 98, 58, 0),
+(232, 98, 261, 1),
+(233, 99, 262, 0),
+(235, 99, 50, 0),
+(236, 99, 196, 1),
+(238, 100, 36, 0),
+(239, 100, 150, 1),
+(241, 101, 197, 0),
+(242, 101, 30, 0),
+(243, 101, 66, 1);
 
 -- --------------------------------------------------------
 
@@ -948,13 +967,13 @@ ALTER TABLE `pokedex`
 -- AUTO_INCREMENT for table `pokemon`
 --
 ALTER TABLE `pokemon`
-  MODIFY `pokemon_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
+  MODIFY `pokemon_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=102;
 
 --
 -- AUTO_INCREMENT for table `pokemon_ability`
 --
 ALTER TABLE `pokemon_ability`
-  MODIFY `pokemon_ability_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=225;
+  MODIFY `pokemon_ability_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=244;
 
 --
 -- AUTO_INCREMENT for table `trainers`
