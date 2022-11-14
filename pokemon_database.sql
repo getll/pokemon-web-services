@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 14, 2022 at 07:16 AM
+-- Generation Time: Nov 14, 2022 at 07:33 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -433,6 +433,13 @@ CREATE TABLE `pokedex` (
   `pokemon_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `pokedex`
+--
+
+INSERT INTO `pokedex` (`pokedex_id`, `nickname`, `level`, `friendship_level`, `nature`, `gender`, `trainer_id`, `pokemon_id`) VALUES
+(1, 'Balboa', 14, 40, 'Docile', 'O', 1, 11);
+
 -- --------------------------------------------------------
 
 --
@@ -818,7 +825,7 @@ INSERT INTO `trainers` (`trainer_id`, `name`, `gender`, `trainer_class`, `quote`
 (1, 'Brock', 'M', 'Gym Leader', 'I took you for granted. As proof of your victory, here\'s the BoulderBadge!', 1386),
 (2, 'Misty', 'F', 'Gym Leader', 'Wow! You\'re too much! All right! You can have the CascadeBadge to show you beat me!', 4700),
 (3, 'Falkner', 'M', 'Gym Leader', '...Darn! My Dad\'s cherished bird Pokémon... All right. Take this. It\'s the official Pokémon League ZephyrBadge.', 900),
-(4, 'Flannery', 'F', 'Gym Leader', 'Oh... I guess I was trying too hard... I... I\'ve only recently become a Gym Leader. I tried too hard to be someone I\'m not. I have to do things my natural way. If I don\'t, my Pokémon will be confused. Thanks for teaching me that. For that, you deserve this.', 2900),
+(4, 'Flannery', 'F', 'Gym Leader', 'Oh... I guess I was trying too hard... I... I\'ve only recently become a Gym Leader. I tried too hard to be someone I\'m not. I have to do things my natural way. If I don\'t, my Pokémon will be confused. Thanks for teaching me that. For that, you deserve thi', 2900),
 (5, 'Gardenia', 'F', 'Gym Leader', 'Amazing! You\'re very good, aren\'t you?', 2640),
 (6, 'Elesa', 'F', 'Gym Leader', 'I meant to make your head spin, but you shocked me instead.', 3240),
 (7, 'Valerie', 'F', 'Gym Leader', 'I hope the sun is shining tomorrow... That would be reason enough to smile.', 6720),
@@ -828,7 +835,7 @@ INSERT INTO `trainers` (`trainer_id`, `name`, `gender`, `trainer_class`, `quote`
 (11, 'Lance', 'M', 'Champion', 'That\'s it! I hate to admit it, but you are a Pokémon master!', 6138),
 (12, 'Dana', 'F', 'Ace Trainer', 'Your love of Pokémon really shows!', 3300),
 (13, 'Cynthia', 'F', 'Champion', 'Just a few moments ago, you were the most powerful challenger. And just now, you became the most powerful of all the Trainers. You are now our newest Champion!', 13200),
-(14, 'Yanis', 'M', 'Black Belt', NULL, 2400),
+(14, 'Yanis', 'M', 'Black Belt', '', 2400),
 (15, 'Bianca', 'F', 'Pokémon Trainer', 'I trained with Iris... But I still couldn\'t win...', 2000);
 
 --
@@ -935,7 +942,7 @@ ALTER TABLE `locations`
 -- AUTO_INCREMENT for table `pokedex`
 --
 ALTER TABLE `pokedex`
-  MODIFY `pokedex_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `pokedex_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `pokemon`
@@ -953,7 +960,7 @@ ALTER TABLE `pokemon_ability`
 -- AUTO_INCREMENT for table `trainers`
 --
 ALTER TABLE `trainers`
-  MODIFY `trainer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `trainer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- Constraints for dumped tables
