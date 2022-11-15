@@ -6,33 +6,33 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Factory\AppFactory;
 
 require_once __DIR__ . './../models/BaseModel.php';
-require_once __DIR__ . './../models/GymModel.php';
+require_once __DIR__ . './../models/AbilityModel.php';
 
 
-function deleteOneGym(Request $request, Response $response, array $args) {
-    $gym_info = array();
+function deleteOneAbility(Request $request, Response $response, array $args) {
+    $ability_info = array();
     $response_data = array();
     $response_code = HTTP_OK;
-    $gym_model = new GymModel();
+    $ability_model = new AbilityModel();
     //check if json is requested
     $requested_format = $request->getHeader('Accept');
     if (isset($requested_format[0]) && $requested_format[0] === APP_MEDIA_TYPE_JSON) {
-        $gyms = $args["gyms"];
+        $abili = $args["abili"];
         //check for artist id
-        if (isset($gyms)) {
+        if (isset($abili)) {
             //check if artist exists
-            $gym_info = $gym_model->getGymById($gyms);
-            $gym_name = $gym_model->getGymById($gyms);
-            if (!$gym_info) {
+            $ability_info = $ability_model->getAbilityById($abili);
+            $ability_name = $ability_model->getAbilityById($abili);
+            if (!$ability_info) {
                 $response_data = json_encode(array("resourceNotFound", 
-                        "No matching record was found for gym ". $gyms ."."), JSON_INVALID_UTF8_SUBSTITUTE);
+                        "No matching record was found for ability ". $abili ."."), JSON_INVALID_UTF8_SUBSTITUTE);
                 $response->getBody()->write($response_data);
                 return $response->withStatus(HTTP_NOT_FOUND);
             }
-            $gym_info = $gym_model->delSingleGym($gyms);
+            $ability_info = $ability_model->delSingleAbility($abili);
         } 
-        $response_data = json_encode(array("Message" => "Gym ". $gyms ." deleted.", 
-                "Gym information" => $gym_name), JSON_INVALID_UTF8_SUBSTITUTE);
+        $response_data = json_encode(array("Message" => "Ability ". $abili ." deleted.", 
+                "Ability information" => $ability_name), JSON_INVALID_UTF8_SUBSTITUTE);
     }
     else {
         $response_data = json_encode(getErrorUnsupportedFormat());
@@ -44,21 +44,20 @@ function deleteOneGym(Request $request, Response $response, array $args) {
 }
 
 
-
-function handleGetGymById(Request $request, Response $response, array $args) {
-    $gym_info = array();
+function handleGetAbilityById(Request $request, Response $response, array $args) {
+    $ability_info = array();
     $response_data = array();
     $response_code = HTTP_OK;
-    $gym_model = new GymModel();
+    $ability_model = new AbilityModel();
 
     // Retreive the artist id from the request's URI.
-    $gyms = $args["gyms"];
-    if (isset($gyms)) {
+    $abili = $args["abili"];
+    if (isset($abili)) {
         // Fetch the info about the specified artist.
-        $gym_info = $gym_model->getGymById($gyms);
-        if (!$gym_info) {
+        $ability_info = $ability_model->getAbilityById($abili);
+        if (!$ability_info) {
             // No matches found?
-            $response_data = makeCustomJSONError("resourceNotFound", "No matching record was found for the specified pokemon.");
+            $response_data = makeCustomJSONError("resourceNotFound", "No matching record was found for the specified ability.");
             $response->getBody()->write($response_data);
             return $response->withStatus(HTTP_NOT_FOUND);
         }
@@ -68,7 +67,7 @@ function handleGetGymById(Request $request, Response $response, array $args) {
     //--
     //-- We verify the requested resource representation.    
     if ($requested_format[0] === APP_MEDIA_TYPE_JSON) {
-        $response_data = json_encode($gym_info, JSON_INVALID_UTF8_SUBSTITUTE);
+        $response_data = json_encode($ability_info, JSON_INVALID_UTF8_SUBSTITUTE);
     } else {
         $response_data = json_encode(getErrorUnsupportedFormat());
         $response_code = HTTP_UNSUPPORTED_MEDIA_TYPE;
@@ -76,5 +75,3 @@ function handleGetGymById(Request $request, Response $response, array $args) {
     $response->getBody()->write($response_data);
     return $response->withStatus($response_code);
 }
-
-

@@ -80,6 +80,7 @@ class BaseModel {
         }
 
         $stmt = $this->db->prepare($sql);
+
         $stmt->execute($args);
 
         return $stmt;

@@ -11,4 +11,16 @@ class GenerationModel extends BaseModel {
         return $info;
     }
 
+    public function delSingleGeneration($gens){
+        $sql = "DELETE FROM generations WHERE generation_id = :gens";
+        $data = $this->run($sql, [":gens" => $gens]);
+        //return $data;
+    }
+
+    public function getGenerationById($gens){
+        $sql = "SELECT * FROM generations WHERE generation_id = ?";
+        $data = $this->run($sql, [$gens])->fetch();
+        return $data;
+    }
+
 }

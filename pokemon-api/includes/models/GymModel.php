@@ -22,4 +22,16 @@ class GymModel extends BaseModel{
         $info = $this->update("gyms", $data, $where);
         return $info;
     }
+
+    public function delSingleGym($gyms){
+        $sql = "DELETE FROM gyms WHERE gym_id = :gyms";
+        $data = $this->run($sql, [":gyms" => $gyms]);
+        //return $data;
+    }
+
+    public function getGymById($gyms){
+        $sql = "SELECT * FROM gyms WHERE gym_id = ?";
+        $data = $this->run($sql, [$gyms])->fetch();
+        return $data;
+    }
 }
