@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 15, 2022 at 04:02 AM
--- Server version: 10.4.24-MariaDB
--- PHP Version: 8.1.6
+-- Generation Time: Nov 15, 2022 at 04:24 AM
+-- Server version: 10.4.22-MariaDB
+-- PHP Version: 8.1.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -308,20 +308,20 @@ INSERT INTO `abilities` (`ability_id`, `name`, `description`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `games`
+-- Table structure for table `game`
 --
 
-CREATE TABLE `games` (
+CREATE TABLE `game` (
   `game_id` int(11) NOT NULL,
   `name` varchar(30) NOT NULL,
   `generation_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `games`
+-- Dumping data for table `game`
 --
 
-INSERT INTO `games` (`game_id`, `name`, `generation_id`) VALUES
+INSERT INTO `game` (`game_id`, `name`, `generation_id`) VALUES
 (1, 'Pokemon Red', 1),
 (2, 'Pokemon Silver', 2),
 (3, 'Pokemon Emerald', 3),
@@ -334,19 +334,19 @@ INSERT INTO `games` (`game_id`, `name`, `generation_id`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `generations`
+-- Table structure for table `generation`
 --
 
-CREATE TABLE `generations` (
+CREATE TABLE `generation` (
   `generation_id` int(11) NOT NULL,
   `pokemon_number` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `generations`
+-- Dumping data for table `generation`
 --
 
-INSERT INTO `generations` (`generation_id`, `pokemon_number`) VALUES
+INSERT INTO `generation` (`generation_id`, `pokemon_number`) VALUES
 (1, 151),
 (2, 251),
 (3, 386),
@@ -365,7 +365,7 @@ INSERT INTO `generations` (`generation_id`, `pokemon_number`) VALUES
 CREATE TABLE `gyms` (
   `gym_id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
-  `type` enum('Normal','Fire','Fighting','Water','Flying','Grass','Poison','Electric','Ground','Psychic','Rock','Ice','Bug','Dragon','Ghost','Dark','Steel','Fairy') NOT NULL,
+  `type` varchar(255) NOT NULL,
   `badge` varchar(255) NOT NULL,
   `gym_leader` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -375,16 +375,16 @@ CREATE TABLE `gyms` (
 --
 
 INSERT INTO `gyms` (`gym_id`, `name`, `type`, `badge`, `gym_leader`) VALUES
-(1, 'Pewter Gym', 'Rock', 'Boulder Badge', 1),
-(2, 'Cerulean Gym', 'Water', 'Cascade Badge', 2),
-(3, 'Violet Gym', 'Flying', 'Zephyr Badge', 3),
-(4, 'Lavaridge Gym', 'Fire', 'Heat Badge', 4),
-(5, 'Eterna Gym', 'Grass', 'Forest Badge', 5),
-(6, 'Nimbasa Gym', 'Electric', 'Bolt Badge', 6),
-(7, 'Laverre Gym', 'Fairy', 'Fairy Badge', 7),
-(8, 'Santalune Gym', 'Bug', 'Bug Badge', 8),
-(9, 'Stow-on-Side Stadium', 'Ghost', 'Ghost Badge', 9),
-(10, 'Hammerlocke Gym', 'Dragon', 'Dragon Badge', 10);
+(1, 'Pewter Gym', 'Rock', 'Boulder Badge', 0),
+(2, 'Cerulean Gym', 'Water', 'Cascade Badge', 0),
+(3, 'Violet Gym', 'Flying', 'Zephyr Badge', 0),
+(4, 'Lavaridge Gym', 'Fire', 'Heat Badge', 0),
+(5, 'Eterna Gym', 'Grass', 'Forest Badge', 0),
+(6, 'Nimbasa Gym', 'Electric', 'Bolt Badge', 0),
+(7, 'Laverre Gym', 'Fairy', 'Fairy Badge', 0),
+(8, 'Santalune Gym', 'Bug', 'Bug Badge', 0),
+(9, 'Stow-on-Side Stadium', 'Ghost', 'Ghost Badge', 0),
+(10, 'Hammerlocke Gym', 'Dragon', 'Dragon Badge', 0);
 
 -- --------------------------------------------------------
 
@@ -419,6 +419,94 @@ INSERT INTO `locations` (`location_id`, `name`, `location`, `music_name`, `gym_i
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `moves`
+--
+
+CREATE TABLE `moves` (
+  `move_id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `description` varchar(255) NOT NULL,
+  `category` varchar(255) NOT NULL,
+  `power` int(11) DEFAULT NULL,
+  `accuracy` int(11) DEFAULT NULL,
+  `powerPoints` int(11) DEFAULT NULL,
+  `type` varchar(255) NOT NULL,
+  `hasSecondaryEffect` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `moves`
+--
+
+INSERT INTO `moves` (`move_id`, `name`, `description`, `category`, `power`, `accuracy`, `powerPoints`, `type`, `hasSecondaryEffect`) VALUES
+(1, 'Vine Whip', 'The target is struck with slender, whiplike vines to inflict damage.', 'Physical', 45, 100, 25, 'Grass', 0),
+(2, 'Tackle', 'A physical attack in which the user charges and slams into the target with its whole body.', 'Physical', 40, 100, 35, 'Normal', 0),
+(3, 'Seed Bomb', 'The user slams a barrage of hard-shelled seeds down on the target from above.', 'Physical', 80, 100, 15, 'Grass', 0),
+(4, 'Growl', 'The user growls in an endearing way, making the foe less wary. The target’s Attack stat is lowered.', 'Status', NULL, 100, 40, 'Normal', 1),
+(5, 'Leech Seed', 'A seed is planted on the target. It steals some HP from the target every turn.', 'Status', NULL, 90, 10, 'Grass', 1),
+(6, 'Poison Powder', 'The user scatters a cloud of poisonous dust on the target. It may poison the target.', 'Status', NULL, 75, 35, 'Poison', 1),
+(7, 'Razor Leaf', 'Sharp-edged leaves are launched to slash at the opposing team. Critical hits land more easily.', 'Physical', 55, 95, 25, 'Grass', 0),
+(8, 'Growth', 'The user’s body grows all at once, raising the Attack and Sp. Atk stats.', 'Status', 0, 0, 20, 'Normal', 0),
+(9, 'Sleep Powder', 'The user scatters a big cloud of sleep-inducing dust around the foe.', 'Status', 0, 75, 15, 'Grass', 0),
+(10, 'Solar Beam', 'A two-turn attack. The user gathers light, then blasts a bundled beam on the second turn.', 'Special', 120, 100, 10, 'Grass', 0),
+(11, 'Flash', 'The user flashes a bright light that cuts the target’s accuracy. It can also be used to illuminate caves.', 'Status', NULL, 100, 20, 'Normal', 1),
+(12, 'Scratch', 'Hard, pointed, and sharp claws rake the foe to inflict damage.', 'Physical', 40, 100, 35, 'Normal', 1),
+(13, 'Dig', '1st turn: Burrow 2nd turn: Attack', 'Physical', 80, 100, 10, 'Ground', 0),
+(14, 'Sand-Attack', 'Reduces accuracy by throwing sand.', 'Status', 0, 100, 15, 'Ground', 1),
+(15, 'Body Slam', 'The user drops onto the foe with its full body weight. It may leave the foe paralyzed.', 'Physical', 85, 100, 15, 'Normal', 1),
+(16, 'Rock Slide', 'Large boulders are hurled at the foe. It may make the foe flinch.', 'Physical', 75, 90, 10, 'Rock', 1),
+(17, 'Bite', 'The foe is bitten with viciously sharp fangs. It may make the target flinch.', 'Physical', 60, 100, 25, 'Dark', 1),
+(18, 'Toxic', 'A move that leaves the target badly poisoned. Its poison damage worsens every turn.', 'Status', NULL, 90, 10, 'Poison', 1),
+(19, 'Rest', 'The user sleeps for 2 turns, restoring HP and status.', 'Status', NULL, NULL, 10, 'Psychic', 0),
+(20, 'Leer', 'The foe is given an intimidating look that lowers its DEFENSE stat.', 'Status', NULL, 100, 30, 'Normal', 0),
+(21, 'Water Gun', 'The target is blasted with a forceful shot of water.', 'Special', 40, 100, 25, 'Water', 0),
+(22, 'Whirlpool', 'Traps and hurts the foe in a whirlpool for 2 to 5 turns.', 'Special', 35, 85, 15, 'Water', 1),
+(23, 'Dynamic Punch', 'The foe is punched with the user’s full power. It confuses the foe if it hits.', 'Physical', 100, 50, 5, 'Fighting', 1),
+(24, 'Iron Tail', 'The foe is slammed with a steel-hard tail. It may also lower the target’s Defense stat.', 'Physical', 100, 75, 15, 'Steel', 1),
+(25, 'Defense Curl', 'Curls up to conceal weak spots and raise DEFENSE.', 'Status', NULL, NULL, 40, 'Normal', 0),
+(26, 'Sunny Day', 'Boosts the power of FIRE-type moves for 5 turns.', 'Status', NULL, NULL, 5, 'Fire', 1),
+(27, 'Shadow Ball', 'Hurls a black blob that may lower the foe’s SP. DEF.', 'Special', 80, 100, 15, 'Ghost', 1),
+(31, 'Poison Sting', 'A toxic attack with barbs, etc., that may poison.', 'Physical', 15, 100, 35, 'Poison', 1),
+(32, 'Spider Web', 'Ensnares the foe to stop it from fleeing or switching.', 'Status', NULL, NULL, 10, 'Bug', 0),
+(33, 'Taunt', 'The foe is taunted into a rage that allows it to use only attack moves for two to four turns.', 'Status', NULL, 100, 20, 'Dark', 0),
+(34, 'Calm Mind', 'The user quietly focuses its mind and calms its spirit to raise its Sp. Atk and Sp. Def stats.', 'Status', NULL, NULL, 20, 'Psychic', 0),
+(35, 'Hail', 'The user summons a hailstorm lasting five turns. It damages all Pokémon except the Ice type.', 'Status', NULL, NULL, 10, 'Ice', 1),
+(36, 'Ice Beam', 'The foe is struck with an icy beam. It may freeze the foe solid.', 'Special', 90, 100, 10, 'Ice', 0),
+(37, 'Absorb', 'An attack that absorbs half the damage it inflicted to restore HP.', 'Special', 20, 100, 25, 'Grass', 0),
+(38, 'Detect', 'Enables the user to evade all attacks. It may fail if used in succession.', 'Status', NULL, NULL, 5, 'Fighting', 0),
+(39, 'Rock Smash', 'An attack that may also cut DEFENSE. It can also smash cracked boulders.', 'Physical', 40, 100, 15, 'Fighting', 0),
+(40, 'Withdraw', 'The user confounds the foe with speed, then slashes. The attack lands without fail.', 'Status', NULL, NULL, 40, 'Water', 0),
+(41, 'Hidden Power', 'An attack that varies in type and intensity depending on the user.', 'Special', 60, 100, 15, 'Normal', 0),
+(42, 'Ember', 'The foe is attacked with small flames. The target may also be left with a burn.', 'Special', 40, 100, 25, 'Fire', 1),
+(43, 'Fire Spin', 'The target becomes trapped within a fierce vortex of fire that rages for four to five turns.', 'Special', 35, 85, 15, 'Fire', 1),
+(44, 'Torment', 'The user torments and enrages the target, making it incapable of using the same move twice in a row.', 'Status', NULL, 100, 15, 'Dark', 0),
+(45, 'Razor Shell', 'The user cuts its target with sharp shells. This may also lower the target’s Defense stat.', 'Physical', 75, 95, 10, 'Water', 1),
+(46, 'Aqua Jet', 'The user lunges at the target at a speed that makes it almost invisible. It is sure to strike first.', 'Physical', 40, 100, 20, 'Water', 0),
+(47, 'Waterfall', 'The user charges at the foe rapidly, and may make it flinch. It can also be used to climb a waterfall.', 'Physical', 80, 100, 15, 'Water', 1),
+(48, 'Low Kick', 'A powerful low kick that makes the target fall over. It inflicts greater damage on heavier targets.', 'Physical', NULL, 100, 20, 'Fighting', 0),
+(49, 'Stone Edge', 'The user stabs the foe with sharpened stones from below. It has a high critical-hit ratio.', 'Physical', 100, 80, 5, 'Rock', 0),
+(50, 'Hammer Arm', 'The user swings and hits with its strong and heavy fist. It lowers the user’s Speed, however.', 'Physical', 100, 90, 10, 'Fighting', 0),
+(51, 'Fairy Wind', 'The user stirs up a fairy wind and strikes the target with it.', 'Special', 40, 100, 30, 'Fairy', 0),
+(52, 'Lucky Chant', 'The user chants an incantation toward the sky, preventing opposing Pokémon from landing critical hits.', 'Status', NULL, NULL, 30, 'Normal', 0),
+(53, 'Misty Terrain', 'This protects Pokémon on the ground from status conditions and halves damage from Dragon-type moves for five turns.', 'Status', NULL, NULL, 10, 'Fairy', 1),
+(54, 'Moonblast', 'Borrowing the power of the moon, the user attacks the target. This may also lower the target’s Sp. Atk stat.', 'Special', 95, 100, 15, 'Fairy', 1),
+(55, 'Metal Sound', 'A horrible sound like scraping metal harshly reduces the target’s Sp. Def stat.', 'Status', NULL, 85, 40, 'Steel', 1),
+(56, 'Shadow Sneak', 'The user extends its shadow and attacks the target from behind. This move always goes first.', 'Physical', 0, 0, 30, 'Ghost', 1),
+(57, 'Power Trick', 'The user employs its psychic power to switch its Attack with its Defense stat.', 'Status', NULL, NULL, 10, 'Psychic', 0),
+(58, 'Cosmic Power', 'The user absorbs a mystical power from space to raise its Defense and Sp. Def stats.', 'Status', NULL, NULL, 20, 'Psychic', 0),
+(59, 'Teleport', 'Use it to flee from any wild Pokémon. It can also warp to the last Pokémon Center visited.', 'Status', NULL, NULL, 20, 'Psychic', 0),
+(60, 'Hypnosis', 'The user employs hypnotic suggestion to make the target fall into a deep sleep.', 'Status', NULL, 60, 20, 'Psychic', 0),
+(61, 'Moongeist Beam', 'The user emits a sinister ray to attack the target. This move can be used on the target regardless of its Abilities.', 'Special', 100, 100, 5, 'Ghost', 0),
+(62, 'Air Slash', 'The user attacks with a blade of air that slices even the sky. This may also make the target flinch.', 'Special', 75, 95, 15, 'Flying', 0),
+(63, 'Acid', 'The opposing Pokémon are attacked with a spray of harsh acid. This may also lower their Sp. Def stats.', 'Special', 40, 100, 30, 'Poison', 1),
+(64, 'Nuzzle', 'The user attacks by nuzzling its electrified cheeks against the target. This also leaves the target with paralysis.', 'Physical', 20, 100, 20, 'Electric', 1),
+(65, 'Beat Up', 'The user gets all party Pokémon to attack the target. The more party Pokémon, the greater the number of attacks.', 'Physical', NULL, 100, 10, 'Dark', 1),
+(66, 'Thief', 'The user attacks and steals the target’s held item simultaneously. The user can’t steal anything if it already holds an item.', 'Physical', 60, 100, 25, 'Dark', 1),
+(67, 'Thunder Fang', 'The user bites with electrified fangs. This may also make the target flinch or leave it with paralysis.', 'Physical', 65, 95, 15, 'Electric', 1);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `pokedex`
 --
 
@@ -427,18 +515,11 @@ CREATE TABLE `pokedex` (
   `nickname` varchar(255) DEFAULT NULL,
   `level` tinyint(4) NOT NULL,
   `friendship_level` smallint(6) NOT NULL,
-  `nature` enum('Hardy','Lonely','Brave','Adamant','Naughty','Bold','Docile','Relaxed','Impish','Lax','Timid','Hasty','Serious','Jolly','Naive','Modest','Mild','Quiet','Bashful','Rash','Calm','Gentle','Sassy','Careful','Quirky') NOT NULL,
-  `gender` enum('M','F','O') NOT NULL,
+  `nature` varchar(255) NOT NULL,
+  `gender` char(1) NOT NULL,
   `trainer_id` int(11) NOT NULL,
   `pokemon_id` int(11) NOT NULL
-) ;
-
---
--- Dumping data for table `pokedex`
---
-
-INSERT INTO `pokedex` (`pokedex_id`, `nickname`, `level`, `friendship_level`, `nature`, `gender`, `trainer_id`, `pokemon_id`) VALUES
-(1, 'Balboa', 14, 40, 'Docile', 'O', 1, 11);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -452,8 +533,8 @@ CREATE TABLE `pokemon` (
   `uri` varchar(255) NOT NULL,
   `height` varchar(255) NOT NULL,
   `weight` varchar(255) NOT NULL,
-  `primary_type` enum('Normal','Fire','Fighting','Water','Flying','Grass','Poison','Electric','Ground','Psychic','Rock','Ice','Bug','Dragon','Ghost','Dark','Steel','Fairy') NOT NULL,
-  `secondary_type` enum('Normal','Fire','Fighting','Water','Flying','Grass','Poison','Electric','Ground','Psychic','Rock','Ice','Bug','Dragon','Ghost','Dark','Steel','Fairy') DEFAULT NULL,
+  `primary_type` varchar(255) NOT NULL,
+  `secondary_type` varchar(255) DEFAULT NULL,
   `intro_gen` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -557,12 +638,7 @@ INSERT INTO `pokemon` (`pokemon_id`, `name`, `uri`, `height`, `weight`, `primary
 (93, 'Grapploct', 'https://den-cards.pokellector.com/299/Grapploct.SWSH0.101.36040.png', '1.6', '86.0', 'Fighting', '', 8),
 (94, 'Sirfetch\'d', 'https://den-cards.pokellector.com/292/Galarian-Sirfetchd.SWSH2.95.34504.png', '0.8', '257.9', 'Fighting', '', 8),
 (95, 'Enamorus', 'https://den-cards.pokellector.com/350/Enamorus-V.SWSH10.82.44742.png', '1.6', '105.8', 'Flying', 'Fairy', 8),
-(96, 'Glastrier', 'https://den-cards.pokellector.com/350/Glastrier.SWSH10.51.44711.png', '2.2', '1763.7', 'Ice', '', 8),
-(97, 'Pidgey', 'https://den-cards.pokellector.com/155/Pidgey.FLF.75.png', '0.3', '4.0', 'Normal', 'Flying', 1),
-(98, 'Slugma', 'https://den-cards.pokellector.com/350/Slugma.SWSH10.21.44682.png', '0.6', '77.2', 'Fire', '', 2),
-(99, 'Torkoal', 'https://den-cards.pokellector.com/350/Torkoal.SWSH10.23.44684.png', '0.5', '177.3', 'Fire', '', 3),
-(100, 'Sylveon', 'https://den-cards.pokellector.com/346/Sylveon.POGO.35.44178.png', '1.0', '51.8', 'Fairy', '', 6),
-(101, 'Vivillon', 'https://den-cards.pokellector.com/239/Vivillon.FLI.8.20714.png', '1.2', '37.5', 'Bug', 'Flying', 6);
+(96, 'Glastrier', 'https://den-cards.pokellector.com/350/Glastrier.SWSH10.51.44711.png', '2.2', '1763.7', 'Ice', '', 8);
 
 -- --------------------------------------------------------
 
@@ -805,57 +881,185 @@ INSERT INTO `pokemon_ability` (`pokemon_ability_id`, `pokemon_id`, `ability_id`,
 (221, 94, 189, 1),
 (222, 95, 81, 0),
 (223, 95, 31, 1),
-(224, 96, 23, 0),
-(226, 97, 106, 0),
-(227, 97, 234, 0),
-(228, 97, 19, 1),
-(230, 98, 120, 0),
-(231, 98, 58, 0),
-(232, 98, 261, 1),
-(233, 99, 262, 0),
-(235, 99, 50, 0),
-(236, 99, 196, 1),
-(238, 100, 36, 0),
-(239, 100, 150, 1),
-(241, 101, 197, 0),
-(242, 101, 30, 0),
-(243, 101, 66, 1);
+(224, 96, 23, 0);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `trainers`
+-- Table structure for table `pokemon_move`
 --
 
-CREATE TABLE `trainers` (
+CREATE TABLE `pokemon_move` (
+  `pokemon_move_id` int(11) NOT NULL,
+  `learn_method` varchar(255) NOT NULL,
+  `level` int(11) NOT NULL,
+  `pokemon_id` int(11) NOT NULL,
+  `move_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `pokemon_move`
+--
+
+INSERT INTO `pokemon_move` (`pokemon_move_id`, `learn_method`, `level`, `pokemon_id`, `move_id`) VALUES
+(1, 'Level Up', 1, 1, 4),
+(2, 'Level Up', 1, 1, 2),
+(3, 'Level Up', 7, 1, 5),
+(4, 'Level Up', 13, 1, 1),
+(5, 'Level Up', 20, 1, 6),
+(6, 'Level Up', 27, 1, 7),
+(7, 'Level Up', 34, 1, 8),
+(8, 'Level Up', 41, 1, 9),
+(9, 'Level Up', 48, 1, 10),
+(10, 'Level Up', 1, 2, 4),
+(11, 'Hidden Machines', 5, 2, 11),
+(12, 'Level up', 1, 3, 12),
+(13, 'Level up', 15, 3, 4),
+(14, 'Level up', 19, 3, 13),
+(15, 'Level up', 24, 3, 14),
+(16, 'Technical Machines', 8, 3, 15),
+(17, 'Technical Machines', 48, 3, 16),
+(18, 'Technical Machines', 6, 3, 18),
+(19, 'Technical Machines', 6, 1, 18),
+(20, 'Technical Machines', 8, 1, 15),
+(21, 'Technical Machines', 44, 1, 19),
+(22, 'Technical Machines', 6, 2, 18),
+(23, 'Technical Machines', 8, 2, 15),
+(24, 'Technical Machines', 44, 2, 19),
+(25, 'Technical Machines', 44, 3, 19),
+(26, 'Level up', 1, 4, 4),
+(27, 'Level up', 1, 4, 12),
+(28, 'Level up', 12, 4, 17),
+(29, 'Technical Machines', 6, 4, 18),
+(30, 'Technical Machines', 8, 4, 15),
+(31, 'Technical Machines', 12, 4, 21),
+(32, 'Technical Machines', 44, 4, 19),
+(33, 'Level up', 1, 13, 20),
+(34, 'Level up', 1, 13, 12),
+(35, 'Level up', 13, 13, 21),
+(36, 'Level up', 20, 13, 17),
+(37, 'Hidden Machines', 6, 13, 22),
+(38, 'Technical Machines', 1, 13, 23),
+(39, 'Technical Machines', 6, 13, 18),
+(40, 'Technical Machines', 10, 13, 41),
+(41, 'Technical Machines', 20, 13, 24),
+(42, 'Technical Machines', 28, 13, 13),
+(43, 'Technical Machines', 43, 13, 38),
+(44, 'Technical Machines', 44, 13, 19),
+(45, 'Level up', 1, 14, 2),
+(46, 'Level up', 5, 14, 25),
+(47, 'Level up', 33, 14, 19),
+(48, 'Technical Machines', 1, 14, 23),
+(49, 'Technical Machines', 6, 14, 18),
+(50, 'Technical Machines', 10, 14, 41),
+(51, 'Technical Machines', 11, 14, 26),
+(52, 'Technical Machines', 23, 14, 24),
+(53, 'Technical Machines', 28, 14, 13),
+(54, 'Technical Machines', 30, 14, 27),
+(55, 'Technical Machines', 40, 14, 25),
+(56, 'Technical Machines', 43, 14, 38),
+(57, 'Technical Machines', 44, 14, 19),
+(58, 'Technical Machines', 46, 14, 66),
+(59, 'Level up', 1, 15, 31),
+(60, 'Level up', 37, 15, 32),
+(61, 'Hidden Machines', 5, 15, 11),
+(62, 'Technical Machines', 6, 15, 18),
+(63, 'Technical Machines', 10, 15, 41),
+(64, 'Technical Machines', 11, 15, 26),
+(65, 'Technical Machines', 22, 15, 10),
+(66, 'Technical Machines', 28, 15, 13),
+(67, 'Technical Machines', 44, 15, 19),
+(68, 'Technical Machines', 46, 15, 66),
+(69, 'Level up', 1, 25, 12),
+(70, 'Level up', 5, 25, 20),
+(71, 'Level up', 9, 25, 33),
+(72, 'Level up', 21, 25, 17),
+(73, 'Hidden Machines', 5, 25, 11),
+(74, 'Hidden Machines', 6, 25, 39),
+(75, 'Technical Machines', 4, 25, 34),
+(76, 'Technical Machines', 6, 25, 18),
+(77, 'Technical Machines', 7, 25, 35),
+(78, 'Technical Machines', 10, 25, 41),
+(79, 'Technical Machines', 11, 25, 26),
+(80, 'Technical Machines', 12, 25, 33),
+(81, 'Technical Machines', 13, 25, 36),
+(82, 'Technical Machines', 23, 25, 24),
+(83, 'Technical Machines', 30, 25, 27),
+(84, 'Technical Machines', 41, 25, 44),
+(85, 'Technical Machines', 44, 25, 19),
+(86, 'Technical Machines', 46, 25, 66),
+(87, 'Level up', 1, 26, 37),
+(88, 'Level up', 1, 26, 20),
+(89, 'Level up', 47, 26, 38),
+(90, 'Hidden Machines', 5, 26, 11),
+(91, 'Hidden Machines', 6, 26, 39),
+(92, 'Technical Machines', 6, 26, 18),
+(93, 'Technical Machines', 10, 26, 41),
+(94, 'Technical Machines', 11, 26, 26),
+(95, 'Technical Machines', 22, 26, 10),
+(96, 'Technical Machines', 23, 26, 24),
+(97, 'Technical Machines', 28, 26, 13),
+(98, 'Technical Machines', 44, 26, 19),
+(99, 'Level up', 1, 37, 37),
+(100, 'Level up', 1, 37, 7),
+(101, 'Level up', 1, 37, 2),
+(102, 'Level up', 1, 37, 40),
+(103, 'Level up', 22, 37, 17),
+(104, 'Level up', 33, 37, 5),
+(105, 'Hidden Machines', 6, 37, 39),
+(106, 'Level up', 1, 38, 42),
+(107, 'Level up', 1, 38, 20),
+(108, 'Level up', 1, 38, 12),
+(109, 'Level up', 9, 38, 33),
+(110, 'Level up', 39, 38, 43),
+(111, 'Level up', 1, 49, 2),
+(112, 'Level up', 1, 49, 21),
+(113, 'Level up', 17, 49, 45),
+(114, 'Level up', 33, 49, 46),
+(115, 'Level up', 1, 50, 20),
+(116, 'Level up', 12, 50, 48),
+(117, 'Level up', 43, 50, 49),
+(118, 'Level up', 40, 50, 50),
+(119, 'Level up', 1, 62, 2),
+(120, 'Level up', 1, 62, 1),
+(121, 'Level up', 6, 62, 51),
+(122, 'Level up', 10, 62, 52),
+(123, 'Level up', 15, 62, 7),
+(124, 'Level up', 43, 62, 53),
+(125, 'Level up', 46, 62, 54),
+(126, 'Level up', 58, 62, 10),
+(127, 'Level up', 1, 64, 2),
+(128, 'Level up', 8, 64, 55),
+(129, 'Level up', 20, 64, 56),
+(130, 'Level up', 39, 64, 57),
+(131, 'Level up', 1, 80, 58),
+(132, 'Level up', 1, 80, 59),
+(133, 'Level up', 1, 81, 58),
+(134, 'Level up', 1, 81, 60),
+(135, 'Level up', 1, 81, 61),
+(136, 'Level up', 1, 81, 59),
+(137, 'Level up', 19, 81, 62),
+(138, 'Level up', 23, 81, 27),
+(139, 'Level up', 47, 81, 54),
+(140, 'Level up', 1, 92, 63),
+(141, 'Level up', 1, 92, 64),
+(142, 'Level up', 1, 88, 65),
+(143, 'Level up', 1, 80, 66);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `trainer`
+--
+
+CREATE TABLE `trainer` (
   `trainer_id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
-  `gender` enum('M','F','O') NOT NULL,
+  `gender` char(1) NOT NULL,
   `trainer_class` varchar(255) NOT NULL,
   `quote` varchar(255) NOT NULL,
   `money` int(11) NOT NULL
-) ;
-
---
--- Dumping data for table `trainers`
---
-
-INSERT INTO `trainers` (`trainer_id`, `name`, `gender`, `trainer_class`, `quote`, `money`) VALUES
-(1, 'Brock', 'M', 'Gym Leader', 'I took you for granted. As proof of your victory, here\'s the BoulderBadge!', 1386),
-(2, 'Misty', 'F', 'Gym Leader', 'Wow! You\'re too much! All right! You can have the CascadeBadge to show you beat me!', 4700),
-(3, 'Falkner', 'M', 'Gym Leader', '...Darn! My Dad\'s cherished bird Pokémon... All right. Take this. It\'s the official Pokémon League ZephyrBadge.', 900),
-(4, 'Flannery', 'F', 'Gym Leader', 'Oh... I guess I was trying too hard... I... I\'ve only recently become a Gym Leader. I tried too hard to be someone I\'m not. I have to do things my natural way. If I don\'t, my Pokémon will be confused. Thanks for teaching me that. For that, you deserve thi', 2900),
-(5, 'Gardenia', 'F', 'Gym Leader', 'Amazing! You\'re very good, aren\'t you?', 2640),
-(6, 'Elesa', 'F', 'Gym Leader', 'I meant to make your head spin, but you shocked me instead.', 3240),
-(7, 'Valerie', 'F', 'Gym Leader', 'I hope the sun is shining tomorrow... That would be reason enough to smile.', 6720),
-(8, 'Viola', 'F', 'Gym Leader', 'You and your Pokémon have shown me a whole new depth of field! Fantastic! Just fantastic!', 1920),
-(9, 'Bea', 'F', 'Gym Leader', 'I felt the fighting spirit of your Pokémon as you led them in battle.', 5760),
-(10, 'Raihan', 'M', 'Gym Leader', 'I might have lost, but I still look good. Maybe I should snap a quick selfie...', 7680),
-(11, 'Lance', 'M', 'Champion', 'That\'s it! I hate to admit it, but you are a Pokémon master!', 6138),
-(12, 'Dana', 'F', 'Ace Trainer', 'Your love of Pokémon really shows!', 3300),
-(13, 'Cynthia', 'F', 'Champion', 'Just a few moments ago, you were the most powerful challenger. And just now, you became the most powerful of all the Trainers. You are now our newest Champion!', 13200),
-(14, 'Yanis', 'M', 'Black Belt', '', 2400),
-(15, 'Bianca', 'F', 'Pokémon Trainer', 'I trained with Iris... But I still couldn\'t win...', 2000);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Indexes for dumped tables
@@ -868,16 +1072,16 @@ ALTER TABLE `abilities`
   ADD PRIMARY KEY (`ability_id`);
 
 --
--- Indexes for table `games`
+-- Indexes for table `game`
 --
-ALTER TABLE `games`
+ALTER TABLE `game`
   ADD PRIMARY KEY (`game_id`),
   ADD KEY `generation_id` (`generation_id`);
 
 --
--- Indexes for table `generations`
+-- Indexes for table `generation`
 --
-ALTER TABLE `generations`
+ALTER TABLE `generation`
   ADD PRIMARY KEY (`generation_id`);
 
 --
@@ -893,6 +1097,13 @@ ALTER TABLE `locations`
   ADD PRIMARY KEY (`location_id`),
   ADD KEY `game_id` (`game_id`),
   ADD KEY `gym_id` (`gym_id`);
+
+--
+-- Indexes for table `moves`
+--
+ALTER TABLE `moves`
+  ADD PRIMARY KEY (`move_id`),
+  ADD UNIQUE KEY `name` (`name`);
 
 --
 -- Indexes for table `pokedex`
@@ -918,9 +1129,17 @@ ALTER TABLE `pokemon_ability`
   ADD KEY `pokemon_id` (`pokemon_id`);
 
 --
--- Indexes for table `trainers`
+-- Indexes for table `pokemon_move`
 --
-ALTER TABLE `trainers`
+ALTER TABLE `pokemon_move`
+  ADD PRIMARY KEY (`pokemon_move_id`),
+  ADD KEY `pokemon_id` (`pokemon_id`),
+  ADD KEY `move_id` (`move_id`);
+
+--
+-- Indexes for table `trainer`
+--
+ALTER TABLE `trainer`
   ADD PRIMARY KEY (`trainer_id`);
 
 --
@@ -934,15 +1153,15 @@ ALTER TABLE `abilities`
   MODIFY `ability_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=267;
 
 --
--- AUTO_INCREMENT for table `games`
+-- AUTO_INCREMENT for table `game`
 --
-ALTER TABLE `games`
+ALTER TABLE `game`
   MODIFY `game_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
--- AUTO_INCREMENT for table `generations`
+-- AUTO_INCREMENT for table `generation`
 --
-ALTER TABLE `generations`
+ALTER TABLE `generation`
   MODIFY `generation_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
@@ -958,6 +1177,12 @@ ALTER TABLE `locations`
   MODIFY `location_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
+-- AUTO_INCREMENT for table `moves`
+--
+ALTER TABLE `moves`
+  MODIFY `move_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
+
+--
 -- AUTO_INCREMENT for table `pokedex`
 --
 ALTER TABLE `pokedex`
@@ -967,18 +1192,24 @@ ALTER TABLE `pokedex`
 -- AUTO_INCREMENT for table `pokemon`
 --
 ALTER TABLE `pokemon`
-  MODIFY `pokemon_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=102;
+  MODIFY `pokemon_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
 
 --
 -- AUTO_INCREMENT for table `pokemon_ability`
 --
 ALTER TABLE `pokemon_ability`
-  MODIFY `pokemon_ability_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=244;
+  MODIFY `pokemon_ability_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=225;
 
 --
--- AUTO_INCREMENT for table `trainers`
+-- AUTO_INCREMENT for table `pokemon_move`
 --
-ALTER TABLE `trainers`
+ALTER TABLE `pokemon_move`
+  MODIFY `pokemon_move_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=144;
+
+--
+-- AUTO_INCREMENT for table `trainer`
+--
+ALTER TABLE `trainer`
   MODIFY `trainer_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -986,37 +1217,44 @@ ALTER TABLE `trainers`
 --
 
 --
--- Constraints for table `games`
+-- Constraints for table `game`
 --
-ALTER TABLE `games`
-  ADD CONSTRAINT `fk_game_gen` FOREIGN KEY (`generation_id`) REFERENCES `generations` (`generation_id`) ON DELETE CASCADE;
+ALTER TABLE `game`
+  ADD CONSTRAINT `fk_game_gen` FOREIGN KEY (`generation_id`) REFERENCES `generation` (`generation_id`);
 
 --
 -- Constraints for table `locations`
 --
 ALTER TABLE `locations`
-  ADD CONSTRAINT `fk_location_game` FOREIGN KEY (`game_id`) REFERENCES `games` (`game_id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `fk_location_gym` FOREIGN KEY (`gym_id`) REFERENCES `gyms` (`gym_id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `fk_location_game` FOREIGN KEY (`game_id`) REFERENCES `game` (`game_id`),
+  ADD CONSTRAINT `fk_location_gym` FOREIGN KEY (`gym_id`) REFERENCES `gyms` (`gym_id`);
 
 --
 -- Constraints for table `pokedex`
 --
 ALTER TABLE `pokedex`
   ADD CONSTRAINT `fk_pokedex_pokemon` FOREIGN KEY (`pokemon_id`) REFERENCES `pokemon` (`pokemon_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_pokedex_trainer` FOREIGN KEY (`trainer_id`) REFERENCES `trainers` (`trainer_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_pokedex_trainer` FOREIGN KEY (`trainer_id`) REFERENCES `trainer` (`trainer_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `pokemon`
 --
 ALTER TABLE `pokemon`
-  ADD CONSTRAINT `fk_pokemon_gen` FOREIGN KEY (`intro_gen`) REFERENCES `generations` (`generation_id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `fk_pokemon_gen` FOREIGN KEY (`intro_gen`) REFERENCES `generation` (`generation_id`);
 
 --
 -- Constraints for table `pokemon_ability`
 --
 ALTER TABLE `pokemon_ability`
-  ADD CONSTRAINT `fk_ability_pokemon` FOREIGN KEY (`pokemon_id`) REFERENCES `pokemon` (`pokemon_id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `fk_pokemon_abilities` FOREIGN KEY (`ability_id`) REFERENCES `abilities` (`ability_id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `fk_ability_pokemon` FOREIGN KEY (`pokemon_id`) REFERENCES `pokemon` (`pokemon_id`),
+  ADD CONSTRAINT `fk_pokemon_abilities` FOREIGN KEY (`ability_id`) REFERENCES `abilities` (`ability_id`);
+
+--
+-- Constraints for table `pokemon_move`
+--
+ALTER TABLE `pokemon_move`
+  ADD CONSTRAINT `fk_pokemon_move_move_id` FOREIGN KEY (`move_id`) REFERENCES `moves` (`move_id`),
+  ADD CONSTRAINT `fk_pokemon_move_pokemon_id` FOREIGN KEY (`pokemon_id`) REFERENCES `pokemon` (`pokemon_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
