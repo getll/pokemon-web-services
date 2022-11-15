@@ -16,3 +16,4 @@ function makeCustomJSONError($error_code, $error_message) {
     );    
     return json_encode($error_data);
 }
+

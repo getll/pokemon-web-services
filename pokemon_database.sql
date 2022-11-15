@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 14, 2022 at 05:28 PM
+-- Generation Time: Nov 15, 2022 at 04:02 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -430,10 +430,8 @@ CREATE TABLE `pokedex` (
   `nature` enum('Hardy','Lonely','Brave','Adamant','Naughty','Bold','Docile','Relaxed','Impish','Lax','Timid','Hasty','Serious','Jolly','Naive','Modest','Mild','Quiet','Bashful','Rash','Calm','Gentle','Sassy','Careful','Quirky') NOT NULL,
   `gender` enum('M','F','O') NOT NULL,
   `trainer_id` int(11) NOT NULL,
-  `pokemon_id` int(11) NOT NULL,
-  CONSTRAINT check_level CHECK (level >= 1 AND level <= 100),
-  CONSTRAINT check_friendship_level CHECK (friendship_level >= 0 AND friendship_level <= 255)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `pokemon_id` int(11) NOT NULL
+) ;
 
 --
 -- Dumping data for table `pokedex`
@@ -835,9 +833,8 @@ CREATE TABLE `trainers` (
   `gender` enum('M','F','O') NOT NULL,
   `trainer_class` varchar(255) NOT NULL,
   `quote` varchar(255) NOT NULL,
-  `money` int(11) NOT NULL,
-  CONSTRAINT check_money CHECK (money >= 0)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `money` int(11) NOT NULL
+) ;
 
 --
 -- Dumping data for table `trainers`
@@ -964,7 +961,7 @@ ALTER TABLE `locations`
 -- AUTO_INCREMENT for table `pokedex`
 --
 ALTER TABLE `pokedex`
-  MODIFY `pokedex_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `pokedex_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `pokemon`
@@ -982,7 +979,7 @@ ALTER TABLE `pokemon_ability`
 -- AUTO_INCREMENT for table `trainers`
 --
 ALTER TABLE `trainers`
-  MODIFY `trainer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `trainer_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
@@ -992,14 +989,14 @@ ALTER TABLE `trainers`
 -- Constraints for table `games`
 --
 ALTER TABLE `games`
-  ADD CONSTRAINT `fk_game_gen` FOREIGN KEY (`generation_id`) REFERENCES `generations` (`generation_id`);
+  ADD CONSTRAINT `fk_game_gen` FOREIGN KEY (`generation_id`) REFERENCES `generations` (`generation_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `locations`
 --
 ALTER TABLE `locations`
-  ADD CONSTRAINT `fk_location_game` FOREIGN KEY (`game_id`) REFERENCES `games` (`game_id`),
-  ADD CONSTRAINT `fk_location_gym` FOREIGN KEY (`gym_id`) REFERENCES `gyms` (`gym_id`);
+  ADD CONSTRAINT `fk_location_game` FOREIGN KEY (`game_id`) REFERENCES `games` (`game_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_location_gym` FOREIGN KEY (`gym_id`) REFERENCES `gyms` (`gym_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `pokedex`
@@ -1012,14 +1009,14 @@ ALTER TABLE `pokedex`
 -- Constraints for table `pokemon`
 --
 ALTER TABLE `pokemon`
-  ADD CONSTRAINT `fk_pokemon_gen` FOREIGN KEY (`intro_gen`) REFERENCES `generations` (`generation_id`);
+  ADD CONSTRAINT `fk_pokemon_gen` FOREIGN KEY (`intro_gen`) REFERENCES `generations` (`generation_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `pokemon_ability`
 --
 ALTER TABLE `pokemon_ability`
-  ADD CONSTRAINT `fk_ability_pokemon` FOREIGN KEY (`pokemon_id`) REFERENCES `pokemon` (`pokemon_id`),
-  ADD CONSTRAINT `fk_pokemon_abilities` FOREIGN KEY (`ability_id`) REFERENCES `abilities` (`ability_id`);
+  ADD CONSTRAINT `fk_ability_pokemon` FOREIGN KEY (`pokemon_id`) REFERENCES `pokemon` (`pokemon_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_pokemon_abilities` FOREIGN KEY (`ability_id`) REFERENCES `abilities` (`ability_id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
