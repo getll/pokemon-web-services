@@ -24,8 +24,8 @@ function deleteOneTrainer(Request $request, Response $response, array $args) {
             $trainer_info = $trainer_model->getTrainerById($trainers);
             $trainer_name = $trainer_model->getTrainerById($trainers);
             if (!$trainer_info) {
-                $response_data = json_encode(array("resourceNotFound", 
-                        "No matching record was found for trainer ". $trainers ."."), JSON_INVALID_UTF8_SUBSTITUTE);
+                $response_data = (makeCustomJSONError("resourceNotFound", 
+                        "No matching record was found for trainer ". $trainers ."."));
                 $response->getBody()->write($response_data);
                 return $response->withStatus(HTTP_NOT_FOUND);
             }

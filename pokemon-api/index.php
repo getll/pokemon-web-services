@@ -30,11 +30,13 @@ require_once './includes/routes/locations_routes.php';
 require_once './includes/routes/pokedex_routes.php';
 require_once './includes/routes/pokemon_ability_routes.php';
 require_once './includes/routes/trainers_routes.php';
+require_once './includes/routes/moves_routes.php';
+require_once './includes/routes/pokemon_moves_routes.php';
 
 //-- Step 6)
 // TODO: And here we define app routes.
 //$app->get("/artists", "handleGetAllArtists");
-$app->get("/pokemons/{pokemonId}", "handleGetPokemonById");
+$app->get("/pokemon/{pokemonId}", "handleGetPokemonById");
 $app->get("/abilities/{abili}", "handleGetAbilityById");
 $app->get("/game/{gamez}", "handleGetGameById");
 $app->get("/generation/{gens}", "handleGetGenerationById");
@@ -43,9 +45,11 @@ $app->get("/location/{location}", "handleGetLocationById");
 $app->get("/pokedex/{pokedex}", "handleGetPokedexById");
 $app->get("/pokemon_ability/{pokebi}", "handleGetPokeAbilityById");
 $app->get("/trainer/{trainers}", "handleGetTrainerById");
+$app->get("/moves/{moves}", "handleGetMoveById");
+$app->get("/pokemonMove/{pokemonMoves}", "handleGetPokemonMoveById");
 
 
-$app->delete("/pokemons/{pokemonId}", "deleteOnePokemon");
+$app->delete("/pokemon/{pokemonId}", "deleteOnePokemon");
 $app->delete("/abilities/{abili}", "deleteOneAbility");
 $app->delete("/game/{gamez}", "deleteOneGame");
 $app->delete("/generation/{gens}", "deleteOneGeneration");
@@ -54,6 +58,8 @@ $app->delete("/location/{location}", "deleteOneLocation");
 $app->delete("/pokedex/{pokedex}", "deleteOnePokedex");
 $app->delete("/pokemon_ability/{pokebi}", "deleteOnePokeAbility");
 $app->delete("/trainer/{trainers}", "deleteOneTrainer");
+$app->delete("/moves/{moves}", "deleteOneMove");
+$app->delete("/pokemonMove/{pokemonMoves}", "deleteOnePokemonMove");
 
 // Define app routes.
 $app->get('/hello/{your_name}', function (Request $request, Response $response, $args) {

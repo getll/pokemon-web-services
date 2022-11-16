@@ -24,8 +24,8 @@ function deleteOnePokeAbility(Request $request, Response $response, array $args)
             $pokemonAbility_info = $pokemonAbility_model->getPokeAbiById($pokebi);
             $pokebi_name = $pokemonAbility_model->getPokeAbiById($pokebi);
             if (!$pokemonAbility_info) {
-                $response_data = json_encode(array("resourceNotFound", 
-                        "No matching record was found for pokemon ability ". $pokebi ."."), JSON_INVALID_UTF8_SUBSTITUTE);
+                $response_data = (makeCustomJSONError("resourceNotFound", 
+                        "No matching record was found for pokemon ability ". $pokebi ."."));
                 $response->getBody()->write($response_data);
                 return $response->withStatus(HTTP_NOT_FOUND);
             }

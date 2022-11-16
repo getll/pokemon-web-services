@@ -24,8 +24,8 @@ function deleteOnePokemon(Request $request, Response $response, array $args) {
             $pokemon_info = $pokemon_model->getPokemonById($pokemonId);
             $pokemon_name = $pokemon_model->getPokemonById($pokemonId);
             if (!$pokemon_info) {
-                $response_data = json_encode(array("resourceNotFound", 
-                        "No matching record was found for pokemon ". $pokemonId ."."), JSON_INVALID_UTF8_SUBSTITUTE);
+                $response_data = (makeCustomJSONError("resourceNotFound", 
+                        "No matching record was found for pokemon ". $pokemonId ."."));
                 $response->getBody()->write($response_data);
                 return $response->withStatus(HTTP_NOT_FOUND);
             }

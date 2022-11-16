@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 15, 2022 at 05:23 AM
--- Server version: 10.4.22-MariaDB
--- PHP Version: 8.1.1
+-- Generation Time: Nov 16, 2022 at 05:35 PM
+-- Server version: 10.4.24-MariaDB
+-- PHP Version: 8.1.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -431,8 +431,7 @@ CREATE TABLE `moves` (
   `accuracy` int(11) DEFAULT NULL,
   `powerPoints` int(11) DEFAULT NULL,
   `type` enum('Normal','Fire','Fighting','Water','Flying','Grass','Poison','Electric','Ground','Psychic','Rock','Ice','Bug','Dragon','Ghost','Dark','Steel','Fairy') NOT NULL,
-  `hasSecondaryEffect` tinyint(1) NOT NULL,
-  CONSTRAINT check_accuracy CHECK (accuracy >= 0 AND accuracy <= 100)
+  `hasSecondaryEffect` tinyint(1) NOT NULL
 ) ;
 
 --
@@ -519,9 +518,7 @@ CREATE TABLE `pokedex` (
   `nature` enum('Hardy','Lonely','Brave','Adamant','Naughty','Bold','Docile','Relaxed','Impish','Lax','Timid','Hasty','Serious','Jolly','Naive','Modest','Mild','Quiet','Bashful','Rash','Calm','Gentle','Sassy','Careful','Quirky') NOT NULL,
   `gender` enum('M','F','O') NOT NULL,
   `trainer_id` int(11) NOT NULL,
-  `pokemon_id` int(11) NOT NULL,
-  CONSTRAINT check_level CHECK (level >= 1 AND level <= 100),
-  CONSTRAINT check_friendship_level CHECK (friendship_level >= 0 AND friendship_level <= 255)
+  `pokemon_id` int(11) NOT NULL
 ) ;
 
 --
@@ -1111,8 +1108,7 @@ CREATE TABLE `trainers` (
   `gender` enum('M','F','O') NOT NULL,
   `trainer_class` varchar(255) NOT NULL,
   `quote` varchar(255) NOT NULL,
-  `money` int(11) NOT NULL,
-  CONSTRAINT check_money CHECK (money >= 0)
+  `money` int(11) NOT NULL
 ) ;
 
 --
@@ -1330,6 +1326,17 @@ ALTER TABLE `pokemon_ability`
 ALTER TABLE `pokemon_move`
   ADD CONSTRAINT `fk_pokemon_move_move_id` FOREIGN KEY (`move_id`) REFERENCES `moves` (`move_id`),
   ADD CONSTRAINT `fk_pokemon_move_pokemon_id` FOREIGN KEY (`pokemon_id`) REFERENCES `pokemon` (`pokemon_id`);
+
+ALTER TABLE `moves`
+  ADD CONSTRAINT check_accuracy CHECK (accuracy >= 0 AND accuracy <= 100);
+
+ALTER TABLE `pokedex`
+  ADD CONSTRAINT check_level CHECK (level >= 1 AND level <= 100),
+  ADD CONSTRAINT check_friendship_level CHECK (friendship_level >= 0 AND friendship_level <= 255);
+
+ALTER TABLE `trainers`
+  ADD CONSTRAINT check_money CHECK (money >= 0);
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

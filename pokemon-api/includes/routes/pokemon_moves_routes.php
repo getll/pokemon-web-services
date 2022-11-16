@@ -6,33 +6,33 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Factory\AppFactory;
 
 require_once __DIR__ . './../models/BaseModel.php';
-require_once __DIR__ . './../models/GymModel.php';
+require_once __DIR__ . './../models/PokemonMovesModel.php';
 
 
-function deleteOneGym(Request $request, Response $response, array $args) {
-    $gym_info = array();
+function deleteOnePokemonMove(Request $request, Response $response, array $args) {
+    $pokemon_moves_info = array();
     $response_data = array();
     $response_code = HTTP_OK;
-    $gym_model = new GymModel();
+    $pokemon_moves_model = new PokemonMovesModel();
     //check if json is requested
     $requested_format = $request->getHeader('Accept');
     if (isset($requested_format[0]) && $requested_format[0] === APP_MEDIA_TYPE_JSON) {
-        $gyms = $args["gyms"];
+        $pokemonMoves = $args["pokemonMoves"];
         //check for artist id
-        if (isset($gyms)) {
+        if (isset($pokemonMoves)) {
             //check if artist exists
-            $gym_info = $gym_model->getGymById($gyms);
-            $gym_name = $gym_model->getGymById($gyms);
-            if (!$gym_info) {
+            $pokemon_moves_info = $pokemon_moves_model->getPokemonMovesById($pokemonMoves);
+            $pokemon_moves_name = $pokemon_moves_model->getPokemonMovesById($pokemonMoves);
+            if (!$pokemon_moves_info) {
                 $response_data = (makeCustomJSONError("resourceNotFound", 
-                        "No matching record was found for gym ". $gyms ."."));
+                        "No matching record was found for pokemon move ". $pokemonMoves ."."));
                 $response->getBody()->write($response_data);
                 return $response->withStatus(HTTP_NOT_FOUND);
             }
-            $gym_info = $gym_model->delSingleGym($gyms);
+            $pokemon_moves_info = $pokemon_moves_model->delSinglePokemonMoves($pokemonMoves);
         } 
-        $response_data = json_encode(array("Message" => "Gym ". $gyms ." deleted.", 
-                "Gym information" => $gym_name), JSON_INVALID_UTF8_SUBSTITUTE);
+        $response_data = json_encode(array("Message" => "Pokemon move ". $pokemonMoves ." deleted.", 
+                "Pokemon move information" => $pokemon_moves_name), JSON_INVALID_UTF8_SUBSTITUTE);
     }
     else {
         $response_data = json_encode(getErrorUnsupportedFormat());
@@ -45,20 +45,20 @@ function deleteOneGym(Request $request, Response $response, array $args) {
 
 
 
-function handleGetGymById(Request $request, Response $response, array $args) {
-    $gym_info = array();
+function handleGetPokemonMoveById(Request $request, Response $response, array $args) {
+    $pokemon_moves_info = array();
     $response_data = array();
     $response_code = HTTP_OK;
-    $gym_model = new GymModel();
+    $pokemon_moves_model = new PokemonMovesModel();
 
     // Retreive the artist id from the request's URI.
-    $gyms = $args["gyms"];
-    if (isset($gyms)) {
+    $pokemonMoves = $args["pokemonMoves"];
+    if (isset($pokemonMoves)) {
         // Fetch the info about the specified artist.
-        $gym_info = $gym_model->getGymById($gyms);
-        if (!$gym_info) {
+        $pokemon_moves_info = $pokemon_moves_model->getPokemonMovesById($pokemonMoves);
+        if (!$pokemon_moves_info) {
             // No matches found?
-            $response_data = makeCustomJSONError("resourceNotFound", "No matching record was found for the specified pokemon.");
+            $response_data = makeCustomJSONError("resourceNotFound", "No matching record was found for the specified pokemon move.");
             $response->getBody()->write($response_data);
             return $response->withStatus(HTTP_NOT_FOUND);
         }
@@ -68,7 +68,7 @@ function handleGetGymById(Request $request, Response $response, array $args) {
     //--
     //-- We verify the requested resource representation.    
     if ($requested_format[0] === APP_MEDIA_TYPE_JSON) {
-        $response_data = json_encode($gym_info, JSON_INVALID_UTF8_SUBSTITUTE);
+        $response_data = json_encode($pokemon_moves_info, JSON_INVALID_UTF8_SUBSTITUTE);
     } else {
         $response_data = json_encode(getErrorUnsupportedFormat());
         $response_code = HTTP_UNSUPPORTED_MEDIA_TYPE;
@@ -76,5 +76,3 @@ function handleGetGymById(Request $request, Response $response, array $args) {
     $response->getBody()->write($response_data);
     return $response->withStatus($response_code);
 }
-
-

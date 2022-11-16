@@ -24,8 +24,8 @@ function deleteOnePokedex(Request $request, Response $response, array $args) {
             $pokedex_info = $pokedex_model->getPokedexById($pokedex);
             $pokedex_name = $pokedex_model->getPokedexById($pokedex);
             if (!$pokedex_info) {
-                $response_data = json_encode(array("resourceNotFound", 
-                        "No matching record was found for pokedex ". $pokedex ."."), JSON_INVALID_UTF8_SUBSTITUTE);
+                $response_data = (makeCustomJSONError("resourceNotFound", 
+                        "No matching record was found for pokedex ". $pokedex ."."));
                 $response->getBody()->write($response_data);
                 return $response->withStatus(HTTP_NOT_FOUND);
             }

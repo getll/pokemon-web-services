@@ -24,8 +24,8 @@ function deleteOneLocation(Request $request, Response $response, array $args) {
             $location_info = $location_model->getLocationById($location);
             $location_name = $location_model->getLocationById($location);
             if (!$location_info) {
-                $response_data = json_encode(array("resourceNotFound", 
-                        "No matching record was found for location ". $location ."."), JSON_INVALID_UTF8_SUBSTITUTE);
+                $response_data = (makeCustomJSONError("resourceNotFound", 
+                        "No matching record was found for location ". $location ."."));
                 $response->getBody()->write($response_data);
                 return $response->withStatus(HTTP_NOT_FOUND);
             }

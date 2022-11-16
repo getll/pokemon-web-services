@@ -23,8 +23,8 @@ function deleteOneGame(Request $request, Response $response, array $args) {
             $game_info = $game_model->getGameById($gamez);
             $game_name = $game_model->getGameById($gamez);
             if (!$game_info) {
-                $response_data = json_encode(array("resourceNotFound", 
-                        "No matching record was found for games ". $gamez ."."), JSON_INVALID_UTF8_SUBSTITUTE);
+                $response_data = (makeCustomJSONError("resourceNotFound", 
+                        "No matching record was found for games ". $gamez ."."));
                 $response->getBody()->write($response_data);
                 return $response->withStatus(HTTP_NOT_FOUND);
             }

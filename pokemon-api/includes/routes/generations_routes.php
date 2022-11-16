@@ -24,8 +24,8 @@ function deleteOneGeneration(Request $request, Response $response, array $args) 
             $generation_info = $generation_model->getGenerationById($gens);
             $generation_name = $generation_model->getGenerationById($gens);
             if (!$generation_info) {
-                $response_data = json_encode(array("resourceNotFound", 
-                        "No matching record was found for generation ". $gens ."."), JSON_INVALID_UTF8_SUBSTITUTE);
+                $response_data = (makeCustomJSONError("resourceNotFound", 
+                        "No matching record was found for generation ". $gens ."."));
                 $response->getBody()->write($response_data);
                 return $response->withStatus(HTTP_NOT_FOUND);
             }
