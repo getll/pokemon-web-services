@@ -13,7 +13,7 @@ class LocationModel extends BaseModel{
     public function delSingleLocation($location){
         $sql = "DELETE FROM locations WHERE location_id = :location";
         $data = $this->run($sql, [":location" => $location]);
-        //return $data;
+        return $data;
     }
 
     public function getLocationById($location){

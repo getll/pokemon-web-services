@@ -26,7 +26,7 @@ class GymModel extends BaseModel{
     public function delSingleGym($gyms){
         $sql = "DELETE FROM gyms WHERE gym_id = :gyms";
         $data = $this->run($sql, [":gyms" => $gyms]);
-        //return $data;
+        return $data;
     }
 
     public function getGymById($gyms){

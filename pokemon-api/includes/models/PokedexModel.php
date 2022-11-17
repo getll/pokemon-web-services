@@ -18,7 +18,7 @@ class PokedexModel extends BaseModel {
     public function delSinglePokedex($pokedex){
         $sql = "DELETE FROM pokedex WHERE pokedex_id = :pokedex";
         $data = $this->run($sql, [":pokedex" => $pokedex]);
-        //return $data;
+        return $data;
     }
 
     public function getPokedexById($pokedex){
@@ -27,4 +27,8 @@ class PokedexModel extends BaseModel {
         return $data;
     }
 
+    public function createPokedex($record) {
+        $data = $this->insert($this->table_name, $record);
+        return $data;
+    }
 }

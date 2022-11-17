@@ -29,5 +29,9 @@ class AbilityModel extends BaseModel {
         return $data;
     }
 
+    public function createAbility($record) {
+        $data = $this->insert($this->table_name, $record);
+        return $data;
+    }
 }  
     

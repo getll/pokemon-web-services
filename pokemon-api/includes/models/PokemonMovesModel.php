@@ -18,7 +18,7 @@ class PokemonMovesModel extends BaseModel {
     public function delSinglePokemonMoves($pokemonMoves){
         $sql = "DELETE FROM pokemon_move WHERE pokemon_move_id = :pokemonMoves";
         $data = $this->run($sql, [":pokemonMoves" => $pokemonMoves]);
-        //return $data;
+        return $data;
     }
 
     public function getPokemonMovesById($pokemonMoves){

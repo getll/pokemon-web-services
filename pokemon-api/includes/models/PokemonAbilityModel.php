@@ -18,7 +18,7 @@ class PokemonAbilityModel extends BaseModel {
     public function delSinglePokeAbi($pokebi){
         $sql = "DELETE FROM pokemon_ability WHERE pokemon_ability_id = :pokebi";
         $data = $this->run($sql, [":pokebi" => $pokebi]);
-        //return $data;
+        return $data;
     }
 
     public function getPokeAbiById($pokebi){

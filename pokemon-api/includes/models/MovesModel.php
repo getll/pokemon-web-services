@@ -18,7 +18,7 @@ class MovesModel extends BaseModel {
     public function delSingleMove($moves){
         $sql = "DELETE FROM moves WHERE move_id = :moves";
         $data = $this->run($sql, [":moves" => $moves]);
-        //return $data;
+        return $data;
     }
 
     public function getMoveById($moves){
@@ -27,4 +27,8 @@ class MovesModel extends BaseModel {
         return $data;
     }
 
+    public function createMove($record) {
+        $data = $this->insert($this->table_name, $record);
+        return $data;
+    }
 }
