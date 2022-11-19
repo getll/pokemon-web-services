@@ -90,21 +90,21 @@ function handleCreateAbility(Request $request, Response $response, array $args) 
             // going through each field in a row
             $ability_id = $single_ability["abilityId"];
             $ability_name = $single_ability["name"];
-            $ability_name = $single_ability["description"];
+            $ability_desc = $single_ability["description"];
 
             $ability_record = array(
                 "ability_id" => $ability_id, 
                 "name" => $ability_name, 
-                "description" => $ability_name
+                "description" => $ability_desc
             );
             $ability_model->createAbility($ability_record);
 
             // preparing response message
-            $abilities .= ((empty($abilities)) ? "Created rows for " . $artist_name : ", " . $artist_name);
+            $abilities .= ((empty($abilities)) ? "Created rows for " . $ability_name : ", " . $ability_name);
         }
         
         $response_data = json_encode(array("message" => $abilities, 
-                "artists" => $parsed_body), JSON_INVALID_UTF8_SUBSTITUTE);
+                "abilities" => $parsed_body), JSON_INVALID_UTF8_SUBSTITUTE);
     }
     else {
         $response_data = json_encode(getErrorUnsupportedFormat());

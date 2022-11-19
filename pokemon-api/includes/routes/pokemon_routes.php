@@ -76,3 +76,52 @@ function handleGetPokemonById(Request $request, Response $response, array $args)
     $response->getBody()->write($response_data);
     return $response->withStatus($response_code);
 }
+
+function handleCreateXPokemon(Request $request, Response $response, array $args) {
+    $response_code = HTTP_CREATED;
+    $pokemons = "";
+    
+    $pokemon_model = new PokemonModel();
+    $parsed_body = $request->getParsedBody();
+    
+    $requested_format = $request->getHeader('Accept');
+    if (isset($requested_format[0]) && $requested_format[0] === APP_MEDIA_TYPE_JSON) {
+        
+        foreach ($parsed_body as $single_pokemon) {
+            // going through each field in a row
+            $pokemon_id = $single_pokemon["pokemonId"];
+            $pokemon_name = $single_pokemon["name"];
+            $pokemon_uri = $single_pokemon["uri"];
+            $pokemon_height = $single_pokemon["height"];
+            $pokemon_weight = $single_pokemon["weight"];
+            $pokemon_type_1 = $single_pokemon["primaryType"];
+            $pokemon_type_2 = $single_pokemon["secondaryType"];
+            $pokemon_intro_gen = $single_pokemon["introGen"];
+
+            $pokemon_record = array(
+                "pokemon_id" => $pokemon_id, 
+                "name" => $pokemon_name, 
+                "uri" => $pokemon_uri, 
+                "height" => $pokemon_height, 
+                "weight" => $pokemon_weight, 
+                "primary_type" => $pokemon_type_1, 
+                "secondary_type" => $pokemon_type_2, 
+                "intro_gen" => $pokemon_intro_gen
+            );
+            $pokemon_model->createXXXXXXXXXX($pokemon_record);
+
+            // preparing response message
+            $pokemons .= ((empty($pokemons)) ? "Created rows for " . $pokemon_name : ", " . $pokemon_name);
+        }
+        
+        $response_data = json_encode(array("message" => $pokemons, 
+                "pokemon" => $parsed_body), JSON_INVALID_UTF8_SUBSTITUTE);
+    }
+    else {
+        $response_data = json_encode(getErrorUnsupportedFormat());
+        $response_code = HTTP_UNSUPPORTED_MEDIA_TYPE;
+    }
+    
+    $response->getBody()->write($response_data);
+    return $response->withStatus($response_code);
+}
