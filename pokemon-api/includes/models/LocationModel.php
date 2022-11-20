@@ -1,6 +1,9 @@
 <?php
 
 class LocationModel extends BaseModel{
+    
+    private $table_name = "locations";
+    
     public function __construct($options = []) {
         parent::__construct($options);
     }

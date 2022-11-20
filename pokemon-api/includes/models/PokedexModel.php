@@ -1,7 +1,9 @@
 <?php
 
 class PokedexModel extends BaseModel {
-
+    
+    private $table_name = "pokedex";
+    
     /**
      * A model class for the `album` database table.
      * It exposes operations that can be performed on albums records.

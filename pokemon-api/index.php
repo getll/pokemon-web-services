@@ -11,10 +11,16 @@ require_once './includes/helpers/helper_functions.php';
 
 //--Step 1) Instantiate App.
 $app = AppFactory::create();
+
 //-- Step 2) Add routing middleware.
 $app->addRoutingMiddleware();
+
 //-- Step 3) Add error handling middleware.
 $errorMiddleware = $app->addErrorMiddleware(true, true, true);
+
+//parsing middleware
+$app->addBodyParsingMiddleware();
+
 //-- Step 4)
 // TODO: change the name of the sub directory here. You also need to change it in .htaccess
 $app->setBasePath("/pokemon-api");
@@ -73,7 +79,7 @@ $app->post("/moves", "handleCreateMove");
 $app->post("/trainer", "handleCreateTrainer");
 
 //to be mapped
-//$app->post("/generation/{genId}", "handleUnsupportedOperation");
+//$app->post("/generation/{generationId}", "handleUnsupportedOperation");
 //$app->post("/pokemon/{pokemonId}", "handleUnsupportedOperation");
 //$app->post("/abilities/{abilityId}", "handleUnsupportedOperation");
 //$app->post("/moves/{moveId}", "handleUnsupportedOperation");
@@ -82,7 +88,9 @@ $app->post("/trainer", "handleCreateTrainer");
 //dependant resources
 $app->post("/generations/{generationId}/games", "handleCreateGame");
 $app->post("/trainers/{trainerId}/pokedex", "handleCreatePokedex");
-$app->post("/gyms/{gymId}/trainers", "handleCreateTrainer");
+
+// needs to be reevaluated for priority
+//$app->post("/gyms/{gymId}/trainers", "handleCreateTrainer");
 
 //to be mapped
 //$app->post("/games/{gameId}/locations", "handleUnsupportedOperation");

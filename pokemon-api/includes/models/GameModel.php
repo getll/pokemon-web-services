@@ -2,6 +2,8 @@
 
 class GameModel extends BaseModel {
 
+    private $table_name = "games";
+    
     public function __construct($options = []) {
         parent::__construct($options);
     }

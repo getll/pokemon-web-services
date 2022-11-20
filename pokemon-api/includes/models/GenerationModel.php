@@ -2,6 +2,8 @@
 
 class GenerationModel extends BaseModel {
 
+    private $table_name = "generation";
+    
     public function __construct($options = []) {
         parent::__construct($options);
     }

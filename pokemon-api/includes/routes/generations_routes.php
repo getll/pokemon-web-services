@@ -8,7 +8,6 @@ use Slim\Factory\AppFactory;
 require_once __DIR__ . './../models/BaseModel.php';
 require_once __DIR__ . './../models/GenerationModel.php';
 
-
 function deleteOneGeneration(Request $request, Response $response, array $args) {
     $generation_info = array();
     $response_data = array();
@@ -96,7 +95,7 @@ function handleCreateGeneration(Request $request, Response $response, array $arg
                 "generation_id" => $generation_id, 
                 "pokemon_number" => $generation_pokemon_num
             );
-            $generation_model->createXXXXXXXXXX($generation_record);
+            $generation_model->createGeneration($generation_record);
 
             // preparing response message
             $generations .= ((empty($generations)) ? "Created rows for generation " . $generation_id : ", " . $generation_id);

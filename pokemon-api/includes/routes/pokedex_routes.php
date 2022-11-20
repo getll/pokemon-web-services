@@ -87,35 +87,41 @@ function handleCreatePokedex(Request $request, Response $response, array $args) 
     $requested_format = $request->getHeader('Accept');
     if (isset($requested_format[0]) && $requested_format[0] === APP_MEDIA_TYPE_JSON) {
         
-        foreach ($parsed_body as $single_pokedex) {
-            // going through each field in a row
-            $pokedex_id = $single_pokedex["pokedexId"];
-            $pokedex_nickname = $single_pokedex["nickname"];
-            $pokedex_level = $single_pokedex["level"];
-            $pokedex_friendship_level = $single_pokedex["friendshipLevel"];
-            $pokedex_nature = $single_pokedex["nature"];
-            $pokedex_gender = $single_pokedex["gender"];
-            $pokedex_trainer_id = $single_pokedex["trainerId"];
-            $pokedex_pokemon_id = $single_pokedex["pokemonId"];
-
-            $pokedex_record = array(
-                "pokedex_id" => $pokedex_id, 
-                "nickname" => $pokedex_nickname, 
-                "level" => $pokedex_level, 
-                "friendship_level" => $pokedex_friendship_level, 
-                "nature" => $pokedex_nature, 
-                "gender" => $pokedex_gender, 
-                "trainer_id" => $pokedex_trainer_id, 
-                "pokemon_id" => $pokedex_pokemon_id
-            );
-            $pokedex_model->createPokedex($pokedex_record);
-
-            // preparing response message
-            $pokedexes .= ((empty($pokedexes)) ? "Created rows for pokedex " . $pokedex_id : ", " . $pokedex_id);
-        }
+        $trainer_id = $args["trainerId"];
+        //check for generation id
         
-        $response_data = json_encode(array("message" => $pokedexes, 
-                "pokedex" => $parsed_body), JSON_INVALID_UTF8_SUBSTITUTE);
+        if (isset($trainer_id)) {
+            foreach ($parsed_body as $single_pokedex) {
+                // going through each field in a row
+                $pokedex_id = $single_pokedex["pokedexId"];
+                $pokedex_nickname = $single_pokedex["nickname"];
+                $pokedex_level = $single_pokedex["level"];
+                $pokedex_friendship_level = $single_pokedex["friendshipLevel"];
+                $pokedex_nature = $single_pokedex["nature"];
+                $pokedex_gender = $single_pokedex["gender"];
+                $pokedex_pokemon_id = $single_pokedex["pokemonId"];
+
+                $pokedex_record = array(
+                    "pokedex_id" => $pokedex_id, 
+                    "nickname" => $pokedex_nickname, 
+                    "level" => $pokedex_level, 
+                    "friendship_level" => $pokedex_friendship_level, 
+                    "nature" => $pokedex_nature, 
+                    "gender" => $pokedex_gender, 
+
+                    // trainer id from uri
+                    "trainer_id" => $trainer_id, 
+                    "pokemon_id" => $pokedex_pokemon_id
+                );
+                $pokedex_model->createPokedex($pokedex_record);
+
+                // preparing response message
+                $pokedexes .= ((empty($pokedexes)) ? "Created rows for pokedex " . $pokedex_id : ", " . $pokedex_id);
+            }
+
+            $response_data = json_encode(array("message" => $pokedexes, 
+                    "pokedex" => $parsed_body), JSON_INVALID_UTF8_SUBSTITUTE);
+        }
     }
     else {
         $response_data = json_encode(getErrorUnsupportedFormat());

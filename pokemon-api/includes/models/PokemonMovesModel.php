@@ -2,6 +2,8 @@
 
 class PokemonMovesModel extends BaseModel {
 
+//    private $table_name = "pokemon_moves";
+    
     /**
      * A model class for the `album` database table.
      * It exposes operations that can be performed on albums records.

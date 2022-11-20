@@ -85,25 +85,34 @@ function handleCreateGame(Request $request, Response $response, array $args) {
     $requested_format = $request->getHeader('Accept');
     if (isset($requested_format[0]) && $requested_format[0] === APP_MEDIA_TYPE_JSON) {
         
-        foreach ($parsed_body as $single_game) {
-            // going through each field in a row
-            $game_id = $single_game["gameId"];
-            $game_name = $single_game["name"];
-            $game_generation_id = $single_game["generationId"];
+        $generation_id = $args["generationId"];
+        //check for generation id
+        
+        if (isset($generation_id)) {
+            foreach ($parsed_body as $single_game) {
+                // going through each field in a row
+                $game_id = $single_game["gameId"];
+                $game_name = $single_game["name"];
 
-            $game_record = array(
-                "game_id" => $game_id, 
-                "name" => $game_name, 
-                "generation_id" => $game_generation_id
-            );
-            $game_model->createGame($game_record);
+                $game_record = array(
+                    "game_id" => $game_id, 
+                    "name" => $game_name, 
+                    
+                    // generation id from uri
+                    "generation_id" => $generation_id
+                );
+                
+                $game_model->createGame($game_record);
 
-            // preparing response message
-            $games .= ((empty($games)) ? "Created rows for " . $game_name : ", " . $game_name);
+                // preparing response message
+                $games .= ((empty($games)) ? "Created rows for " . $game_name : ", " . $game_name);
+            }
+        
+            $response_data = json_encode(array("message" => $games, 
+            "games" => $parsed_body), JSON_INVALID_UTF8_SUBSTITUTE);
         }
         
-        $response_data = json_encode(array("message" => $games, 
-                "games" => $parsed_body), JSON_INVALID_UTF8_SUBSTITUTE);
+        
     }
     else {
         $response_data = json_encode(getErrorUnsupportedFormat());

@@ -2,6 +2,7 @@
 
 class TrainersModel extends BaseModel {
 
+    private $table_name = "trainers";
     /**
      * A model class for the `album` database table.
      * It exposes operations that can be performed on albums records.

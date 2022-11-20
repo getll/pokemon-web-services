@@ -77,7 +77,7 @@ function handleGetPokemonById(Request $request, Response $response, array $args)
     return $response->withStatus($response_code);
 }
 
-function handleCreateXPokemon(Request $request, Response $response, array $args) {
+function handleCreatePokemon(Request $request, Response $response, array $args) {
     $response_code = HTTP_CREATED;
     $pokemons = "";
     
@@ -108,7 +108,7 @@ function handleCreateXPokemon(Request $request, Response $response, array $args)
                 "secondary_type" => $pokemon_type_2, 
                 "intro_gen" => $pokemon_intro_gen
             );
-            $pokemon_model->createXXXXXXXXXX($pokemon_record);
+            $pokemon_model->createPokemon($pokemon_record);
 
             // preparing response message
             $pokemons .= ((empty($pokemons)) ? "Created rows for " . $pokemon_name : ", " . $pokemon_name);

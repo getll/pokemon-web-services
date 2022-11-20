@@ -2,6 +2,8 @@
 
 class GymModel extends BaseModel{
     
+//    private $table_name = "gyms";
+    
     public function __construct($options = []) {
         parent::__construct($options);
     }
