@@ -50,7 +50,7 @@ INSERT INTO `abilities` (`ability_id`, `name`, `description`) VALUES
 (10, 'As One', 'Combines Unnerve and Chilling Neigh/Grim Neigh'),
 (11, 'Aura Break', 'Reduces power of Dark- and Fairy-type moves.'),
 (12, 'Bad Dreams', 'Reduces a sleeping foe\'s HP.'),
-(13, 'Ball Fetch', '	Retrieves a Poké Ball from a failed throw.'),
+(13, 'Ball Fetch', 'Retrieves a Poké Ball from a failed throw.'),
 (14, 'Battery', 'Raises power of teammates\' Special moves.'),
 (15, 'Battle Armor', 'The Pokémon is protected against critical hits.'),
 (16, 'Battle Bond', 'Transform into Ash-Greninja after causing opponent to faint.'),
@@ -58,10 +58,10 @@ INSERT INTO `abilities` (`ability_id`, `name`, `description`) VALUES
 (18, 'Berserk', 'Raises Special Attack when HP drops below half.'),
 (19, 'Big Pecks', 'Protects the Pokémon from Defense-lowering attacks.'),
 (20, 'Blaze', 'Powers up Fire-type moves in a pinch.'),
-(21, 'Bulletproof	', 'Protects the Pokémon from ball and bomb moves.'),
+(21, 'Bulletproof', 'Protects the Pokémon from ball and bomb moves.'),
 (22, 'Cheek Pouch', 'Restores additional HP when a Berry is consumed.'),
 (23, 'Chilling Neigh', 'Boosts Attack after knocking out a Pokémon.'),
-(24, 'Chlorophyll	', 'Boosts the Pokémon\'s Speed in sunshine.'),
+(24, 'Chlorophyll', 'Boosts the Pokémon\'s Speed in sunshine.'),
 (25, 'Clear Body', 'Prevents other Pokémon from lowering its stats.'),
 (26, 'Cloud Nine', 'Eliminates the effects of weather.'),
 (27, 'Color Change', 'Changes the Pokémon\'s type to the foe\'s move.'),
@@ -70,12 +70,12 @@ INSERT INTO `abilities` (`ability_id`, `name`, `description`) VALUES
 (30, 'Compound Eyes', 'The Pokémon\'s accuracy is boosted.'),
 (31, 'Contrary', 'Makes stat changes have an opposite effect.'),
 (32, 'Corrosion', 'The Pokémon can poison Steel and Poison types.'),
-(33, 'Cotton Down', '	Lowers foe\'s Speed when hit.'),
+(33, 'Cotton Down', 'Lowers foe\'s Speed when hit.'),
 (34, 'Curious Medicine', 'Resets all stat changes upon entering battlefield.'),
 (35, 'Cursed Body', 'May disable a move used on the Pokémon.'),
 (36, 'Cute Charm', 'Contact with the Pokémon may cause infatuation.'),
 (37, 'Damp', 'Prevents the use of self-destructing moves.'),
-(38, 'Dancer', '	Copies the foe\'s Dance moves.'),
+(38, 'Dancer', 'Copies the foe\'s Dance moves.'),
 (39, 'Dark Aura', 'Raises power of Dark type moves for all Pokémon in battle.'),
 (40, 'Dauntless Shield', 'Boosts Defense in battle.'),
 (41, 'Dazzling', 'Protects the Pokémon from high-priority moves.'),
@@ -138,9 +138,9 @@ INSERT INTO `abilities` (`ability_id`, `name`, `description`) VALUES
 (98, 'Innards Out', 'Deals damage upon fainting.'),
 (99, 'Inner Focus', 'The Pokémon is protected from flinching.'),
 (100, 'Insomnia', 'Prevents the Pokémon from falling asleep.'),
-(101, 'Intimidate', '	Lowers the foe\'s Attack stat.'),
+(101, 'Intimidate', 'Lowers the foe\'s Attack stat.'),
 (102, 'Intrepid Sword', 'Boosts Attack in battle.'),
-(103, 'Iron Barbs', '	Inflicts damage to the Pokémon on contact.'),
+(103, 'Iron Barbs', 'Inflicts damage to the Pokémon on contact.'),
 (104, 'Iron Fist', 'Boosts the power of punching moves.'),
 (105, 'Justified', 'Raises Attack when hit by a Dark-type move.'),
 (106, 'Keen Eye', 'Prevents other Pokémon from lowering accuracy.'),
@@ -256,11 +256,11 @@ INSERT INTO `abilities` (`ability_id`, `name`, `description`) VALUES
 (216, 'Static', 'Contact with the Pokémon may cause paralysis.'),
 (217, 'Steadfast', 'Raises Speed each time the Pokémon flinches.'),
 (218, 'Steam Engine', 'Drastically raises Speed when hit by a Fire- or Water-type move.'),
-(219, 'Steelworker	', 'Powers up Steel-type moves.'),
+(219, 'Steelworker', 'Powers up Steel-type moves.'),
 (220, 'Steely Spirit', 'Powers up ally Pokémon\'s Steel-type moves.'),
 (221, 'Stench', 'The stench may cause the target to flinch.'),
 (222, 'Sticky Hold', 'Protects the Pokémon from item theft.'),
-(223, 'Storm Drain	', 'Draws in all Water-type moves to up Sp. Attack'),
+(223, 'Storm Drain', 'Draws in all Water-type moves to up Sp. Attack'),
 (224, 'Strong Jaw', 'Boosts the power of biting moves.'),
 (225, 'Sturdy', 'It cannot be knocked out with one hit.'),
 (226, 'Suction Cups', 'Negates all moves that force switching out.'),
@@ -299,7 +299,7 @@ INSERT INTO `abilities` (`ability_id`, `name`, `description`) VALUES
 (259, 'Water Compaction', 'Sharply raises Defense when hit by a Water-type move.'),
 (260, 'Water Veil', 'Prevents the Pokémon from getting a burn.'),
 (261, 'Weak Armor', 'Physical attacks lower Defense and raise Speed.'),
-(262, 'White Smoke	', 'Prevents other Pokémon from lowering its stats.'),
+(262, 'White Smoke', 'Prevents other Pokémon from lowering its stats.'),
 (263, 'Wimp Out', 'Switches out when HP drops below half.'),
 (264, 'Wonder Guard', 'Only supereffective moves will hit.'),
 (265, 'Wonder Skin', 'Makes status-changing moves more likely to miss.'),
@@ -429,16 +429,16 @@ CREATE TABLE `moves` (
   `category` enum('Physical','Special','Status') NOT NULL,
   `power` int(11) DEFAULT NULL,
   `accuracy` int(11) DEFAULT NULL,
-  `powerPoints` int(11) DEFAULT NULL,
+  `power_points` int(11) DEFAULT NULL,
   `type` enum('Normal','Fire','Fighting','Water','Flying','Grass','Poison','Electric','Ground','Psychic','Rock','Ice','Bug','Dragon','Ghost','Dark','Steel','Fairy') NOT NULL,
-  `hasSecondaryEffect` tinyint(1) NOT NULL
+  `has_secondary_effect` tinyint(1) NOT NULL
 ) ;
 
 --
 -- Dumping data for table `moves`
 --
 
-INSERT INTO `moves` (`move_id`, `name`, `description`, `category`, `power`, `accuracy`, `powerPoints`, `type`, `hasSecondaryEffect`) VALUES
+INSERT INTO `moves` (`move_id`, `name`, `description`, `category`, `power`, `accuracy`, `power_points`, `type`, `has_secondary_effect`) VALUES
 (1, 'Vine Whip', 'The target is struck with slender, whiplike vines to inflict damage.', 'Physical', 45, 100, 25, 'Grass', 0),
 (2, 'Tackle', 'A physical attack in which the user charges and slams into the target with its whole body.', 'Physical', 40, 100, 35, 'Normal', 0),
 (3, 'Seed Bomb', 'The user slams a barrage of hard-shelled seeds down on the target from above.', 'Physical', 80, 100, 15, 'Grass', 0),
@@ -674,7 +674,8 @@ INSERT INTO `pokemon` (`pokemon_id`, `name`, `uri`, `height`, `weight`, `primary
 (100, 'Sylveon', 'https://den-cards.pokellector.com/346/Sylveon.POGO.35.44178.png', '1.0', '51.8', 'Fairy', NULL, 6),
 (101, 'Vivillon', 'https://den-cards.pokellector.com/239/Vivillon.FLI.8.20714.png', '1.2', '37.5', 'Bug', 'Flying', 6),
 (102, 'Emolga', 'https://den-cards.pokellector.com/325/Emolga.SWSH7.57.39926.png', '0.4', '11.0', 'Electric', 'Flying', 6),
-(103, 'Flaaffy', 'https://den-cards.pokellector.com/335/Flaaffy.SWSH8.280.40948.png', '0.8', '29.3', 'Electric', NULL, 6);
+(103, 'Flaaffy', 'https://den-cards.pokellector.com/335/Flaaffy.SWSH8.280.40948.png', '0.8', '29.3', 'Electric', NULL, 6),
+(104, 'Sleiman', 'https://i.imgflip.com/6c1xy7.jpg', '1.7', '165', 'Electric', "Rock", 6);
 
 -- --------------------------------------------------------
 
