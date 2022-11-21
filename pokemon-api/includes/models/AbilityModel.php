@@ -28,6 +28,5 @@ class AbilityModel extends BaseModel {
         $data = $this->run($sql, [$abili])->fetch(); 
         return $data;
     }
-
 }  
     

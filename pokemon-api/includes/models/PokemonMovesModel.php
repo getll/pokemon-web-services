@@ -27,4 +27,15 @@ class PokemonMovesModel extends BaseModel {
         return $data;
     }
 
+    public function getMoveRelatedToPokemon($pokemonId){
+        $sql = "SELECT * FROM pokemon_move WHERE pokemon_id = ?";
+        $data = $this->run($sql,[$pokemonId])->fetchAll();
+        return $data;
+    }
+
+    public function deleteMovesRelatedToPokemon($pokemonId){
+        $sql = "DELETE FROM pokemon_move WHERE pokemon_id = :pokemonId";
+        $data = $this->run($sql, [":pokemonId" => $pokemonId]);
+        return $data;
+    }
 }

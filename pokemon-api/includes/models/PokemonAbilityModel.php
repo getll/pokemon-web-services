@@ -27,4 +27,16 @@ class PokemonAbilityModel extends BaseModel {
         return $data;
     }
 
+    public function getAbilityRelatedToPokemon($pokemonId){
+        $sql = "SELECT * FROM pokemon_ability WHERE pokemon_id = ?";
+        $data = $this->run($sql,[$pokemonId])->fetchAll();
+        return $data;
+    }
+
+    public function deleteAbilityRelatedToPokemon($pokemonId){
+        $sql = "DELETE FROM pokemon_ability WHERE pokemon_id = :pokemonId";
+        $data = $this->run($sql, [":pokemonId" => $pokemonId]);
+        return $data;
+    }
+
 }
