@@ -40,4 +40,18 @@ class PokemonAbilityModel extends BaseModel {
         return $data;
     }
 
+    public function getSpecificAbilityRelatedToPokemon($pokemonId, $pokemonAbility){
+        $sql = "SELECT * FROM pokemon_ability WHERE pokemon_id = ? AND ability_id = ?";
+        $data = $this->run($sql,[$pokemonId, $pokemonAbility])->fetch();
+        return $data;
+    }
+
+    public function deleteSpecificAbilityRelatedToPokemon($pokemonId, $abilityId){
+        $sql = "DELETE FROM pokemon_ability WHERE pokemon_id = ? AND ability_id = ?";
+        $data = $this->run($sql, [$pokemonId, $abilityId]);
+        return $data;
+    }
+
+    //DELETE FROM pokemon_ability WHERE pokemon_id = :pokemonId AND pokemon_ability_id = :pokemonAbilityId
+
 }

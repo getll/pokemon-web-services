@@ -53,8 +53,12 @@ $app->get("/pokemon_ability/{pokebi}", "handleGetPokeAbilityById");
 $app->get("/trainers/{trainers}", "handleGetTrainerById");
 $app->get("/moves/{moves}", "handleGetMoveById");
 $app->get("/pokemonMove/{pokemonMoves}", "handleGetPokemonMoveById");
+//Change this piece of shit 
 $app->get("/pokemon/{pokemonId}/abilities", "handleGetAllAbilitiesRelatedToPokemon");
 $app->get("/pokemon/{pokemonId}/moves", "handleGetAllMovesRelatedToPokemon");
+$app->get("/pokemon/{pokemonId}/abilities/{pokemonAbility}", "handleGetSpecificAbilitiesRelatedToPokemon");
+$app->get("/pokemon/{pokemonId}/moves/{pokemonMove}", "handleGetSpecificMovesRelatedToPokemon");
+
 
 
 $app->delete("/pokemon/{pokemonId}", "deleteOnePokemon");
@@ -70,6 +74,8 @@ $app->delete("/moves/{moves}", "deleteOneMove");
 $app->delete("/pokemonMove/{pokemonMoves}", "deleteOnePokemonMove");
 $app->delete("/pokemon/{pokemonId}/abilities", "deleteAbilityByPokemon");
 $app->delete("/pokemon/{pokemonId}/moves", "deleteMovesByPokemon");
+$app->delete("/pokemon/{pokemonId}/abilities/{abilityId}", "handleDeleteSpecificAbilitiesRelatedToPokemon");
+$app->delete("/pokemon/{pokemonId}/moves/{moveId}", "handleDeleteSpecificMoveRelatedToPokemon");
 
 
 //-------------------------------------------------------------------------------------------------
