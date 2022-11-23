@@ -41,7 +41,9 @@ require_once './includes/routes/pokemon_moves_routes.php';
 
 //-- Step 6)
 // TODO: And here we define app routes.
-//$app->get("/artists", "handleGetAllArtists");
+
+//-------------------------------------------------------------------------------------------------
+//Get operations
 $app->get("/pokemon/{pokemonId}", "handleGetPokemonById");
 $app->get("/abilities/{abili}", "handleGetAbilityById");
 $app->get("/games/{gamez}", "handleGetGameById");
@@ -56,6 +58,14 @@ $app->get("/pokemonMove/{pokemonMoves}", "handleGetPokemonMoveById");
 $app->get("/pokemon/{pokemonId}/abilities", "handleGetAllAbilitiesRelatedToPokemon");
 $app->get("/pokemon/{pokemonId}/moves", "handleGetAllMovesRelatedToPokemon");
 
+//-------------------------------------------------------------------------------------------------
+//Delete operations
+
+$app->delete("/generations", "handleUnsupportedOperation");
+$app->delete("/pokemon", "handleUnsupportedOperation");
+$app->delete("/abilities", "handleUnsupportedOperation");
+$app->delete("/moves", "handleUnsupportedOperation");
+$app->delete("/trainers", "handleUnsupportedOperation");
 
 $app->delete("/pokemon/{pokemonId}", "deleteOnePokemon");
 $app->delete("/abilities/{abili}", "deleteOneAbility");
@@ -71,6 +81,21 @@ $app->delete("/pokemonMove/{pokemonMoves}", "deleteOnePokemonMove");
 $app->delete("/pokemon/{pokemonId}/abilities", "deleteAbilityByPokemon");
 $app->delete("/pokemon/{pokemonId}/moves", "deleteMovesByPokemon");
 
+$app->delete("/generations/{generationId}/games", "handleUnsupportedOperation");
+$app->delete("/trainers/{trainerId}/pokedex", "handleUnsupportedOperation");
+$app->delete("/gyms/{gymId}/trainers", "handleUnsupportedOperation");
+$app->delete("/games/{gameId}/locations", "handleUnsupportedOperation");
+$app->delete("/locations/{locationId}/gyms", "handleUnsupportedOperation");
+$app->delete("/generations/{generationId}/pokemon", "handleUnsupportedOperation");
+
+$app->delete("/generations/{generationId}/games/{gameId}", "handleUnsupportedOperation");
+$app->delete("/trainers/{trainerId}/pokedex/{pokedexId}", "handleUnsupportedOperation");
+$app->delete("/games/{gameId}/location/{locationId}", "handleUnsupportedOperation");
+$app->delete("/locations/{locationsId}/gyms/{gymId}", "handleUnsupportedOperation");
+$app->delete("/gyms/{gymId}/trainers/{trainerId}", "handleUnsupportedOperation");
+$app->delete("/generations/{generationId}/pokemon/{pokemonId}", "handleUnsupportedOperation");
+$app->delete("/pokemon/{pokemonId}/abilities/{abilityId}", "handleUnsupportedOperation");
+$app->delete("/pokemon/{pokemonId}/moves/{moveId}", "handleUnsupportedOperation");
 
 //-------------------------------------------------------------------------------------------------
 //post operations 
@@ -149,7 +174,7 @@ function handleUnsupportedOperation(Request $request, Response $response, array 
     
     if (isset($requested_format[0]) && $requested_format[0] === APP_MEDIA_TYPE_JSON) {
         $response_code = HTTP_METHOD_NOT_ALLOWED;
-        $response_data = json_encode(getErrorUnsupportedMethod($request->getMethod), JSON_INVALID_UTF8_SUBSTITUTE);
+        $response_data = json_encode(array("Error" => "unsupportedMethod", "Message" => $request->getMethod(). " method is unsupported on this resource :)"), JSON_INVALID_UTF8_SUBSTITUTE);
     }
     else {
         $response_code = HTTP_UNSUPPORTED_MEDIA_TYPE;

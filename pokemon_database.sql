@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 16, 2022 at 05:35 PM
+-- Generation Time: Nov 23, 2022 at 06:19 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -675,7 +675,7 @@ INSERT INTO `pokemon` (`pokemon_id`, `name`, `uri`, `height`, `weight`, `primary
 (101, 'Vivillon', 'https://den-cards.pokellector.com/239/Vivillon.FLI.8.20714.png', '1.2', '37.5', 'Bug', 'Flying', 6),
 (102, 'Emolga', 'https://den-cards.pokellector.com/325/Emolga.SWSH7.57.39926.png', '0.4', '11.0', 'Electric', 'Flying', 6),
 (103, 'Flaaffy', 'https://den-cards.pokellector.com/335/Flaaffy.SWSH8.280.40948.png', '0.8', '29.3', 'Electric', NULL, 6),
-(104, 'Sleiman', 'https://i.imgflip.com/6c1xy7.jpg', '1.7', '165', 'Electric', "Rock", 6);
+(104, 'Sleiman', 'https://i.imgflip.com/6c1xy7.jpg', '1.7', '165', 'Electric', 'Rock', 6);
 
 -- --------------------------------------------------------
 
@@ -932,7 +932,13 @@ INSERT INTO `pokemon_ability` (`pokemon_ability_id`, `pokemon_id`, `ability_id`,
 (239, 100, 150, 1),
 (241, 101, 197, 0),
 (242, 101, 30, 0),
-(243, 101, 66, 1);
+(243, 101, 66, 1),
+(244, 102, 216, 0),
+(245, 102, 131, 1),
+(246, 103, 216, 0),
+(247, 103, 151, 1),
+(248, 104, 159, 0),
+(249, 104, 199, 1);
 
 -- --------------------------------------------------------
 
@@ -1264,13 +1270,13 @@ ALTER TABLE `pokedex`
 -- AUTO_INCREMENT for table `pokemon`
 --
 ALTER TABLE `pokemon`
-  MODIFY `pokemon_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=104;
+  MODIFY `pokemon_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=105;
 
 --
 -- AUTO_INCREMENT for table `pokemon_ability`
 --
 ALTER TABLE `pokemon_ability`
-  MODIFY `pokemon_ability_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=244;
+  MODIFY `pokemon_ability_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=250;
 
 --
 -- AUTO_INCREMENT for table `pokemon_move`
@@ -1327,17 +1333,6 @@ ALTER TABLE `pokemon_ability`
 ALTER TABLE `pokemon_move`
   ADD CONSTRAINT `fk_pokemon_move_move_id` FOREIGN KEY (`move_id`) REFERENCES `moves` (`move_id`),
   ADD CONSTRAINT `fk_pokemon_move_pokemon_id` FOREIGN KEY (`pokemon_id`) REFERENCES `pokemon` (`pokemon_id`);
-
-ALTER TABLE `moves`
-  ADD CONSTRAINT check_accuracy CHECK (accuracy >= 0 AND accuracy <= 100);
-
-ALTER TABLE `pokedex`
-  ADD CONSTRAINT check_level CHECK (level >= 1 AND level <= 100),
-  ADD CONSTRAINT check_friendship_level CHECK (friendship_level >= 0 AND friendship_level <= 255);
-
-ALTER TABLE `trainers`
-  ADD CONSTRAINT check_money CHECK (money >= 0);
-
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
