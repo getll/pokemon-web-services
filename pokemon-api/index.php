@@ -11,10 +11,16 @@ require_once './includes/helpers/helper_functions.php';
 
 //--Step 1) Instantiate App.
 $app = AppFactory::create();
+
 //-- Step 2) Add routing middleware.
 $app->addRoutingMiddleware();
+
 //-- Step 3) Add error handling middleware.
 $errorMiddleware = $app->addErrorMiddleware(true, true, true);
+
+//parsing middleware
+$app->addBodyParsingMiddleware();
+
 //-- Step 4)
 // TODO: change the name of the sub directory here. You also need to change it in .htaccess
 $app->setBasePath("/pokemon-api");
@@ -65,12 +71,131 @@ $app->delete("/pokemonMove/{pokemonMoves}", "deleteOnePokemonMove");
 $app->delete("/pokemon/{pokemonId}/abilities", "deleteAbilityByPokemon");
 $app->delete("/pokemon/{pokemonId}/moves", "deleteMovesByPokemon");
 
-// Define app routes.
-$app->get('/hello/{your_name}', function (Request $request, Response $response, $args) {
-    //var_dump($args);
-    $response->getBody()->write("Hello!" . $args["your_name"]);
-    return $response;
-});
+
+//-------------------------------------------------------------------------------------------------
+//post operations 
+
+//base resources
+$app->post("/generations", "handleCreateGeneration");
+$app->post("/pokemon", "handleCreatePokemon");
+$app->post("/abilities", "handleCreateAbility");
+$app->post("/moves", "handleCreateMove");
+$app->post("/trainers", "handleCreateTrainer");
+
+//to be mapped
+//$app->post("/generations/{generationId}", "handleUnsupportedOperation");
+//$app->post("/pokemon/{pokemonId}", "handleUnsupportedOperation");
+//$app->post("/abilities/{abilityId}", "handleUnsupportedOperation");
+//$app->post("/moves/{moveId}", "handleUnsupportedOperation");
+//$app->post("/trainers/{trainerId}", "handleUnsupportedOperation");
+
+//dependant resources
+$app->post("/generations/{generationId}/games", "handleCreateGame");
+$app->post("/trainers/{trainerId}/pokedex", "handleCreatePokedex");
+
+// needs to be reevaluated for priority
+//$app->post("/gyms/{gymId}/trainers", "handleCreateTrainer");
+
+//to be mapped
+//$app->post("/games/{gameId}/locations", "handleUnsupportedOperation");
+//$app->post("/locations/{locationsId}/gyms", "handleUnsupportedOperation");
+//$app->post("/generations/{generationId}/pokemon", "handleUnsupportedOperation");
+//$app->post("/pokemon/{pokemonId}/abilities", "handleUnsupportedOperation");
+//$app->post("/pokemon/{pokemonId}/moves", "handleUnsupportedOperation");
+
+//to be mapped
+//$app->post("/generations/{generationId}/games/{gameId}", "handleUnsupportedOperation");
+//$app->post("/trainers/{trainerId}/pokedex/{pokedexId}", "handleUnsupportedOperation");
+//$app->post("/games/{gameId}/locations/{locationId}", "handleUnsupportedOperation");
+//$app->post("/locations/{locationsId}/gyms/{gymId}", "handleUnsupportedOperation");
+//$app->post("/gyms/{gymId}/trainers/{trainerId}", "handleUnsupportedOperation");
+//$app->post("/generations/{generationId}/pokemon/{pokemonId}", "handleUnsupportedOperation");
+//$app->post("/pokemon/{pokemonId}/abilities/{abilityId}", "handleUnsupportedOperation");
+//$app->post("/pokemon/{pokemonId}/moves/{moveId}", "handleUnsupportedOperation");
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function handleUnsupportedOperation(Request $request, Response $response, array $args) {
+    $requested_format = $request->getHeader('Accept');
+    
+    if (isset($requested_format[0]) && $requested_format[0] === APP_MEDIA_TYPE_JSON) {
+        $response_code = HTTP_METHOD_NOT_ALLOWED;
+        $response_data = json_encode(getErrorUnsupportedMethod($request->getMethod), JSON_INVALID_UTF8_SUBSTITUTE);
+    }
+    else {
+        $response_code = HTTP_UNSUPPORTED_MEDIA_TYPE;
+        $response_data = json_encode(getErrorUnsupportedFormat(), JSON_INVALID_UTF8_SUBSTITUTE);
+    }
+    
+    $response->getBody()->write($response_data);
+    return $response->withStatus($response_code);
+}
+
+function handleBase(Request $request, Response $response, array $args) {
+    $response_code = HTTP_OK;
+    
+    $requested_format = $request->getHeader('Accept');
+    
+    $resp = array(
+        "message" => "Welcome to our pokemon api! Below are our resources and subresources.",
+        "main resources" => array(
+            "generations" => "localhost/generations",
+            "pokemon" => "localhost/pokemon",
+            "abilities" => "localhost/abilities",
+            "moves" => "localhost/moves",
+            "trainers" => "localhost/trainers"
+        ),
+        "subresources" => array(
+            "games by generation" => "localhost/generations/{generationId}/games",
+            "pokedex by trainers" => "localhost/trainers/{trainerId}/pokedex",
+            "locations by games" => "localhost/games/{gameId}/locations",
+            "gyms by location" => "localhost/locations/{locationsId}/gyms",
+            "trainers as gym leaders" => "localhost/gyms/{gymId}/trainers",
+            "pokemon by generation" => "localhost/generation/{generationId}/pokemon",
+            "pokemon abilities" => "localhost/pokemon/{pokemonId}/abilities",
+            "pokemon moves" => "localhost/pokemon/{pokemonId}/moves"
+        )
+    );
+    
+    if (isset($requested_format[0]) && $requested_format[0] === APP_MEDIA_TYPE_JSON) {
+        $response_data = json_encode($resp);
+    }
+    else {
+        $response_data = json_encode(getErrorUnsupportedFormat());
+        $response_code = HTTP_UNSUPPORTED_MEDIA_TYPE;
+    }
+    
+    $response->getBody()->write($response_data);
+    return $response->withStatus($response_code);
+}
 
 // Run the app.
 $app->run();

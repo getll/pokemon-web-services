@@ -75,3 +75,42 @@ function handleGetAbilityById(Request $request, Response $response, array $args)
     $response->getBody()->write($response_data);
     return $response->withStatus($response_code);
 }
+
+function handleCreateAbility(Request $request, Response $response, array $args) {
+    $response_code = HTTP_CREATED;
+    $abilities = "";
+    
+    $ability_model = new AbilityModel();
+    $parsed_body = $request->getParsedBody();
+    
+    $requested_format = $request->getHeader('Accept');
+    if (isset($requested_format[0]) && $requested_format[0] === APP_MEDIA_TYPE_JSON) {
+        
+        foreach ($parsed_body as $single_ability) {
+            // going through each field in a row
+            $ability_id = $single_ability["ability_id"];
+            $ability_name = $single_ability["name"];
+            $ability_desc = $single_ability["description"];
+
+            $ability_record = array(
+                "ability_id" => $ability_id, 
+                "name" => $ability_name, 
+                "description" => $ability_desc
+            );
+            $ability_model->createAbility($ability_record);
+
+            // preparing response message
+            $abilities .= ((empty($abilities)) ? "Created rows for " . $ability_name : ", " . $ability_name);
+        }
+        
+        $response_data = json_encode(array("message" => $abilities, 
+                "abilities" => $parsed_body), JSON_INVALID_UTF8_SUBSTITUTE);
+    }
+    else {
+        $response_data = json_encode(getErrorUnsupportedFormat());
+        $response_code = HTTP_UNSUPPORTED_MEDIA_TYPE;
+    }
+    
+    $response->getBody()->write($response_data);
+    return $response->withStatus($response_code);
+}

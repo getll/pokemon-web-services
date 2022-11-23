@@ -2,6 +2,7 @@
 
 class TrainersModel extends BaseModel {
 
+    private $table_name = "trainers";
     /**
      * A model class for the `album` database table.
      * It exposes operations that can be performed on albums records.
@@ -18,7 +19,7 @@ class TrainersModel extends BaseModel {
     public function delSingleTrainer($trainers){
         $sql = "DELETE FROM trainers WHERE trainer_id = :trainers";
         $data = $this->run($sql, [":trainers" => $trainers]);
-        //return $data;
+        return $data;
     }
 
     public function getTrainerById($trainers){
@@ -27,4 +28,13 @@ class TrainersModel extends BaseModel {
         return $data;
     }
 
+    public function createTrainer($record) {
+        $data = $this->insert($this->table_name, $record);
+        return $data;
+    }
+    
+    public function createTrainerAsGymLeader($record) {
+        $data = $this->insert($this->table_name, $record);
+        return $data;
+    }
 }

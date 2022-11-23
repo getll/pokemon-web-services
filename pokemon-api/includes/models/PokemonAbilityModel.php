@@ -2,6 +2,7 @@
 
 class PokemonAbilityModel extends BaseModel {
 
+//    private $table_name = "pokemon_ability";
     /**
      * A model class for the `album` database table.
      * It exposes operations that can be performed on albums records.
@@ -18,7 +19,7 @@ class PokemonAbilityModel extends BaseModel {
     public function delSinglePokeAbi($pokebi){
         $sql = "DELETE FROM pokemon_ability WHERE pokemon_ability_id = :pokebi";
         $data = $this->run($sql, [":pokebi" => $pokebi]);
-        //return $data;
+        return $data;
     }
 
     public function getPokeAbiById($pokebi){

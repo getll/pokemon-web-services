@@ -20,7 +20,7 @@ class PokemonModel extends BaseModel {
     public function delSinglePokemon($pokemonId){
         $sql = "DELETE FROM pokemon WHERE pokemon_id = :pokemonId";
         $data = $this->run($sql, [":pokemonId" => $pokemonId]);
-        //return $data;
+        return $data;
     }
 
     public function getPokemonById($pokemonId){
@@ -29,4 +29,8 @@ class PokemonModel extends BaseModel {
         return $data;
     }
 
+    public function createPokemon($record) {
+        $data = $this->insert($this->table_name, $record);
+        return $data;
+    }
 }

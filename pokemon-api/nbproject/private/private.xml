@@ -3,14 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/xampp/htdocs/pokemon-web-services/pokemon-api/includes/models/LocationModel.php</file>
-            <file>file:/C:/xampp/htdocs/pokemon-web-services/pokemon-api/includes/routes/gyms_routes.php</file>
-            <file>file:/C:/xampp/htdocs/pokemon-web-services/pokemon-api/includes/routes/artists_routes.php</file>
-            <file>file:/C:/xampp/htdocs/pokemon-web-services/pokemon-api/includes/models/ArtistModel.php</file>
-            <file>file:/C:/xampp/htdocs/pokemon-web-services/pokemon-api/index.php</file>
-            <file>file:/C:/xampp/htdocs/pokemon-web-services/pokemon-api/includes/models/GenerationModel.php</file>
-            <file>file:/C:/xampp/htdocs/pokemon-web-services/pokemon-api/includes/models/GameModel.php</file>
-            <file>file:/C:/xampp/htdocs/pokemon-web-services/pokemon-api/includes/models/GymModel.php</file>
+            <file>file:/C:/Users/sudok/Documents/GitHub/pokemon-web-services/pokemon-api/index.php</file>
+            <file>file:/C:/Users/sudok/Documents/GitHub/pokemon-web-services/pokemon-api/includes/routes/generations_routes.php</file>
+            <file>file:/C:/Users/sudok/Documents/GitHub/pokemon-web-services/pokemon-api/includes/routes/games_routes.php</file>
+            <file>file:/C:/Users/sudok/Documents/GitHub/pokemon-web-services/pokemon-api/includes/routes/pokedex_routes.php</file>
+            <file>file:/C:/Users/sudok/Documents/GitHub/pokemon-web-services/pokemon-api/includes/routes/trainers_routes.php</file>
+            <file>file:/C:/Users/sudok/Documents/GitHub/pokemon-web-services/pokemon-api/includes/routes/pokemon_routes.php</file>
+            <file>file:/C:/Users/sudok/Documents/GitHub/pokemon-web-services/pokemon-api/includes/routes/ability_routes.php</file>
+            <file>file:/C:/Users/sudok/Documents/GitHub/pokemon-web-services/pokemon-api/includes/routes/moves_routes.php</file>
         </group>
     </open-files>
 </project-private>

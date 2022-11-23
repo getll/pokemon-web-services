@@ -2,6 +2,8 @@
 
 class GameModel extends BaseModel {
 
+    private $table_name = "games";
+    
     public function __construct($options = []) {
         parent::__construct($options);
     }
@@ -15,12 +17,17 @@ class GameModel extends BaseModel {
     public function delSingleGame($gamez){
         $sql = "DELETE FROM games WHERE game_id = :gamez";
         $data = $this->run($sql, [":gamez" => $gamez]);
-        //return $data;
+        return $data;
     }
 
     public function getGameById($gamez){
         $sql = "SELECT * FROM games WHERE game_id = ?";
         $data = $this->run($sql, [$gamez])->fetch();
+        return $data;
+    }
+    
+    public function createGame($record) {
+        $data = $this->insert($this->table_name, $record);
         return $data;
     }
 }

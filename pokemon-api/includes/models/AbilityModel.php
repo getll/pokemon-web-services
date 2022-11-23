@@ -28,5 +28,10 @@ class AbilityModel extends BaseModel {
         $data = $this->run($sql, [$abili])->fetch(); 
         return $data;
     }
+
+    public function createAbility($record) {
+        $data = $this->insert($this->table_name, $record);
+        return $data;
+    }
 }  
     

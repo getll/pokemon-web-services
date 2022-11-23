@@ -1,7 +1,9 @@
 <?php
 
 class PokedexModel extends BaseModel {
-
+    
+    private $table_name = "pokedex";
+    
     /**
      * A model class for the `album` database table.
      * It exposes operations that can be performed on albums records.
@@ -18,7 +20,7 @@ class PokedexModel extends BaseModel {
     public function delSinglePokedex($pokedex){
         $sql = "DELETE FROM pokedex WHERE pokedex_id = :pokedex";
         $data = $this->run($sql, [":pokedex" => $pokedex]);
-        //return $data;
+        return $data;
     }
 
     public function getPokedexById($pokedex){
@@ -27,4 +29,8 @@ class PokedexModel extends BaseModel {
         return $data;
     }
 
+    public function createPokedex($record) {
+        $data = $this->insert($this->table_name, $record);
+        return $data;
+    }
 }

@@ -2,6 +2,8 @@
 
 class GymModel extends BaseModel{
     
+//    private $table_name = "gyms";
+    
     public function __construct($options = []) {
         parent::__construct($options);
     }
@@ -26,7 +28,7 @@ class GymModel extends BaseModel{
     public function delSingleGym($gyms){
         $sql = "DELETE FROM gyms WHERE gym_id = :gyms";
         $data = $this->run($sql, [":gyms" => $gyms]);
-        //return $data;
+        return $data;
     }
 
     public function getGymById($gyms){

@@ -76,3 +76,58 @@ function handleGetPokedexById(Request $request, Response $response, array $args)
     $response->getBody()->write($response_data);
     return $response->withStatus($response_code);
 }
+
+function handleCreatePokedex(Request $request, Response $response, array $args) {
+    $response_code = HTTP_CREATED;
+    $pokedexes = "";
+    
+    $pokedex_model = new PokedexModel();
+    $parsed_body = $request->getParsedBody();
+    
+    $requested_format = $request->getHeader('Accept');
+    if (isset($requested_format[0]) && $requested_format[0] === APP_MEDIA_TYPE_JSON) {
+        
+        $trainer_id = $args["trainerId"];
+        //check for generation id
+        
+        if (isset($trainer_id)) {
+            foreach ($parsed_body as $single_pokedex) {
+                // going through each field in a row
+                $pokedex_id = $single_pokedex["pokedex_id"];
+                $pokedex_nickname = $single_pokedex["nickname"];
+                $pokedex_level = $single_pokedex["level"];
+                $pokedex_friendship_level = $single_pokedex["friendship_level"];
+                $pokedex_nature = $single_pokedex["nature"];
+                $pokedex_gender = $single_pokedex["gender"];
+                $pokedex_pokemon_id = $single_pokedex["pokemon_id"];
+
+                $pokedex_record = array(
+                    "pokedex_id" => $pokedex_id, 
+                    "nickname" => $pokedex_nickname, 
+                    "level" => $pokedex_level, 
+                    "friendship_level" => $pokedex_friendship_level, 
+                    "nature" => $pokedex_nature, 
+                    "gender" => $pokedex_gender, 
+
+                    // trainer id from uri
+                    "trainer_id" => $trainer_id, 
+                    "pokemon_id" => $pokedex_pokemon_id
+                );
+                $pokedex_model->createPokedex($pokedex_record);
+
+                // preparing response message
+                $pokedexes .= ((empty($pokedexes)) ? "Created rows for pokedex " . $pokedex_id : ", " . $pokedex_id);
+            }
+
+            $response_data = json_encode(array("message" => $pokedexes, 
+                    "pokedex" => $parsed_body), JSON_INVALID_UTF8_SUBSTITUTE);
+        }
+    }
+    else {
+        $response_data = json_encode(getErrorUnsupportedFormat());
+        $response_code = HTTP_UNSUPPORTED_MEDIA_TYPE;
+    }
+    
+    $response->getBody()->write($response_data);
+    return $response->withStatus($response_code);
+}
