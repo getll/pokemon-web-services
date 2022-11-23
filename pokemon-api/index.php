@@ -44,28 +44,32 @@ require_once './includes/routes/pokemon_moves_routes.php';
 //$app->get("/artists", "handleGetAllArtists");
 $app->get("/pokemon/{pokemonId}", "handleGetPokemonById");
 $app->get("/abilities/{abili}", "handleGetAbilityById");
-$app->get("/game/{gamez}", "handleGetGameById");
-$app->get("/generation/{gens}", "handleGetGenerationById");
-$app->get("/gym/{gyms}", "handleGetGymById");
-$app->get("/location/{location}", "handleGetLocationById");
+$app->get("/games/{gamez}", "handleGetGameById");
+$app->get("/generations/{gens}", "handleGetGenerationById");
+$app->get("/gyms/{gyms}", "handleGetGymById");
+$app->get("/locations/{location}", "handleGetLocationById");
 $app->get("/pokedex/{pokedex}", "handleGetPokedexById");
 $app->get("/pokemon_ability/{pokebi}", "handleGetPokeAbilityById");
-$app->get("/trainer/{trainers}", "handleGetTrainerById");
+$app->get("/trainers/{trainers}", "handleGetTrainerById");
 $app->get("/moves/{moves}", "handleGetMoveById");
 $app->get("/pokemonMove/{pokemonMoves}", "handleGetPokemonMoveById");
+$app->get("/pokemon/{pokemonId}/abilities", "handleGetAllAbilitiesRelatedToPokemon");
+$app->get("/pokemon/{pokemonId}/moves", "handleGetAllMovesRelatedToPokemon");
 
 
 $app->delete("/pokemon/{pokemonId}", "deleteOnePokemon");
 $app->delete("/abilities/{abili}", "deleteOneAbility");
-$app->delete("/game/{gamez}", "deleteOneGame");
-$app->delete("/generation/{gens}", "deleteOneGeneration");
-$app->delete("/gym/{gyms}", "deleteOneGym");
-$app->delete("/location/{location}", "deleteOneLocation");
+$app->delete("/games/{gamez}", "deleteOneGame");
+$app->delete("/generations/{gens}", "deleteOneGeneration");
+$app->delete("/gyms/{gyms}", "deleteOneGym");
+$app->delete("/locations/{location}", "deleteOneLocation");
 $app->delete("/pokedex/{pokedex}", "deleteOnePokedex");
 $app->delete("/pokemon_ability/{pokebi}", "deleteOnePokeAbility");
-$app->delete("/trainer/{trainers}", "deleteOneTrainer");
+$app->delete("/trainers/{trainers}", "deleteOneTrainer");
 $app->delete("/moves/{moves}", "deleteOneMove");
 $app->delete("/pokemonMove/{pokemonMoves}", "deleteOnePokemonMove");
+$app->delete("/pokemon/{pokemonId}/abilities", "deleteAbilityByPokemon");
+$app->delete("/pokemon/{pokemonId}/moves", "deleteMovesByPokemon");
 
 
 //-------------------------------------------------------------------------------------------------

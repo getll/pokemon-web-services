@@ -76,3 +76,64 @@ function handleGetPokeAbilityById(Request $request, Response $response, array $a
     $response->getBody()->write($response_data);
     return $response->withStatus($response_code);
 }
+
+
+function handleGetAllAbilitiesRelatedToPokemon(Request $request, Response $response, array $args) {
+    $ability_pokemon = array();
+    $response_data = array();
+    $response_code = HTTP_OK;
+    $pokemon_abilities_model = new PokemonAbilityModel();
+
+    // Retreive the artist id from the request's URI.
+    $pokemonId = $args["pokemonId"];
+
+    $ability_pokemon = $pokemon_abilities_model->getAbilityRelatedToPokemon($pokemonId);
+
+    // Handle serve-side content negotiation and produce the requested representation.    
+    $requested_format = $request->getHeader('Accept');
+    //--
+    //-- We verify the requested resource representation.    
+    if ($requested_format[0] === APP_MEDIA_TYPE_JSON) {
+        $response_data = json_encode($ability_pokemon, JSON_INVALID_UTF8_SUBSTITUTE);
+    } else {
+        $response_data = json_encode(getErrorUnsupportedFormat());
+        $response_code = HTTP_UNSUPPORTED_MEDIA_TYPE;
+    }
+    $response->getBody()->write($response_data);
+    return $response->withStatus($response_code);
+}
+
+
+function deleteAbilityByPokemon(Request $request, Response $response, array $args) {
+    $pokemonAbility_info = array();
+    $response_data = array();
+    $response_code = HTTP_OK;
+    $pokemonAbility_model = new PokemonAbilityModel();
+    //check if json is requested
+    $requested_format = $request->getHeader('Accept');
+    if (isset($requested_format[0]) && $requested_format[0] === APP_MEDIA_TYPE_JSON) {
+        $pokemonId = $args["pokemonId"];
+        //check for artist id
+        if (isset($pokemonId)) {
+            //check if artist exists
+            $pokemonAbility_info = $pokemonAbility_model->getAbilityRelatedToPokemon($pokemonId);
+            $pokemonId_name = $pokemonAbility_model->getAbilityRelatedToPokemon($pokemonId);
+            if (!$pokemonAbility_info) {
+                $response_data = (makeCustomJSONError("resourceNotFound", 
+                        "No matching record was found for abilities related to pokemon ". $pokemonId ."."));
+                $response->getBody()->write($response_data);
+                return $response->withStatus(HTTP_NOT_FOUND);
+            }
+            $pokemonAbility_info = $pokemonAbility_model->deleteAbilityRelatedToPokemon($pokemonId);
+        } 
+        $response_data = json_encode(array("Message" => "Abilities related to Pokemon ". $pokemonId ." deleted.", 
+                "Ability related to pokemon information" => $pokemonId_name), JSON_INVALID_UTF8_SUBSTITUTE);
+    }
+    else {
+        $response_data = json_encode(getErrorUnsupportedFormat());
+        $response_code = HTTP_UNSUPPORTED_MEDIA_TYPE;
+    }
+    
+    $response->getBody()->write($response_data);
+    return $response->withStatus($response_code);
+}
