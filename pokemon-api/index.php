@@ -94,6 +94,7 @@ $app->post("/generations/{generationId}/games", "handleCreateGame");
 $app->post("/trainers/{trainerId}/pokedex", "handleCreatePokedex");
 
 // needs to be reevaluated for priority
+//Unsuport this piece of shit that is bullying this young fine man 😘😍
 //$app->post("/gyms/{gymId}/trainers", "handleCreateTrainer");
 
 //to be mapped
