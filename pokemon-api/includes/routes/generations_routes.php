@@ -88,8 +88,8 @@ function handleCreateGeneration(Request $request, Response $response, array $arg
         
         foreach ($parsed_body as $single_generation) {
             // going through each field in a row
-            $generation_id = $single_generation["generationId"];
-            $generation_pokemon_num = $single_generation["pokemonNumber"];
+            $generation_id = $single_generation["generation_id"];
+            $generation_pokemon_num = $single_generation["pokemon_number"];
 
             $generation_record = array(
                 "generation_id" => $generation_id, 

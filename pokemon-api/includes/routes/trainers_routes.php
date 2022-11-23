@@ -89,10 +89,10 @@ function handleCreateTrainer(Request $request, Response $response, array $args) 
         
         foreach ($parsed_body as $single_trainer) {
             // going through each field in a row
-            $trainer_id = $single_trainer["trainerId"];
+            $trainer_id = $single_trainer["trainer_id"];
             $trainer_name = $single_trainer["name"];
             $trainer_gender = $single_trainer["gender"];
-            $trainer_class = $single_trainer["trainerClass"];
+            $trainer_class = $single_trainer["trainer_class"];
             $trainer_quote = $single_trainer["quote"];
             $trainer_money = $single_trainer["money"];
 

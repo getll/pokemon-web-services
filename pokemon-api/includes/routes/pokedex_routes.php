@@ -93,13 +93,13 @@ function handleCreatePokedex(Request $request, Response $response, array $args) 
         if (isset($trainer_id)) {
             foreach ($parsed_body as $single_pokedex) {
                 // going through each field in a row
-                $pokedex_id = $single_pokedex["pokedexId"];
+                $pokedex_id = $single_pokedex["pokedex_id"];
                 $pokedex_nickname = $single_pokedex["nickname"];
                 $pokedex_level = $single_pokedex["level"];
-                $pokedex_friendship_level = $single_pokedex["friendshipLevel"];
+                $pokedex_friendship_level = $single_pokedex["friendship_level"];
                 $pokedex_nature = $single_pokedex["nature"];
                 $pokedex_gender = $single_pokedex["gender"];
-                $pokedex_pokemon_id = $single_pokedex["pokemonId"];
+                $pokedex_pokemon_id = $single_pokedex["pokemon_id"];
 
                 $pokedex_record = array(
                     "pokedex_id" => $pokedex_id, 

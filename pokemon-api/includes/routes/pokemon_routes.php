@@ -89,14 +89,14 @@ function handleCreatePokemon(Request $request, Response $response, array $args) 
         
         foreach ($parsed_body as $single_pokemon) {
             // going through each field in a row
-            $pokemon_id = $single_pokemon["pokemonId"];
+            $pokemon_id = $single_pokemon["pokemon_id"];
             $pokemon_name = $single_pokemon["name"];
             $pokemon_uri = $single_pokemon["uri"];
             $pokemon_height = $single_pokemon["height"];
             $pokemon_weight = $single_pokemon["weight"];
-            $pokemon_type_1 = $single_pokemon["primaryType"];
-            $pokemon_type_2 = $single_pokemon["secondaryType"];
-            $pokemon_intro_gen = $single_pokemon["introGen"];
+            $pokemon_type_1 = $single_pokemon["primary_type"];
+            $pokemon_type_2 = $single_pokemon["secondary_type"];
+            $pokemon_intro_gen = $single_pokemon["intro_gen"];
 
             $pokemon_record = array(
                 "pokemon_id" => $pokemon_id, 

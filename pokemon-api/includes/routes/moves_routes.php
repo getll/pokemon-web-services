@@ -89,15 +89,15 @@ function handleCreateMove(Request $request, Response $response, array $args) {
         
         foreach ($parsed_body as $single_move) {
             // going through each field in a row
-            $move_id = $single_move["moveId"];
+            $move_id = $single_move["move_id"];
             $move_name = $single_move["name"];
             $move_desc = $single_move["description"];
             $move_category = $single_move["category"];
             $move_power = $single_move["power"];
             $move_accuracy = $single_move["accuracy"];
-            $move_power_points = $single_move["powerPoints"];
+            $move_power_points = $single_move["power_points"];
             $move_type = $single_move["type"];
-            $move_secondary_effect = $single_move["hasSecondaryEffect"];
+            $move_secondary_effect = $single_move["has_secondary_effect"];
 
             $move_record = array(
                 "move_id" => $move_id, 
@@ -106,9 +106,9 @@ function handleCreateMove(Request $request, Response $response, array $args) {
                 "category" => $move_category, 
                 "power" => $move_power, 
                 "accuracy" => $move_accuracy, 
-                "powerPoints" => $move_power_points, 
+                "power_points" => $move_power_points, 
                 "type" => $move_type, 
-                "hasSecondaryEffect" => $move_secondary_effect
+                "has_secondary_effect" => $move_secondary_effect
             );
             $moves_model->createMove($move_record);
 
