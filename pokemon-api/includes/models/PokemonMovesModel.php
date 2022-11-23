@@ -38,4 +38,16 @@ class PokemonMovesModel extends BaseModel {
         $data = $this->run($sql, [":pokemonId" => $pokemonId]);
         return $data;
     }
+
+    public function getSpecificMoveRelatedToPokemon($pokemonId, $pokemonMove){
+        $sql = "SELECT * FROM pokemon_move WHERE pokemon_id = ? AND move_id = ?";
+        $data = $this->run($sql,[$pokemonId, $pokemonMove])->fetchAll();
+        return $data;
+    }
+
+    public function deleteSpecificMoveRelatedToPokemon($pokemonId, $moveId){
+        $sql = "DELETE FROM pokemon_move WHERE pokemon_id = ? AND move_id = ?";
+        $data = $this->run($sql, [$pokemonId, $moveId]);
+        return $data;
+    }
 }
