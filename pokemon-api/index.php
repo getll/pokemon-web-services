@@ -84,7 +84,7 @@ $app->delete("/moves/{moves}", "deleteOneMove");
 $app->delete("/pokemonMove/{pokemonMoves}", "deleteOnePokemonMove");
 $app->delete("/pokemon/{pokemonId}/abilities", "deleteAbilityByPokemon");
 $app->delete("/pokemon/{pokemonId}/moves", "deleteMovesByPokemon");
-$app->delete("/pokemon/{pokemonId}/abilities/{abilityId}", "handleDeleteSpecificAbilitiesRelatedToPokemon");
+//$app->delete("/pokemon/{pokemonId}/abilities/{abilityId}", "handleDeleteSpecificAbilitiesRelatedToPokemon");
 $app->delete("/pokemon/{pokemonId}/moves/{moveId}", "handleDeleteSpecificMoveRelatedToPokemon");
 
 $app->delete("/generations/{generationId}/games", "handleUnsupportedOperation");
@@ -100,8 +100,8 @@ $app->delete("/games/{gameId}/location/{locationId}", "handleUnsupportedOperatio
 $app->delete("/locations/{locationsId}/gyms/{gymId}", "handleUnsupportedOperation");
 $app->delete("/gyms/{gymId}/trainers/{trainerId}", "handleUnsupportedOperation");
 $app->delete("/generations/{generationId}/pokemon/{pokemonId}", "handleUnsupportedOperation");
-$app->delete("/pokemon/{pokemonId}/abilities/{abilityId}", "handleUnsupportedOperation");
-$app->delete("/pokemon/{pokemonId}/moves/{moveId}", "handleUnsupportedOperation");
+//$app->delete("/pokemon/{pokemonId}/abilities/{abilityId}", "handleUnsupportedOperation");
+//$app->delete("/pokemon/{pokemonId}/moves/{moveId}", "handleUnsupportedOperation");
 
 //-------------------------------------------------------------------------------------------------
 //post operations 
@@ -144,6 +144,23 @@ $app->post("/trainers/{trainerId}/pokedex", "handleCreatePokedex");
 //$app->post("/generations/{generationId}/pokemon/{pokemonId}", "handleUnsupportedOperation");
 //$app->post("/pokemon/{pokemonId}/abilities/{abilityId}", "handleUnsupportedOperation");
 //$app->post("/pokemon/{pokemonId}/moves/{moveId}", "handleUnsupportedOperation");
+
+//-------------------------------------------------------------------------------------------------
+//Put Operations
+
+$app->put("/generations", "handleUpdateGeneration");
+$app->put("/pokemon", "handleUpdatePokemon");
+$app->put("/abilities", "handleUpdateAbility");
+$app->put("/moves", "handleUpdateMove");
+$app->put("/trainers", "handleUpdateTrainer");
+
+
+//dependent resources
+$app->put("/trainers/{trainerId}/pokedex", "handleUpdatePokedex");
+
+//not to sure ab this since we can already update trainers through base resource
+$app->put("/gyms/{gymId}/trainers", "callback");
+
 
 
     

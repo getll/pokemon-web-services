@@ -37,4 +37,9 @@ class TrainersModel extends BaseModel {
         $data = $this->insert($this->table_name, $record);
         return $data;
     }
+    
+    public function updateTrainer($record, $where) {
+        $data = $this->update($this->table_name, $record, $where);
+        return $data;
+    }
 }

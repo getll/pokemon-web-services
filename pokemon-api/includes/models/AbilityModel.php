@@ -33,5 +33,10 @@ class AbilityModel extends BaseModel {
         $data = $this->insert($this->table_name, $record);
         return $data;
     }
+    
+    public function updateAbility($data, $where){
+        $info = $this->update($this->table_name, $data, $where);
+        return $info;
+    }
 }  
     

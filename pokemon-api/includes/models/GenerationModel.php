@@ -2,14 +2,14 @@
 
 class GenerationModel extends BaseModel {
 
-    private $table_name = "generation";
+    private $table_name = "generations";
     
     public function __construct($options = []) {
         parent::__construct($options);
     }
     
     public function updateGeneration($data, $where){
-        $info = $this->updateGeneration($data, $where);
+        $info = $this->update($this->table_name, $data, $where);
         return $info;
     }
 

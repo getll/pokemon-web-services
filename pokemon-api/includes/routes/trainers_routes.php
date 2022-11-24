@@ -121,3 +121,47 @@ function handleCreateTrainer(Request $request, Response $response, array $args) 
     $response->getBody()->write($response_data);
     return $response->withStatus($response_code);
 }
+
+function handleUpdateTrainer(Request $request, Response $response, array $args) {
+    $response_code = HTTP_CREATED;
+    $trainers = "";
+    
+    $trainer_model = new TrainersModel();
+    $parsed_body = $request->getParsedBody();
+    
+    $requested_format = $request->getHeader('Accept');
+    if (isset($requested_format[0]) && $requested_format[0] === APP_MEDIA_TYPE_JSON) {
+        
+        foreach ($parsed_body as $single_trainer) {
+            // going through each field in a row
+            $trainer_id = $single_trainer["trainer_id"];
+            $trainer_name = $single_trainer["name"];
+            $trainer_gender = $single_trainer["gender"];
+            $trainer_class = $single_trainer["trainer_class"];
+            $trainer_quote = $single_trainer["quote"];
+            $trainer_money = $single_trainer["money"];
+
+            $trainer_record = array( 
+                "name" => $trainer_name, 
+                "gender" => $trainer_gender, 
+                "trainer_class" => $trainer_class, 
+                "quote" => $trainer_quote, 
+                "money" => $trainer_money
+            );
+            $trainer_model->updateTrainer($trainer_record, array("trainer_id" => $trainer_id));
+
+            // preparing response message
+            $trainers .= ((empty($trainers)) ? "Updated rows for " . $trainer_name : ", " . $trainer_name);
+        }
+        
+        $response_data = json_encode(array("message" => $trainers, 
+                "trainers" => $parsed_body), JSON_INVALID_UTF8_SUBSTITUTE);
+    }
+    else {
+        $response_data = json_encode(getErrorUnsupportedFormat());
+        $response_code = HTTP_UNSUPPORTED_MEDIA_TYPE;
+    }
+    
+    $response->getBody()->write($response_data);
+    return $response->withStatus($response_code);
+}
