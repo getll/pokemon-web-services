@@ -186,7 +186,6 @@ class BaseModel {
             $fieldDetails .= "$key = ?,";
         }
         $fieldDetails = rtrim($fieldDetails, ',');
-
         //setup where 
         $whereDetails = null;
         $i = 0;
@@ -196,6 +195,7 @@ class BaseModel {
         }
 
         $stmt = $this->run("UPDATE $table SET $fieldDetails WHERE $whereDetails", $values);
+        
 
         return $stmt->rowCount();
     }
