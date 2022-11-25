@@ -51,27 +51,7 @@ class PokemonModel extends BaseModel {
         $data = $this->run($sql, [$generation_id])->fetchAll();
         return $data;
     }
-
-    public function getAllPokemonsFilterByName($name){
-        
-        $sql = "SELECT * FROM pokemon WHERE name LIKE :name";
-        $data = $this->run($sql, [":name" => "%" . $name . "%"])->fetchAll();
-        return $data;
-    }
-
-    public function getAllPokemonsFilterByPrimaryType($primaryType){
-        
-        $sql = "SELECT * FROM pokemon WHERE primary_type LIKE :primaryType";
-        $data = $this->run($sql, [":primaryType" => "%" . $primaryType . "%"])->fetchAll();
-        return $data;
-    }
-
-    public function getAllPokemonsFilterBySecondaryType($secondaryType){
-        $sql = "SELECT * FROM pokemon WHERE secondary_type LIKE :secondaryType";
-        $data = $this->run($sql, [":secondaryType" => "%" . $secondaryType . "%"])->fetchAll();
-        return $data;
-    }
-
+    
     public function getAllPokemonsFiltered($filteringOptions){
         $query_options = Array();
         $sql = "SELECT * FROM pokemon WHERE 1 ";
