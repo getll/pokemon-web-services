@@ -50,10 +50,10 @@ function handleGetAbilityById(Request $request, Response $response, array $args)
     $response_code = HTTP_OK;
     $ability_model = new AbilityModel();
 
-    // Retreive the artist id from the request's URI.
+    // Retreive the ability id from the request's URI.
     $abili = $args["abili"];
     if (isset($abili)) {
-        // Fetch the info about the specified artist.
+        // Fetch the info about the specified ability.
         $ability_info = $ability_model->getAbilityById($abili);
         if (!$ability_info) {
             // No matches found?
@@ -150,6 +150,71 @@ function handleUpdateAbility(Request $request, Response $response, array $args) 
         $response_code = HTTP_UNSUPPORTED_MEDIA_TYPE;
     }
     
+    $response->getBody()->write($response_data);
+    return $response->withStatus($response_code);
+}
+
+function handleGetAllAbilities(Request $request, Response $response, array $args) {
+    $abilities = array();
+    $response_data = array();
+    $response_code = HTTP_OK;
+    $ability_model = new AbilityModel();
+
+    $abilities = $ability_model->getAllAbilities();
+
+    // TODO: Implement filtering by Name
+    if (!$abilities) {
+        $response_data = makeCustomJSONError("resourceNotFound", "There are no records of abilities");
+        $response->getBody()->write($response_data);
+        return $response->withStatus(HTTP_NOT_FOUND);
+    }
+    
+    // Handle serve-side content negotiation and produce the requested representation.    
+    $requested_format = $request->getHeader('Accept');
+
+    //-- We verify the requested resource representation.    
+    if ($requested_format[0] === APP_MEDIA_TYPE_JSON) {
+        $response_data = json_encode($abilities, JSON_INVALID_UTF8_SUBSTITUTE);
+    } else {
+        $response_data = json_encode(getErrorUnsupportedFormat());
+        $response_code = HTTP_UNSUPPORTED_MEDIA_TYPE;
+    }
+
+    $response->getBody()->write($response_data);
+    return $response->withStatus($response_code);
+}
+
+function handleGetAbilitiesByPokemon(Request $request, Response $response, array $args) {
+    $abilities = array();
+    $response_data = array();
+    $response_code = HTTP_OK;
+    $ability_model = new AbilityModel();
+
+    
+    $pokemonId = $args["pokemonId"];
+    if (isset($pokemonId)) {
+          
+        $abilities = $ability_model->getAllAbilitiesByPokemon($pokemonId);
+
+        if (!$abilities) {
+            // No matches found?
+            $response_data = makeCustomJSONError("resourceNotFound", "No abilities were found for the specified pokemon.");
+            $response->getBody()->write($response_data);
+            return $response->withStatus(HTTP_NOT_FOUND);
+        }
+    }
+    
+    // Handle serve-side content negotiation and produce the requested representation.    
+    $requested_format = $request->getHeader('Accept');
+
+    //-- We verify the requested resource representation.    
+    if ($requested_format[0] === APP_MEDIA_TYPE_JSON) {
+        $response_data = json_encode($abilities, JSON_INVALID_UTF8_SUBSTITUTE);
+    } else {
+        $response_data = json_encode(getErrorUnsupportedFormat());
+        $response_code = HTTP_UNSUPPORTED_MEDIA_TYPE;
+    }
+
     $response->getBody()->write($response_data);
     return $response->withStatus($response_code);
 }

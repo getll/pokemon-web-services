@@ -24,5 +24,12 @@ class LocationModel extends BaseModel{
         $data = $this->run($sql, [$location])->fetch();
         return $data;
     }
-}
 
+    public function getAllLocationsByGame($game_id){
+        $sql = "SELECT locations.* FROM locations
+                JOIN games ON locations.game_id=games.game_id
+                WHERE games.game_id = ?";
+        $data = $this->run($sql, [$game_id])->fetchAll();
+        return $data;
+    }
+}

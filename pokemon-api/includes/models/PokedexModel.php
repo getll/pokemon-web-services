@@ -37,4 +37,12 @@ class PokedexModel extends BaseModel {
         $data = $this->update($this->table_name, $record, $where);
         return $data;
     }
+
+    public function getAllPokedexByTrainer($trainer_id){
+        $sql = "SELECT pokedex.* FROM pokedex
+                JOIN trainers ON pokedex.trainer_id=trainers.trainer_id
+                WHERE trainers.trainer_id = ?";
+        $data = $this->run($sql, [$trainer_id])->fetchAll();
+        return $data;
+    }
 }

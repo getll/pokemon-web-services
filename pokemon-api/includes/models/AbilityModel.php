@@ -38,5 +38,20 @@ class AbilityModel extends BaseModel {
         $info = $this->update($this->table_name, $data, $where);
         return $info;
     }
+
+    public function getAllAbilities(){
+        $sql = "SELECT * FROM abilities";
+        $data = $this->rows($sql); 
+        return $data;
+    }
+
+    public function getAllAbilitiesByPokemon($pokemon_id){
+        $sql = "SELECT abilities.* FROM abilities
+                JOIN pokemon_ability ON abilities.ability_id=pokemon_ability.ability_id
+                JOIN pokemon ON pokemon_ability.pokemon_id=pokemon.pokemon_id
+                WHERE pokemon.pokemon_id = ?";
+        $data = $this->run($sql, [$pokemon_id])->fetchAll();
+        return $data;
+    }
 }  
     

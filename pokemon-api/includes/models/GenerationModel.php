@@ -29,4 +29,10 @@ class GenerationModel extends BaseModel {
         $data = $this->insert($this->table_name, $record);
         return $data;
     }
+
+    public function getAllGenerations(){
+        $sql = "SELECT * FROM generations";
+        $data = $this->rows($sql); 
+        return $data;
+    }
 }

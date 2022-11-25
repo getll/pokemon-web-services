@@ -36,4 +36,12 @@ class GymModel extends BaseModel{
         $data = $this->run($sql, [$gyms])->fetch();
         return $data;
     }
+
+    public function getAllGymsByLocation($location_id){
+        $sql = "SELECT gyms.* FROM gyms
+                JOIN locations ON gyms.gym_id=locations.gym_id
+                WHERE locations.location_id = ?";
+        $data = $this->run($sql, [$location_id])->fetchAll();
+        return $data;
+    }
 }
