@@ -53,12 +53,14 @@ class PokemonModel extends BaseModel {
     }
 
     public function getAllPokemonsFilterByName($name){
+        
         $sql = "SELECT * FROM pokemon WHERE name LIKE :name";
         $data = $this->run($sql, [":name" => "%" . $name . "%"])->fetchAll();
         return $data;
     }
 
     public function getAllPokemonsFilterByPrimaryType($primaryType){
+        
         $sql = "SELECT * FROM pokemon WHERE primary_type LIKE :primaryType";
         $data = $this->run($sql, [":primaryType" => "%" . $primaryType . "%"])->fetchAll();
         return $data;
@@ -67,6 +69,30 @@ class PokemonModel extends BaseModel {
     public function getAllPokemonsFilterBySecondaryType($secondaryType){
         $sql = "SELECT * FROM pokemon WHERE secondary_type LIKE :secondaryType";
         $data = $this->run($sql, [":secondaryType" => "%" . $secondaryType . "%"])->fetchAll();
+        return $data;
+    }
+
+    public function getAllPokemonsFiltered($filteringOptions){
+        $query_options = Array();
+        $sql = "SELECT * FROM pokemon WHERE 1 ";
+
+        // Now we validate and filter:
+        //TODO: do we filter using AND or OR clause?
+        if (isset($filteringOptions["name"])) {
+            $name = $filteringOptions["name"];
+            $sql .= " AND name LIKE :name ";            
+            $query_options[":name"] = "%" .  $filteringOptions["name"] . "%";
+        }
+        if (isset($filteringOptions["primaryType"])) {
+            $sql .= " AND  primary_type LIKE :primaryType ";
+            $query_options[":primaryType"] = "%" .  $filteringOptions["primaryType"] . "%";            
+        }
+        if (isset($filteringOptions["secondaryType"])) {
+            $sql .= " AND secondary_type LIKE :secondaryType " ;                
+            $query_options[":secondaryType"] = "%" .  $filteringOptions["secondaryType"] . "%";
+        }    
+
+        $data = $this->run($sql, $query_options)->fetchAll();
         return $data;
     }
 }

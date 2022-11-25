@@ -182,22 +182,8 @@ function handleGetAllPokemons(Request $request, Response $response, array $args)
 
     $filter_params = $request->getQueryParams();
     
-    // TODO: Implement filtering by Name and by PrimaryType & SecondaryType
-    // Filter by Name:
-    if (isset($filter_params["Name"])) {
-        $pokemons = $pokemon_model->getAllPokemonsFilterByName($filter_params["Name"]);
-    }
-    // Filter by PrimaryType:
-    elseif (isset($filter_params["PrimaryType"])) {
-        $pokemons = $pokemon_model->getAllPokemonsFilterByPrimaryType($filter_params["PrimaryType"]);
-    }
-    // Filter by SecondaryType:
-    elseif (isset($filter_params["SecondaryType"])) {
-        $pokemons = $pokemon_model->getAllPokemonsFilterBySecondaryType($filter_params["SecondaryType"]);
-    }
-    else {
-        $pokemons = $pokemon_model->getAllPokemons();
-    }
+    // Filtering
+    $pokemons = $pokemon_model->getAllPokemonsFiltered($filter_params);
 
     if (!$pokemons) {
         $response_data = makeCustomJSONError("resourceNotFound", "There are no records of pokemons");
