@@ -40,7 +40,9 @@ class PokemonModel extends BaseModel {
 
     public function getAllPokemons(){
         $sql = "SELECT * FROM pokemon";
-        $data = $this->rows($sql); 
+        //$data = $this->rows($sql); 
+        $data = $this->paginate($sql); 
+        
         return $data;
     }
 

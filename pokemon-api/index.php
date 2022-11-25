@@ -8,6 +8,8 @@ use Slim\Factory\AppFactory;
 require __DIR__ . '/vendor/autoload.php';
 require_once './includes/app_constants.php';
 require_once './includes/helpers/helper_functions.php';
+require_once './includes/helpers/Paginator.php';
+require_once './includes/helpers/WebServiceInvoker.php';
 
 //--Step 1) Instantiate App.
 $app = AppFactory::create();
@@ -46,6 +48,7 @@ require_once './includes/routes/pokemon_moves_routes.php';
 //Get operations
 
 // Main resources:
+//TODO: add pagination support for the following: collections.
 $app->get("/generations", "handleGetAllGenerations");
 $app->get("/pokemon", "handleGetAllPokemons");
 $app->get("/abilities", "handleGetAllAbilities");

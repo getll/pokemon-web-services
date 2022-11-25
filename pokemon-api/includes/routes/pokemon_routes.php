@@ -174,11 +174,17 @@ function handleUpdatePokemon(Request $request, Response $response, array $args) 
     return $response->withStatus($response_code);
 }
 
+//-     /pokemon/{pokemon_id}} 
 function handleGetAllPokemons(Request $request, Response $response, array $args) {
     $pokemons = array();
     $response_data = array();
     $response_code = HTTP_OK;
     $pokemon_model = new PokemonModel();
+    $req_query_params  = $request->getQueryParams();
+    $pageNumber =  isset($req_query_params["page"])? $req_query_params["page"] : 1 ;
+    $pageSize =  isset($req_query_params["per_page"])? $req_query_params["per_page"] : 5 ;
+    $pokemon_model->setPaginationOptions($pageNumber, $pageSize);
+    //var_dump($req_query_params);exit;
 
     $pokemons = $pokemon_model->getAllPokemons();
     
