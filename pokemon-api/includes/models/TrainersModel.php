@@ -42,4 +42,18 @@ class TrainersModel extends BaseModel {
         $data = $this->update($this->table_name, $record, $where);
         return $data;
     }
+
+    public function getAllTrainers(){
+        $sql = "SELECT * FROM trainers";
+        $data = $this->rows($sql); 
+        return $data;
+    }
+
+    public function getAllTrainersByGym($gym_id){
+        $sql = "SELECT trainers.* FROM trainers
+                JOIN gyms ON trainers.trainer_id=gyms.gym_leader
+                WHERE gyms.gym_id = ?";
+        $data = $this->run($sql, [$gym_id])->fetchAll();
+        return $data;
+    }
 }

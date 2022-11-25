@@ -177,3 +177,68 @@ function handleUpdateMove(Request $request, Response $response, array $args) {
     $response->getBody()->write($response_data);
     return $response->withStatus($response_code);
 }
+
+function handleGetAllMoves(Request $request, Response $response, array $args) {
+    $moves = array();
+    $response_data = array();
+    $response_code = HTTP_OK;
+    $move_model = new MovesModel();
+    
+    // TODO: Implement filtering by Name, by Category (optional/low priority), by Type
+    $moves = $move_model->getAllMoves();
+
+    if (!$moves) {
+        $response_data = makeCustomJSONError("resourceNotFound", "There are no records of moves");
+        $response->getBody()->write($response_data);
+        return $response->withStatus(HTTP_NOT_FOUND);
+    }
+    
+    // Handle serve-side content negotiation and produce the requested representation.    
+    $requested_format = $request->getHeader('Accept');
+
+    //-- We verify the requested resource representation.    
+    if ($requested_format[0] === APP_MEDIA_TYPE_JSON) {
+        $response_data = json_encode($moves, JSON_INVALID_UTF8_SUBSTITUTE);
+    } else {
+        $response_data = json_encode(getErrorUnsupportedFormat());
+        $response_code = HTTP_UNSUPPORTED_MEDIA_TYPE;
+    }
+
+    $response->getBody()->write($response_data);
+    return $response->withStatus($response_code);
+}
+
+function handleGetMovesByPokemon(Request $request, Response $response, array $args) {
+    $moves = array();
+    $response_data = array();
+    $response_code = HTTP_OK;
+    $moves_model = new MovesModel();
+
+    
+    $pokemonId = $args["pokemonId"];
+    if (isset($pokemonId)) {
+          
+        $moves = $moves_model->getAllMovesByPokemon($pokemonId);
+
+        if (!$moves) {
+            // No matches found?
+            $response_data = makeCustomJSONError("resourceNotFound", "No moves were found for the specified pokemon.");
+            $response->getBody()->write($response_data);
+            return $response->withStatus(HTTP_NOT_FOUND);
+        }
+    }
+    
+    // Handle serve-side content negotiation and produce the requested representation.    
+    $requested_format = $request->getHeader('Accept');
+
+    //-- We verify the requested resource representation.    
+    if ($requested_format[0] === APP_MEDIA_TYPE_JSON) {
+        $response_data = json_encode($moves, JSON_INVALID_UTF8_SUBSTITUTE);
+    } else {
+        $response_data = json_encode(getErrorUnsupportedFormat());
+        $response_code = HTTP_UNSUPPORTED_MEDIA_TYPE;
+    }
+
+    $response->getBody()->write($response_data);
+    return $response->withStatus($response_code);
+}

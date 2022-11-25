@@ -44,20 +44,47 @@ require_once './includes/routes/pokemon_moves_routes.php';
 
 //-------------------------------------------------------------------------------------------------
 //Get operations
+
+// Main resources:
+$app->get("/generations", "handleGetAllGenerations");
+$app->get("/pokemon", "handleGetAllPokemons");
+$app->get("/abilities", "handleGetAllAbilities");
+$app->get("/moves", "handleGetAllMoves");
+$app->get("/trainers", "handleGetAllTrainers");
+
+$app->get("/generations/{gens}", "handleGetGenerationById");
 $app->get("/pokemon/{pokemonId}", "handleGetPokemonById");
 $app->get("/abilities/{abili}", "handleGetAbilityById");
+$app->get("/moves/{moves}", "handleGetMoveById");
+$app->get("/trainers/{trainers}", "handleGetTrainerById");
 $app->get("/games/{gamez}", "handleGetGameById");
-$app->get("/generations/{gens}", "handleGetGenerationById");
 $app->get("/gyms/{gyms}", "handleGetGymById");
 $app->get("/locations/{location}", "handleGetLocationById");
 $app->get("/pokedex/{pokedex}", "handleGetPokedexById");
 $app->get("/pokemon_ability/{pokebi}", "handleGetPokeAbilityById");
-$app->get("/trainers/{trainers}", "handleGetTrainerById");
-$app->get("/moves/{moves}", "handleGetMoveById");
+
+// // Sub-Resources:
+$app->get("/generations/{generationId}/games", "handleGetGamesByGeneration");
+$app->get("/trainers/{trainerId}/pokedex", "handleGetPokedexByTrainer");
+$app->get("/games/{gameId}/locations", "handleGetLocationsByGame");
+$app->get("/locations/{locationId}/gyms", "handleGetGymsByLocation");
+$app->get("/gyms/{gymId}/trainers", "handleGetTrainersByGym");
+$app->get("/generations/{generationId}/pokemon", "handleGetPokemonsByGeneration");
+$app->get("/pokemon/{pokemonId}/abilities", "handleGetAbilitiesByPokemon");
+$app->get("/pokemon/{pokemonId}/moves", "handleGetMovesByPokemon");
+
+// Unsupported operations:
+$app->get("/generations/{generationId}/games/{gameId}", "handleUnsupportedOperation");
+$app->get("/trainers/{trainerId}/pokedex/{pokedexId}", "handleUnsupportedOperation");
+$app->get("/games/{gameId}/location/{locationId}", "handleUnsupportedOperation");
+$app->get("/locations/{locationsId}/gyms/{gymId}", "handleUnsupportedOperation");
+$app->get("/gyms/{gymId}/trainers/{trainerId}", "handleUnsupportedOperation");
+$app->get("/generations/{generationId}/pokemon/{pokemonId}", "handleUnsupportedOperation");
+
+// ???
 $app->get("/pokemonMove/{pokemonMoves}", "handleGetPokemonMoveById");
-//Change this piece of shit 
-$app->get("/pokemon/{pokemonId}/abilities", "handleGetAllAbilitiesRelatedToPokemon");
-$app->get("/pokemon/{pokemonId}/moves", "handleGetAllMovesRelatedToPokemon");
+
+//Change this piece of shit ??????????
 $app->get("/pokemon/{pokemonId}/abilities/{pokemonAbility}", "handleGetSpecificAbilitiesRelatedToPokemon");
 $app->get("/pokemon/{pokemonId}/moves/{pokemonMove}", "handleGetSpecificMovesRelatedToPokemon");
 

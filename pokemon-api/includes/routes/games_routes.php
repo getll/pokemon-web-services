@@ -123,3 +123,37 @@ function handleCreateGame(Request $request, Response $response, array $args) {
     return $response->withStatus($response_code);
 }
 
+function handleGetGamesByGeneration(Request $request, Response $response, array $args) {
+    $games = array();
+    $response_data = array();
+    $response_code = HTTP_OK;
+    $game_model = new GameModel();
+
+    $generationId = $args["generationId"];
+    if (isset($generationId)) {
+        // TODO: Implement filtering by Name
+        
+        $games = $game_model->getAllGamesByGeneration($generationId);
+        
+        if (!$games) {
+            // No matches found?
+            $response_data = makeCustomJSONError("resourceNotFound", "No games were found for the specified generation.");
+            $response->getBody()->write($response_data);
+            return $response->withStatus(HTTP_NOT_FOUND);
+        }
+    }
+    
+    // Handle serve-side content negotiation and produce the requested representation.    
+    $requested_format = $request->getHeader('Accept');
+
+    //-- We verify the requested resource representation.    
+    if ($requested_format[0] === APP_MEDIA_TYPE_JSON) {
+        $response_data = json_encode($games, JSON_INVALID_UTF8_SUBSTITUTE);
+    } else {
+        $response_data = json_encode(getErrorUnsupportedFormat());
+        $response_code = HTTP_UNSUPPORTED_MEDIA_TYPE;
+    }
+
+    $response->getBody()->write($response_data);
+    return $response->withStatus($response_code);
+}

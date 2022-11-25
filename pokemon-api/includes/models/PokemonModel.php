@@ -37,4 +37,18 @@ class PokemonModel extends BaseModel {
         $data = $this->update($this->table_name, $record,$where);
         return $data;
     }
+
+    public function getAllPokemons(){
+        $sql = "SELECT * FROM pokemon";
+        $data = $this->rows($sql); 
+        return $data;
+    }
+
+    public function getAllPokemonsByGeneration($generation_id){
+        $sql = "SELECT pokemon.* FROM pokemon
+                JOIN generations ON pokemon.intro_gen=generations.generation_id
+                WHERE generations.generation_id = ?";
+        $data = $this->run($sql, [$generation_id])->fetchAll();
+        return $data;
+    }
 }

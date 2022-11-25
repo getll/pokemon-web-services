@@ -30,4 +30,12 @@ class GameModel extends BaseModel {
         $data = $this->insert($this->table_name, $record);
         return $data;
     }
+
+    public function getAllGamesByGeneration($generation_id){
+        $sql = "SELECT games.* FROM games
+                JOIN generations ON games.generation_id=generations.generation_id
+                WHERE generations.generation_id = ?";
+        $data = $this->run($sql, [$generation_id])->fetchAll();
+        return $data;
+    }
 }

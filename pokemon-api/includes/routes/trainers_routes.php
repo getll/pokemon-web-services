@@ -165,3 +165,68 @@ function handleUpdateTrainer(Request $request, Response $response, array $args) 
     $response->getBody()->write($response_data);
     return $response->withStatus($response_code);
 }
+
+function handleGetAllTrainers(Request $request, Response $response, array $args) {
+    $trainers = array();
+    $response_data = array();
+    $response_code = HTTP_OK;
+    $trainer_model = new TrainersModel();
+
+    // TODO: Implement filtering by Name, by Quote and by TrainerClass
+    $trainers = $trainer_model->getAllTrainers();
+
+    if (!$trainers) {
+        $response_data = makeCustomJSONError("resourceNotFound", "There are no records of abilities");
+        $response->getBody()->write($response_data);
+        return $response->withStatus(HTTP_NOT_FOUND);
+    }
+    
+    // Handle serve-side content negotiation and produce the requested representation.    
+    $requested_format = $request->getHeader('Accept');
+
+    //-- We verify the requested resource representation.    
+    if ($requested_format[0] === APP_MEDIA_TYPE_JSON) {
+        $response_data = json_encode($trainers, JSON_INVALID_UTF8_SUBSTITUTE);
+    } else {
+        $response_data = json_encode(getErrorUnsupportedFormat());
+        $response_code = HTTP_UNSUPPORTED_MEDIA_TYPE;
+    }
+
+    $response->getBody()->write($response_data);
+    return $response->withStatus($response_code);
+}
+
+function handleGetTrainersByGym(Request $request, Response $response, array $args) {
+    $trainers = array();
+    $response_data = array();
+    $response_code = HTTP_OK;
+    $trainers_model = new TrainersModel();
+
+    
+    $gymId = $args["gymId"];
+    if (isset($gymId)) {
+
+        $trainers = $trainers_model->getAllTrainersByGym($gymId);
+
+        if (!$trainers) {
+            // No matches found?
+            $response_data = makeCustomJSONError("resourceNotFound", "No trainers were found for the specified gym.");
+            $response->getBody()->write($response_data);
+            return $response->withStatus(HTTP_NOT_FOUND);
+        }
+    }
+    
+    // Handle serve-side content negotiation and produce the requested representation.    
+    $requested_format = $request->getHeader('Accept');
+
+    //-- We verify the requested resource representation.    
+    if ($requested_format[0] === APP_MEDIA_TYPE_JSON) {
+        $response_data = json_encode($trainers, JSON_INVALID_UTF8_SUBSTITUTE);
+    } else {
+        $response_data = json_encode(getErrorUnsupportedFormat());
+        $response_code = HTTP_UNSUPPORTED_MEDIA_TYPE;
+    }
+
+    $response->getBody()->write($response_data);
+    return $response->withStatus($response_code);
+}

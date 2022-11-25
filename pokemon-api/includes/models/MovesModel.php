@@ -33,8 +33,24 @@ class MovesModel extends BaseModel {
         $data = $this->insert($this->table_name, $record);
         return $data;
     }
+
     public function updateMove($record, $where) {
         $data = $this->update($this->table_name, $record, $where);
+        return $data;
+    }
+
+    public function getAllMoves(){
+        $sql = "SELECT * FROM moves";
+        $data = $this->rows($sql); 
+        return $data;
+    }
+    
+    public function getAllMovesByPokemon($pokemon_id){
+        $sql = "SELECT moves.* FROM moves
+                JOIN pokemon_move ON moves.move_id=pokemon_move.move_id
+                JOIN pokemon ON pokemon_move.pokemon_id=pokemon.pokemon_id
+                WHERE pokemon.pokemon_id = ?";
+        $data = $this->run($sql, [$pokemon_id])->fetchAll();
         return $data;
     }
 }
