@@ -45,7 +45,7 @@ class TrainersModel extends BaseModel {
 
     public function getAllTrainers(){
         $sql = "SELECT * FROM trainers";
-        $data = $this->rows($sql); 
+        $data = $this->paginate($sql); 
         return $data;
     }
 

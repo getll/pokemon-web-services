@@ -172,6 +172,14 @@ function handleGetAllTrainers(Request $request, Response $response, array $args)
     $response_code = HTTP_OK;
     $trainer_model = new TrainersModel();
 
+    $input_page_number = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
+    $input_per_page = filter_input(INPUT_GET, "per_page", FILTER_VALIDATE_INT);
+
+    $page_number = ($input_page_number > 0) ? $input_page_number : 1;
+    $per_page = ($input_per_page > 0) ? $input_per_page : 10;
+
+    $trainer_model->setPaginationOptions($page_number, $per_page);
+
     // TODO: Implement filtering by Name, by Quote and by TrainerClass
     $trainers = $trainer_model->getAllTrainers();
 

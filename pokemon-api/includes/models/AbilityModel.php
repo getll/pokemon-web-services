@@ -51,7 +51,7 @@ class AbilityModel extends BaseModel {
             $query_options[":name"] = "%" .  $filteringOptions["name"] . "%";
         } 
 
-        $data = $this->run($sql, $query_options)->fetchAll();
+        $data = $this->paginate($sql, $query_options);
         return $data;
     }
 
