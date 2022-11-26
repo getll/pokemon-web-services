@@ -159,10 +159,12 @@ function handleGetAllAbilities(Request $request, Response $response, array $args
     $response_data = array();
     $response_code = HTTP_OK;
     $ability_model = new AbilityModel();
+    
+    $filter_params = $request->getQueryParams();
+    
+    // Filtering
+    $abilities = $ability_model->getAllAbilitiesFiltered($filter_params);
 
-    $abilities = $ability_model->getAllAbilities();
-
-    // TODO: Implement filtering by Name
     if (!$abilities) {
         $response_data = makeCustomJSONError("resourceNotFound", "There are no records of abilities");
         $response->getBody()->write($response_data);

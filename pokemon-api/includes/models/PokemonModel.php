@@ -38,12 +38,6 @@ class PokemonModel extends BaseModel {
         return $data;
     }
 
-    public function getAllPokemons(){
-        $sql = "SELECT * FROM pokemon";
-        $data = $this->rows($sql); 
-        return $data;
-    }
-
     public function getAllPokemonsByGeneration($generation_id){
         $sql = "SELECT pokemon.* FROM pokemon
                 JOIN generations ON pokemon.intro_gen=generations.generation_id
@@ -57,7 +51,9 @@ class PokemonModel extends BaseModel {
         $sql = "SELECT * FROM pokemon WHERE 1 ";
 
         // Now we validate and filter:
-        //TODO: do we filter using AND or OR clause?
+        // by Name
+        // by PrimaryType 
+        // by SecondaryType
         if (isset($filteringOptions["name"])) {
             $name = $filteringOptions["name"];
             $sql .= " AND name LIKE :name ";            
