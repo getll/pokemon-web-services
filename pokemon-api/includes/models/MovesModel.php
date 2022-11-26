@@ -61,7 +61,7 @@ class MovesModel extends BaseModel {
             $query_options[":type"] = "%" .  $filteringOptions["type"] . "%";
         }    
 
-        $data = $this->run($sql, $query_options)->fetchAll();
+        $data = $this->paginate($sql, $query_options);
         return $data;
     }
     

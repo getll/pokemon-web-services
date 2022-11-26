@@ -68,7 +68,7 @@ class PokemonModel extends BaseModel {
             $query_options[":secondaryType"] = "%" .  $filteringOptions["secondaryType"] . "%";
         }    
 
-        $data = $this->run($sql, $query_options)->fetchAll();
+        $data = $this->paginate($sql, $query_options);
         return $data;
     }
 }

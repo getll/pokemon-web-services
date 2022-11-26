@@ -184,6 +184,14 @@ function handleGetAllMoves(Request $request, Response $response, array $args) {
     $response_code = HTTP_OK;
     $move_model = new MovesModel();
     
+    $input_page_number = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
+    $input_per_page = filter_input(INPUT_GET, "per_page", FILTER_VALIDATE_INT);
+
+    $page_number = ($input_page_number > 0) ? $input_page_number : 1;
+    $per_page = ($input_per_page > 0) ? $input_per_page : 10;
+
+    $move_model->setPaginationOptions($page_number, $per_page);
+
     $filter_params = $request->getQueryParams();
     
     // Filtering
