@@ -39,9 +39,19 @@ class AbilityModel extends BaseModel {
         return $info;
     }
 
-    public function getAllAbilities(){
-        $sql = "SELECT * FROM abilities";
-        $data = $this->rows($sql); 
+    public function getAllAbilitiesFiltered($filteringOptions){
+        $query_options = Array();
+        $sql = "SELECT * FROM abilities WHERE 1 ";
+
+        // Now we validate and filter:
+        // by Name
+        if (isset($filteringOptions["name"])) {
+            $name = $filteringOptions["name"];
+            $sql .= " AND name LIKE :name ";            
+            $query_options[":name"] = "%" .  $filteringOptions["name"] . "%";
+        } 
+
+        $data = $this->run($sql, $query_options)->fetchAll();
         return $data;
     }
 

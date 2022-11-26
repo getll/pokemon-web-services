@@ -39,9 +39,29 @@ class MovesModel extends BaseModel {
         return $data;
     }
 
-    public function getAllMoves(){
-        $sql = "SELECT * FROM moves";
-        $data = $this->rows($sql); 
+    public function getAllMovesFiltered($filteringOptions){
+        $query_options = Array();
+        $sql = "SELECT * FROM moves WHERE 1 ";
+
+        // Now we validate and filter:
+        // by Name
+        // by Category (optional/low priority)
+        // by Type
+        if (isset($filteringOptions["name"])) {
+            $name = $filteringOptions["name"];
+            $sql .= " AND name LIKE :name ";            
+            $query_options[":name"] = "%" .  $filteringOptions["name"] . "%";
+        }
+        if (isset($filteringOptions["category"])) {
+            $sql .= " AND  category LIKE :category ";
+            $query_options[":category"] = "%" .  $filteringOptions["category"] . "%";            
+        }
+        if (isset($filteringOptions["type"])) {
+            $sql .= " AND type LIKE :type " ;                
+            $query_options[":type"] = "%" .  $filteringOptions["type"] . "%";
+        }    
+
+        $data = $this->run($sql, $query_options)->fetchAll();
         return $data;
     }
     

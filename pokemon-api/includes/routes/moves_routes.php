@@ -184,8 +184,10 @@ function handleGetAllMoves(Request $request, Response $response, array $args) {
     $response_code = HTTP_OK;
     $move_model = new MovesModel();
     
-    // TODO: Implement filtering by Name, by Category (optional/low priority), by Type
-    $moves = $move_model->getAllMoves();
+    $filter_params = $request->getQueryParams();
+    
+    // Filtering
+    $moves = $move_model->getAllMovesFiltered($filter_params);
 
     if (!$moves) {
         $response_data = makeCustomJSONError("resourceNotFound", "There are no records of moves");
