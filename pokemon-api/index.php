@@ -45,6 +45,8 @@ require_once './includes/routes/pokemon_moves_routes.php';
 //-- Step 6)
 // TODO: And here we define app routes.
 
+$app->any("/", "handleBase");
+
 //-------------------------------------------------------------------------------------------------
 //Get operations
 
@@ -114,7 +116,7 @@ $app->delete("/moves/{moves}", "deleteOneMove");
 $app->delete("/pokemonMove/{pokemonMoves}", "deleteOnePokemonMove");
 $app->delete("/pokemon/{pokemonId}/abilities", "deleteAbilityByPokemon");
 $app->delete("/pokemon/{pokemonId}/moves", "deleteMovesByPokemon");
-//$app->delete("/pokemon/{pokemonId}/abilities/{abilityId}", "handleDeleteSpecificAbilitiesRelatedToPokemon");
+$app->delete("/pokemon/{pokemonId}/abilities/{abilityId}", "handleDeleteSpecificAbilitiesRelatedToPokemon");
 $app->delete("/pokemon/{pokemonId}/moves/{moveId}", "handleDeleteSpecificMoveRelatedToPokemon");
 
 $app->delete("/generations/{generationId}/games", "handleUnsupportedOperation");
@@ -143,37 +145,33 @@ $app->post("/abilities", "handleCreateAbility");
 $app->post("/moves", "handleCreateMove");
 $app->post("/trainers", "handleCreateTrainer");
 
-//to be mapped
-//$app->post("/generations/{generationId}", "handleUnsupportedOperation");
-//$app->post("/pokemon/{pokemonId}", "handleUnsupportedOperation");
-//$app->post("/abilities/{abilityId}", "handleUnsupportedOperation");
-//$app->post("/moves/{moveId}", "handleUnsupportedOperation");
-//$app->post("/trainers/{trainerId}", "handleUnsupportedOperation");
+//base resources - unsupported operations
+$app->post("/generations/{generationId}", "handleUnsupportedOperation");
+$app->post("/pokemon/{pokemonId}", "handleUnsupportedOperation");
+$app->post("/abilities/{abilityId}", "handleUnsupportedOperation");
+$app->post("/moves/{moveId}", "handleUnsupportedOperation");
+$app->post("/trainers/{trainerId}", "handleUnsupportedOperation");
 
 //dependant resources
 $app->post("/generations/{generationId}/games", "handleCreateGame");
 $app->post("/trainers/{trainerId}/pokedex", "handleCreatePokedex");
 
-// needs to be reevaluated for priority
-//Unsuport this piece of shit that is bullying this young fine man 😘😍
-//$app->post("/gyms/{gymId}/trainers", "handleCreateTrainer");
+//dependant resources - unsupported operations
+$app->post("/games/{gameId}/locations", "handleUnsupportedOperation");
+$app->post("/gyms/{gymId}/trainers", "handleUnsupportedOperation");
+$app->post("/locations/{locationsId}/gyms", "handleUnsupportedOperation");
+$app->post("/generations/{generationId}/pokemon", "handleUnsupportedOperation");
+$app->post("/pokemon/{pokemonId}/abilities", "handleUnsupportedOperation");
+$app->post("/pokemon/{pokemonId}/moves", "handleUnsupportedOperation");
 
-//to be mapped
-//$app->post("/games/{gameId}/locations", "handleUnsupportedOperation");
-//$app->post("/locations/{locationsId}/gyms", "handleUnsupportedOperation");
-//$app->post("/generations/{generationId}/pokemon", "handleUnsupportedOperation");
-//$app->post("/pokemon/{pokemonId}/abilities", "handleUnsupportedOperation");
-//$app->post("/pokemon/{pokemonId}/moves", "handleUnsupportedOperation");
-
-//to be mapped
-//$app->post("/generations/{generationId}/games/{gameId}", "handleUnsupportedOperation");
-//$app->post("/trainers/{trainerId}/pokedex/{pokedexId}", "handleUnsupportedOperation");
-//$app->post("/games/{gameId}/locations/{locationId}", "handleUnsupportedOperation");
-//$app->post("/locations/{locationsId}/gyms/{gymId}", "handleUnsupportedOperation");
-//$app->post("/gyms/{gymId}/trainers/{trainerId}", "handleUnsupportedOperation");
-//$app->post("/generations/{generationId}/pokemon/{pokemonId}", "handleUnsupportedOperation");
-//$app->post("/pokemon/{pokemonId}/abilities/{abilityId}", "handleUnsupportedOperation");
-//$app->post("/pokemon/{pokemonId}/moves/{moveId}", "handleUnsupportedOperation");
+$app->post("/generations/{generationId}/games/{gameId}", "handleUnsupportedOperation");
+$app->post("/trainers/{trainerId}/pokedex/{pokedexId}", "handleUnsupportedOperation");
+$app->post("/games/{gameId}/locations/{locationId}", "handleUnsupportedOperation");
+$app->post("/locations/{locationsId}/gyms/{gymId}", "handleUnsupportedOperation");
+$app->post("/gyms/{gymId}/trainers/{trainerId}", "handleUnsupportedOperation");
+$app->post("/generations/{generationId}/pokemon/{pokemonId}", "handleUnsupportedOperation");
+$app->post("/pokemon/{pokemonId}/abilities/{abilityId}", "handleUnsupportedOperation");
+$app->post("/pokemon/{pokemonId}/moves/{moveId}", "handleUnsupportedOperation");
 
 //-------------------------------------------------------------------------------------------------
 //Put Operations
@@ -184,43 +182,37 @@ $app->put("/abilities", "handleUpdateAbility");
 $app->put("/moves", "handleUpdateMove");
 $app->put("/trainers", "handleUpdateTrainer");
 
+//base resources - unsupported operations
+$app->put("/generations/{generationId}", "handleUnsupportedOperation");
+$app->put("/pokemon/{pokemonId}", "handleUnsupportedOperation");
+$app->put("/abilities/{abilityId}", "handleUnsupportedOperation");
+$app->put("/moves/{moveId}", "handleUnsupportedOperation");
+$app->put("/trainers/{trainerId}", "handleUnsupportedOperation");
 
 //dependent resources
 $app->put("/trainers/{trainerId}/pokedex", "handleUpdatePokedex");
 
+//dependant resources without id
+$app->put("/generations/{generationId}/games", "handleUnsupportedOperation");
+$app->put("/gyms/{gymId}/trainers", "handleUnsupportedOperation");
+$app->put("/games/{gameId}/locations", "handleUnsupportedOperation");
+$app->put("/locations/{locationId}/gyms", "handleUnsupportedOperation");
+$app->put("/generations/{generationId}/pokemon", "handleUnsupportedOperation");
+$app->put("/pokemon/{pokemonId}/abilities", "handleUnsupportedOperation");
+$app->put("/pokemon/{pokemonId}/moves", "handleUnsupportedOperation");
+
+//dependant resources with id
+$app->put("/generations/{generationId}/games/{gameId}", "handleUnsupportedOperation");
+$app->put("/trainers/{trainerId}/pokedex/{pokedexId}", "handleUnsupportedOperation");
+$app->put("/games/{gameId}/location/{locationId}", "handleUnsupportedOperation");
+$app->put("/locations/{locationsId}/gyms/{gymId}", "handleUnsupportedOperation");
+$app->put("/gyms/{gymId}/trainers/{trainerId}", "handleUnsupportedOperation");
+$app->put("/generations/{generationId}/pokemon/{pokemonId}", "handleUnsupportedOperation");
+$app->put("/pokemon/{pokemonId}/abilities/{abilityId}", "handleUnsupportedOperation");
+$app->put("/pokemon/{pokemonId}/moves/{moveId}", "handleUnsupportedOperation");
+
 //not to sure ab this since we can already update trainers through base resource
-$app->put("/gyms/{gymId}/trainers", "callback");
-
-
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//$app->put("/gyms/{gymId}/trainers", "callback");
 
 function handleUnsupportedOperation(Request $request, Response $response, array $args) {
     $requested_format = $request->getHeader('Accept');
