@@ -1,0 +1,19 @@
+To install composer:
+C:\xampp\php\windowsXamppPhp\php.exe composer.phar
+To install guzzle:
+C:\xampp\php\windowsXamppPhp\php.exe composer.phar require guzzlehttp/guzzle
+
+
+Install Composer:
+1. https://getcomposer.org/download/
+2. Download and run Composer-Setup.exe
+3. Install (next all)
+4. cmd:
+	a. composer -> to verify if installed
+	b. cd C:\xampp\htdocs\music-api
+	c. composer require guzzlehttp/guzzle
+	d. check in htdocs project folder -> Vendor if guzzlehttp folder is there
+
+https://docs.guzzlephp.org/en/stable/overview.html
+
+https://datatables.net/
