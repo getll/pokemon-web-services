@@ -11,6 +11,7 @@ require_once './includes/helpers/helper_functions.php';
 require_once './includes/helpers/Paginator.php';
 require_once './includes/helpers/WebServiceInvoker.php';
 require_once './includes/models/BaseModel.php';
+require_once './controllers/PokeAPIController.php';
 
 //--Step 1) Instantiate App.
 $app = AppFactory::create();
