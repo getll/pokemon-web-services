@@ -238,21 +238,21 @@ function handleBase(Request $request, Response $response, array $args) {
     $resp = array(
         "message" => "Welcome to our pokemon api! Below are our resources and subresources.",
         "main resources" => array(
-            "generations" => "localhost/generations",
-            "pokemon" => "localhost/pokemon",
-            "abilities" => "localhost/abilities",
-            "moves" => "localhost/moves",
-            "trainers" => "localhost/trainers"
+            "generations" => "pokemon-api/generations",
+            "pokemon" => "pokemon-api/pokemon",
+            "abilities" => "pokemon-api/abilities",
+            "moves" => "pokemon-api/moves",
+            "trainers" => "pokemon-api/trainers"
         ),
         "subresources" => array(
-            "games by generation" => "localhost/generations/{generationId}/games",
-            "pokedex by trainers" => "localhost/trainers/{trainerId}/pokedex",
-            "locations by games" => "localhost/games/{gameId}/locations",
-            "gyms by location" => "localhost/locations/{locationsId}/gyms",
-            "trainers as gym leaders" => "localhost/gyms/{gymId}/trainers",
-            "pokemon by generation" => "localhost/generation/{generationId}/pokemon",
-            "pokemon abilities" => "localhost/pokemon/{pokemonId}/abilities",
-            "pokemon moves" => "localhost/pokemon/{pokemonId}/moves"
+            "games by generation" => "pokemon-api/generations/{generationId}/games",
+            "pokedex by trainers" => "pokemon-api/trainers/{trainerId}/pokedex",
+            "locations by games" => "pokemon-api/games/{gameId}/locations",
+            "gyms by location" => "pokemon-api/locations/{locationsId}/gyms",
+            "trainers as gym leaders" => "pokemon-api/gyms/{gymId}/trainers",
+            "pokemon by generation" => "pokemon-api/generation/{generationId}/pokemon",
+            "pokemon abilities" => "pokemon-api/pokemon/{pokemonId}/abilities",
+            "pokemon moves" => "pokemon-api/pokemon/{pokemonId}/moves"
         )
     );
     
