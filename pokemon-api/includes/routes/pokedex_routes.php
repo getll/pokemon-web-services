@@ -4,6 +4,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 //var_dump($_SERVER["REQUEST_METHOD"]);
 use Slim\Factory\AppFactory;
+require_once './includes/controllers/PokeAPIController.php';
 
 require_once __DIR__ . './../models/BaseModel.php';
 require_once __DIR__ . './../models/PokedexModel.php';
@@ -50,12 +51,14 @@ function handleGetPokedexById(Request $request, Response $response, array $args)
     $response_data = array();
     $response_code = HTTP_OK;
     $pokedex_model = new PokedexModel();
-
+    $pokeapi_controller = new PokeAPIController();
+    
     // Retreive the artist id from the request's URI.
     $pokedex = $args["pokedex"];
     if (isset($pokedex)) {
         // Fetch the info about the specified artist.
         $pokedex_info = $pokedex_model->getPokedexById($pokedex);
+        
         if (!$pokedex_info) {
             // No matches found?
             $response_data = makeCustomJSONError("resourceNotFound", "No matching record was found for the specified pokemon.");
@@ -68,6 +71,9 @@ function handleGetPokedexById(Request $request, Response $response, array $args)
     //--
     //-- We verify the requested resource representation.    
     if ($requested_format[0] === APP_MEDIA_TYPE_JSON) {
+        
+        var_dump($pokeapi_controller->getNatureInfo($pokedex_info["nature"]));
+        
         $response_data = json_encode($pokedex_info, JSON_INVALID_UTF8_SUBSTITUTE);
     } else {
         $response_data = json_encode(getErrorUnsupportedFormat());

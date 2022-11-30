@@ -11,7 +11,7 @@ require_once './includes/helpers/helper_functions.php';
 require_once './includes/helpers/Paginator.php';
 require_once './includes/helpers/WebServiceInvoker.php';
 require_once './includes/models/BaseModel.php';
-require_once './controllers/PokeAPIController.php';
+require_once './includes/controllers/PokeAPIController.php';
 
 //--Step 1) Instantiate App.
 $app = AppFactory::create();
@@ -63,6 +63,7 @@ $app->get("/pokemon/{pokemonId}", "handleGetPokemonById");
 $app->get("/abilities/{abili}", "handleGetAbilityById");
 $app->get("/moves/{moves}", "handleGetMoveById");
 $app->get("/trainers/{trainers}", "handleGetTrainerById");
+
 $app->get("/games/{gamez}", "handleGetGameById");
 $app->get("/gyms/{gyms}", "handleGetGymById");
 $app->get("/locations/{location}", "handleGetLocationById");
@@ -88,7 +89,7 @@ $app->get("/gyms/{gymId}/trainers/{trainerId}", "handleUnsupportedOperation");
 $app->get("/generations/{generationId}/pokemon/{pokemonId}", "handleUnsupportedOperation");
 
 // ???
-$app->get("/pokemonMove/{pokemonMoves}", "handleGetPokemonMoveById");
+//$app->get("/pokemonMove/{pokemonMoves}", "handleGetPokemonMoveById");
 
 //Change this piece of shit ??????????
 $app->get("/pokemon/{pokemonId}/abilities/{pokemonAbility}", "handleGetSpecificAbilitiesRelatedToPokemon");
