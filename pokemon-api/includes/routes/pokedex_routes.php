@@ -72,7 +72,8 @@ function handleGetPokedexById(Request $request, Response $response, array $args)
     //-- We verify the requested resource representation.    
     if ($requested_format[0] === APP_MEDIA_TYPE_JSON) {
         
-        var_dump($pokeapi_controller->getNatureInfo($pokedex_info["nature"]));
+        // Using the PokeApi nature data to create the composite resource:
+        $pokedex_info["nature_info"] = $pokeapi_controller->getNatureInfo($pokedex_info["nature"]);
         
         $response_data = json_encode($pokedex_info, JSON_INVALID_UTF8_SUBSTITUTE);
     } else {

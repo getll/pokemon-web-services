@@ -21,20 +21,20 @@ class PokeAPIController extends WebServiceInvoker {
      * @return array containing some information about natures. 
      */
     function getNatureInfo($nature) {
-        $natureData = Array();
+        $natures = Array();
         $resource_uri = "https://pokeapi.co/api/v2/nature/" . strtolower($nature);
-        
         
         $natureData = $this->invoke($resource_uri);
 
         if (!empty($natureData)) {
-            foreach ($natureData as $key => $book) {
-                $books["decreased_stat"] = $book["name"];
-                //
-                $index++;
-            }
-        }
-        return $books;
-    }
 
+            $natureData = json_decode($natureData, true);
+
+            $natures["decreased_stat"] = isset($natureData["decreased_stat"]["name"]) ? $natureData["decreased_stat"]["name"] : "None";
+            $natures["increased_stat"] = isset($natureData["increased_stat"]["name"]) ? $natureData["increased_stat"]["name"] : "None";
+            $natures["hates_flavor"] = isset($natureData["hates_flavor"]["name"]) ? $natureData["hates_flavor"]["name"] : "None";
+            $natures["likes_flavor"] = isset($natureData["likes_flavor"]["name"]) ? $natureData["likes_flavor"]["name"] : "None";
+        }
+        return $natures;
+    }
 }
