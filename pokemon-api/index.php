@@ -52,25 +52,22 @@ $app->any("/", "handleBase");
 //Get operations
 
 // Main resources:
+// get all
 $app->get("/generations", "handleGetAllGenerations");
 $app->get("/pokemon", "handleGetAllPokemons");
 $app->get("/abilities", "handleGetAllAbilities");
 $app->get("/moves", "handleGetAllMoves");
 $app->get("/trainers", "handleGetAllTrainers");
 
+// get by id
 $app->get("/generations/{gens}", "handleGetGenerationById");
 $app->get("/pokemon/{pokemonId}", "handleGetPokemonById");
 $app->get("/abilities/{abili}", "handleGetAbilityById");
 $app->get("/moves/{moves}", "handleGetMoveById");
 $app->get("/trainers/{trainers}", "handleGetTrainerById");
 
-$app->get("/games/{gamez}", "handleGetGameById");
-$app->get("/gyms/{gyms}", "handleGetGymById");
-$app->get("/locations/{location}", "handleGetLocationById");
-$app->get("/pokedex/{pokedex}", "handleGetPokedexById");
-$app->get("/pokemon_ability/{pokebi}", "handleGetPokeAbilityById");
-
-// // Sub-Resources:
+// Sub-Resources:
+// get all
 $app->get("/generations/{generationId}/games", "handleGetGamesByGeneration");
 $app->get("/trainers/{trainerId}/pokedex", "handleGetPokedexByTrainer");
 $app->get("/games/{gameId}/locations", "handleGetLocationsByGame");
@@ -80,21 +77,33 @@ $app->get("/generations/{generationId}/pokemon", "handleGetPokemonsByGeneration"
 $app->get("/pokemon/{pokemonId}/abilities", "handleGetAbilitiesByPokemon");
 $app->get("/pokemon/{pokemonId}/moves", "handleGetMovesByPokemon");
 
-// Unsupported operations:
-$app->get("/generations/{generationId}/games/{gameId}", "handleUnsupportedOperation");
-$app->get("/trainers/{trainerId}/pokedex/{pokedexId}", "handleUnsupportedOperation");
-$app->get("/games/{gameId}/location/{locationId}", "handleUnsupportedOperation");
-$app->get("/locations/{locationsId}/gyms/{gymId}", "handleUnsupportedOperation");
+// match these routes to have the uri shown below (lines 95 to 100)
+// add callbacks for 2 routes, "/gyms/{gymId}/trainers/{trainerId}" and "/generations/{generationId}/pokemon/{pokemonId}"
+// change model functions as well
+//
+// this route was already implemented as "/pokemon/{pokemonId}/abilities/{pokemonAbility}", you can use as reference
+// $app->get("/pokemon_ability/{pokebi}", "handleGetPokeAbilityById");
+//
+// $app->get("/games/{gamez}", "handleGetGameById");
+// $app->get("/pokedex/{pokedex}", "handleGetPokedexById");
+// $app->get("/locations/{location}", "handleGetLocationById");
+// $app->get("/gyms/{gyms}", "handleGetGymById");
+// this route needs to be added, "/gyms/{gymId}/trainers/{trainerId}"
+// this route needs to be added, "/generations/{generationId}/pokemon/{pokemonId}"
+
+// uris on top need to be these instead, you can use same callbacks but handle the added id
+$app->get("/generations/{generationId}/games/{gamez}", "handleUnsupportedOperation");
+$app->get("/trainers/{trainerId}/pokedex/{pokedex}", "handleUnsupportedOperation");
+$app->get("/games/{gameId}/location/{location}", "handleUnsupportedOperation");
+$app->get("/locations/{locationsId}/gyms/{gyms}", "handleUnsupportedOperation");
 $app->get("/gyms/{gymId}/trainers/{trainerId}", "handleUnsupportedOperation");
 $app->get("/generations/{generationId}/pokemon/{pokemonId}", "handleUnsupportedOperation");
 
-// ???
-//$app->get("/pokemonMove/{pokemonMoves}", "handleGetPokemonMoveById");
-
-//Change this piece of shit ??????????
+// already implemented
 $app->get("/pokemon/{pokemonId}/abilities/{pokemonAbility}", "handleGetSpecificAbilitiesRelatedToPokemon");
 $app->get("/pokemon/{pokemonId}/moves/{pokemonMove}", "handleGetSpecificMovesRelatedToPokemon");
 
+// Unsupported operation
 
 //-------------------------------------------------------------------------------------------------
 //Delete operations
