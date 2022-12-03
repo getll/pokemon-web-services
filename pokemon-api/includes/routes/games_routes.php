@@ -91,11 +91,11 @@ function handleCreateGame(Request $request, Response $response, array $args) {
         if (isset($generation_id)) {
             foreach ($parsed_body as $single_game) {
                 // going through each field in a row
-                $game_id = $single_game["game_id"];
+//                $game_id = $single_game["game_id"];
                 $game_name = $single_game["name"];
 
                 $game_record = array(
-                    "game_id" => $game_id, 
+//                    "game_id" => $game_id, 
                     "name" => $game_name, 
                     
                     // generation id from uri

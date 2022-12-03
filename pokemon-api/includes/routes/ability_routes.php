@@ -88,12 +88,12 @@ function handleCreateAbility(Request $request, Response $response, array $args) 
         
         foreach ($parsed_body as $single_ability) {
             // going through each field in a row
-            $ability_id = $single_ability["ability_id"];
+//            $ability_id = $single_ability["ability_id"];
             $ability_name = $single_ability["name"];
             $ability_desc = $single_ability["description"];
 
             $ability_record = array(
-                "ability_id" => $ability_id, 
+//                "ability_id" => $ability_id, 
                 "name" => $ability_name, 
                 "description" => $ability_desc
             );

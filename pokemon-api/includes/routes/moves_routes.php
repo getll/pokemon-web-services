@@ -89,7 +89,7 @@ function handleCreateMove(Request $request, Response $response, array $args) {
         
         foreach ($parsed_body as $single_move) {
             // going through each field in a row
-            $move_id = $single_move["move_id"];
+//            $move_id = $single_move["move_id"];
             $move_name = $single_move["name"];
             $move_desc = $single_move["description"];
             $move_category = $single_move["category"];
@@ -100,7 +100,7 @@ function handleCreateMove(Request $request, Response $response, array $args) {
             $move_secondary_effect = $single_move["has_secondary_effect"];
 
             $move_record = array(
-                "move_id" => $move_id, 
+//                "move_id" => $move_id, 
                 "name" => $move_name, 
                 "description" => $move_desc, 
                 "category" => $move_category, 

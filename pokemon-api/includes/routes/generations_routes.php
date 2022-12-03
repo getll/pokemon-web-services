@@ -78,7 +78,9 @@ function handleGetGenerationById(Request $request, Response $response, array $ar
 
 function handleCreateGeneration(Request $request, Response $response, array $args) {
     $response_code = HTTP_CREATED;
-    $generations = "";
+    
+    $valid_rows = array();
+    $rows_not_added = 0;
     
     $generation_model = new GenerationModel();
     $parsed_body = $request->getParsedBody();
@@ -87,22 +89,28 @@ function handleCreateGeneration(Request $request, Response $response, array $arg
     if (isset($requested_format[0]) && $requested_format[0] === APP_MEDIA_TYPE_JSON) {
         
         foreach ($parsed_body as $single_generation) {
-            // going through each field in a row
-            $generation_id = $single_generation["generation_id"];
-            $generation_pokemon_num = $single_generation["pokemon_number"];
+            if (validate($single_generation)) {
+                
+                // going through each field in a row
+                $generation_pokemon_num = $single_generation["pokemon_number"];
 
-            $generation_record = array(
-                "generation_id" => $generation_id, 
-                "pokemon_number" => $generation_pokemon_num
-            );
-            $generation_model->createGeneration($generation_record);
+                $generation_record = array(
+                    "pokemon_number" => $generation_pokemon_num
+                );
+                $generation_model->createGeneration($generation_record);
 
-            // preparing response message
-            $generations .= ((empty($generations)) ? "Created rows for generation " . $generation_id : ", " . $generation_id);
+                // preparing response message
+                array_push($valid_rows, $generation_record);
+            }
+            else {
+                $rows_not_added++;
+            }
         }
         
-        $response_data = json_encode(array("message" => $generations, 
-                "generations" => $parsed_body), JSON_INVALID_UTF8_SUBSTITUTE);
+        $response_data = json_encode(array("message" => 
+                count($valid_rows) . ((count($valid_rows) == 1) ? " row" : " rows") . " added, " .
+                $rows_not_added . (($rows_not_added == 1) ? " row" : " rows") . " invalid.",
+                "generations" => $valid_rows), JSON_INVALID_UTF8_SUBSTITUTE);
     }
     else {
         $response_data = json_encode(getErrorUnsupportedFormat());
@@ -173,4 +181,10 @@ function handleGetAllGenerations(Request $request, Response $response, array $ar
 
     $response->getBody()->write($response_data);
     return $response->withStatus($response_code);
+}
+
+function validate($single_generation) {
+    return isset($single_generation["pokemon_number"]) &&
+            is_numeric($single_generation["pokemon_number"]) &&
+            $single_generation["pokemon_number"] >= 0;
 }
