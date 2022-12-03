@@ -28,6 +28,12 @@ class MovesModel extends BaseModel {
         $data = $this->run($sql, [$moves])->fetch();
         return $data;
     }
+    
+    public function getMoveByName($move_name){
+        $sql = "SELECT * FROM moves WHERE name = ?";
+        $data = $this->run($sql, [$move_name])->fetch();
+        return $data;
+    }
 
     public function createMove($record) {
         $data = $this->insert($this->table_name, $record);

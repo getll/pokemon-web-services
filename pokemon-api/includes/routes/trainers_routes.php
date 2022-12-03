@@ -79,43 +79,64 @@ function handleGetTrainerById(Request $request, Response $response, array $args)
 
 function handleCreateTrainer(Request $request, Response $response, array $args) {
     $response_code = HTTP_CREATED;
-    $trainers = "";
+    
+    $valid_rows = array();
+    $rows_not_added = 0;
     
     $trainer_model = new TrainersModel();
     $parsed_body = $request->getParsedBody();
+    
+    // checking for request body
+    if (!$parsed_body || !(is_array($parsed_body) && array_is_list($parsed_body)) || empty($parsed_body)) {
+        $response_code = HTTP_BAD_REQUEST;
+        $response_data = json_encode(getErrorBadRequest("Missing or badly formatted request body."));
+        $response->getBody()->write($response_data);
+        return $response->withStatus($response_code);
+    }
     
     $requested_format = $request->getHeader('Accept');
     if (isset($requested_format[0]) && $requested_format[0] === APP_MEDIA_TYPE_JSON) {
         
         foreach ($parsed_body as $single_trainer) {
-            // going through each field in a row
-//            $trainer_id = $single_trainer["trainer_id"];
-            $trainer_name = $single_trainer["name"];
-            $trainer_gender = $single_trainer["gender"];
-            $trainer_class = $single_trainer["trainer_class"];
-            $trainer_quote = $single_trainer["quote"];
-            $trainer_money = $single_trainer["money"];
+            
+            if (validateTrainer($single_trainer)) {
+                // going through each field in a row
+                $trainer_name = $single_trainer["name"];
+                $trainer_gender = $single_trainer["gender"];
+                $trainer_class = $single_trainer["trainer_class"];
+                $trainer_quote = $single_trainer["quote"];
+                $trainer_money = $single_trainer["money"];
 
-            $trainer_record = array(
-//                "trainer_id" => $trainer_id, 
-                "name" => $trainer_name, 
-                "gender" => $trainer_gender, 
-                "trainer_class" => $trainer_class, 
-                "quote" => $trainer_quote, 
-                "money" => $trainer_money
-            );
-            $trainer_model->createTrainer($trainer_record);
+                $trainer_record = array(
+                    "name" => $trainer_name, 
+                    "gender" => $trainer_gender, 
+                    "trainer_class" => $trainer_class, 
+                    "quote" => $trainer_quote, 
+                    "money" => $trainer_money
+                );
+                $trainer_model->createTrainer($trainer_record);
 
-            // preparing response message
-            $trainers .= ((empty($trainers)) ? "Created rows for " . $trainer_name : ", " . $trainer_name);
+                // preparing response message
+                array_push($valid_rows, $trainer_record);
+            }
+            else {
+                $rows_not_added++;
+            }
         }
         
-        $response_data = json_encode(array("message" => $trainers, 
-                "trainers" => $parsed_body), JSON_INVALID_UTF8_SUBSTITUTE);
+        $response_data = json_encode(array("message" => 
+                count($valid_rows) . ((count($valid_rows) == 1) ? " row" : " rows") . " added, " .
+                $rows_not_added . (($rows_not_added == 1) ? " row" : " rows") . " invalid.",
+                "trainers" => $valid_rows), JSON_INVALID_UTF8_SUBSTITUTE);
     }
     else {
         $response_data = json_encode(getErrorUnsupportedFormat());
         $response_code = HTTP_UNSUPPORTED_MEDIA_TYPE;
+    }
+    
+    // if all rows were rejected
+    if (empty($valid_rows) && $rows_not_added > 0) {
+        $response_code = HTTP_BAD_REQUEST;
     }
     
     $response->getBody()->write($response_data);
@@ -237,4 +258,15 @@ function handleGetTrainersByGym(Request $request, Response $response, array $arg
 
     $response->getBody()->write($response_data);
     return $response->withStatus($response_code);
+}
+
+function validateTrainer($single_trainer) {
+    return isset($single_trainer["name"]) && 
+            isset($single_trainer["gender"]) && 
+            in_array($single_trainer["gender"], POKEMON_GENDERS) && 
+            isset($single_trainer["trainer_class"]) && 
+            isset($single_trainer["quote"]) && 
+            isset($single_trainer["money"]) && 
+            is_numeric($single_trainer["money"]) &&
+            floor($single_trainer["money"]) == $single_trainer["money"];
 }

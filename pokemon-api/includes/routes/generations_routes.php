@@ -85,11 +85,19 @@ function handleCreateGeneration(Request $request, Response $response, array $arg
     $generation_model = new GenerationModel();
     $parsed_body = $request->getParsedBody();
     
+    // checking for request body
+    if (!$parsed_body || !(is_array($parsed_body) && array_is_list($parsed_body)) || empty($parsed_body)) {
+        $response_code = HTTP_BAD_REQUEST;
+        $response_data = json_encode(getErrorBadRequest("Missing or badly formatted request body."));
+        $response->getBody()->write($response_data);
+        return $response->withStatus($response_code);
+    }
+    
     $requested_format = $request->getHeader('Accept');
     if (isset($requested_format[0]) && $requested_format[0] === APP_MEDIA_TYPE_JSON) {
         
         foreach ($parsed_body as $single_generation) {
-            if (validate($single_generation)) {
+            if (validateGeneration($single_generation)) {
                 
                 // going through each field in a row
                 $generation_pokemon_num = $single_generation["pokemon_number"];
@@ -115,6 +123,11 @@ function handleCreateGeneration(Request $request, Response $response, array $arg
     else {
         $response_data = json_encode(getErrorUnsupportedFormat());
         $response_code = HTTP_UNSUPPORTED_MEDIA_TYPE;
+    }
+    
+    // if all rows were rejected
+    if (empty($valid_rows) && $rows_not_added > 0) {
+        $response_code = HTTP_BAD_REQUEST;
     }
     
     $response->getBody()->write($response_data);
@@ -183,7 +196,7 @@ function handleGetAllGenerations(Request $request, Response $response, array $ar
     return $response->withStatus($response_code);
 }
 
-function validate($single_generation) {
+function validateGeneration($single_generation) {
     return isset($single_generation["pokemon_number"]) &&
             is_numeric($single_generation["pokemon_number"]) &&
             $single_generation["pokemon_number"] >= 0;
