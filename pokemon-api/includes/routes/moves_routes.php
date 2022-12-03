@@ -177,8 +177,8 @@ function handleUpdateMove(Request $request, Response $response, array $args) {
         foreach ($parsed_body as $single_move) {
             // ---------------------------------------------------------------------------------------------------------------------------------------
             // validation added in foreach loop, checking the $single move row using validate function
-            // validation excludes if the id of the row isset, to add in validation pls
-            // id can also checked if it exists in db, but still technically valid if it doesnt. query will just not happen ---> it is this ($moves_model->getMoveById($single_move["move_id"])
+            // validation excludes if the id of the row isset, to add in validation pls ----> this condition (isset($single_move["move_id"]))
+            // id can also checked if it exists in db, but still technically valid if it doesnt. query will just not happen ---> this condition($moves_model->getMoveById($single_move["move_id"])
             if (validateMove($single_move) && isset($single_move["move_id"]) && $moves_model->getMoveById($single_move["move_id"])) {
                 // going through each field in a row
                 $move_id = $single_move["move_id"];
