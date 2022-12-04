@@ -233,7 +233,6 @@ class BaseModel {
         }
 
         $stmt = $this->run("UPDATE $table SET $fieldDetails WHERE $whereDetails", $values);
-
         return $stmt->rowCount();
     }
 

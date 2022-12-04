@@ -149,15 +149,27 @@ function handleCreatePokemon(Request $request, Response $response, array $args) 
 
 function handleUpdatePokemon(Request $request, Response $response, array $args) {
     $response_code = HTTP_CREATED;
-    $pokemons = "";
+    
+    $valid_rows = array();
+    $rows_not_added = 0;
     
     $pokemon_model = new PokemonModel();
     $parsed_body = $request->getParsedBody();
     
+     if (!$parsed_body || !(is_array($parsed_body) && array_is_list($parsed_body)) || empty($parsed_body)) {
+        $response_code = HTTP_BAD_REQUEST;
+        $response_data = json_encode(getErrorBadRequest("Missing or badly formatted request body."));
+        $response->getBody()->write($response_data);
+        return $response->withStatus($response_code);
+    }
+    
+    
     $requested_format = $request->getHeader('Accept');
     if (isset($requested_format[0]) && $requested_format[0] === APP_MEDIA_TYPE_JSON) {
         
+         
         foreach ($parsed_body as $single_pokemon) {
+            if (validatePokemon($single_pokemon)) {
             // going through each field in a row
             $pokemon_id = $single_pokemon["pokemon_id"];
             $pokemon_name = $single_pokemon["name"];
@@ -179,12 +191,16 @@ function handleUpdatePokemon(Request $request, Response $response, array $args) 
             );
             $pokemon_model->updatePokemon($pokemon_record, array("pokemon_id" => $pokemon_id));
             
-            // preparing response message
-            $pokemons .= ((empty($pokemons)) ? "Updated rows for " . $pokemon_name : ", " . $pokemon_name);
+            array_push($valid_rows, $pokemon_record);
+            }else {
+                $rows_not_added++;
+            }
         }
         
-        $response_data = json_encode(array("message" => $pokemons, 
-                "pokemon" => $parsed_body), JSON_INVALID_UTF8_SUBSTITUTE);
+        $response_data = json_encode(array("message" => 
+                count($valid_rows) . ((count($valid_rows) == 1) ? " row" : " rows") . " added, " .
+                $rows_not_added . (($rows_not_added == 1) ? " row" : " rows") . " invalid.",
+                "pokemon" => $valid_rows), JSON_INVALID_UTF8_SUBSTITUTE);
     }
     else {
         $response_data = json_encode(getErrorUnsupportedFormat());
