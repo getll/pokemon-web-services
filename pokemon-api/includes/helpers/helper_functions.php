@@ -16,6 +16,14 @@ function getErrorUnsupportedMethod($method_name) {
     return $error_data;
 }
 
+function getErrorBadRequest($message) {
+    $error_data = array(
+        "error:" => "badRequest",
+        "message:" => $message
+    );
+    return $error_data;
+}
+
 function makeCustomJSONError($error_code, $error_message) {
     $error_data = array(
         "error:" => $error_code,
