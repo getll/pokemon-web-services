@@ -207,6 +207,10 @@ function handleUpdatePokemon(Request $request, Response $response, array $args) 
         $response_code = HTTP_UNSUPPORTED_MEDIA_TYPE;
     }
     
+    if (empty($valid_rows) && $rows_not_added > 0) {
+        $response_code = HTTP_BAD_REQUEST;
+    }
+    
     $response->getBody()->write($response_data);
     return $response->withStatus($response_code);
 }
