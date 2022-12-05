@@ -71,4 +71,10 @@ class PokemonModel extends BaseModel {
         $data = $this->paginate($sql, $query_options);
         return $data;
     }
+
+    public function getSpecificPokemonRelatedToGeneration($generationId, $pokemonId){
+        $sql = "SELECT * FROM pokemon WHERE intro_gen = ? AND pokemon_id = ?";
+        $data = $this->run($sql,[$generationId, $pokemonId])->fetch();
+        return $data;
+    }
 }

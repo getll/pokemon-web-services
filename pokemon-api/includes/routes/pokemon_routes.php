@@ -290,6 +290,36 @@ function handleGetPokemonsByGeneration(Request $request, Response $response, arr
     return $response->withStatus($response_code);
 }
 
+
+function handleGetSpecificPokemonRelatedToGeneration(Request $request, Response $response, array $args) {
+    $pokemon_spec = array();
+    $response_data = array();
+    $response_code = HTTP_OK;
+    $pokemon_model = new PokemonModel();
+
+    $generationId = $args['generationId'];
+    $pokemonId = $args["pokemonId"];
+    if (isset($generationId, $pokemonId)) {
+        $pokemon_spec = $pokemon_model->getSpecificPokemonRelatedToGeneration($generationId, $pokemonId);
+        if (!$pokemon_spec) {
+            $response_data = makeCustomJSONError("resourceNotFound", "No matching record was found for the specified pokemon generation.");
+            $response->getBody()->write($response_data);
+            return $response->withStatus(HTTP_NOT_FOUND);
+        }
+    }
+    $requested_format = $request->getHeader('Accept');
+    //--
+    //-- We verify the requested resource representation.    
+    if ($requested_format[0] === APP_MEDIA_TYPE_JSON) {
+        $response_data = json_encode($pokemon_spec, JSON_INVALID_UTF8_SUBSTITUTE);
+    } else {
+        $response_data = json_encode(getErrorUnsupportedFormat());
+        $response_code = HTTP_UNSUPPORTED_MEDIA_TYPE;
+    }
+    $response->getBody()->write($response_data);
+    return $response->withStatus($response_code);
+   }
+
 function validatePokemon($single_pokemon) {
     $generation_model = new GenerationModel();
     
@@ -317,4 +347,5 @@ function validatePokemon($single_pokemon) {
     }
     
     return false;
+
 }

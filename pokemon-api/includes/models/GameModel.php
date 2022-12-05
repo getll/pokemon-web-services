@@ -38,4 +38,16 @@ class GameModel extends BaseModel {
         $data = $this->run($sql, [$generation_id])->fetchAll();
         return $data;
     }
+
+    public function getSpecificGameRelatedToGeneration($gen, $gamez){
+        $sql = "SELECT * FROM games WHERE generation_id = ? AND game_id = ?";
+        $data = $this->run($sql,[$gen, $gamez])->fetch();
+        return $data;
+    }
+
+    public function deleteSpecificGameRelatedToGeneration($gen, $gamez){
+        $sql = "DELETE FROM games WHERE generation_id = ? AND game_id = ?";
+        $data = $this->run($sql, [$gen, $gamez]);
+        return $data;
+    }
 }
