@@ -23,26 +23,23 @@ function deleteOneGeneration(Request $request, Response $response, array $args) 
             $generation_info = $generation_model->getGenerationById($gens);
             $generation_name = $generation_model->getGenerationById($gens);
             if (!$generation_info) {
-                $response_data = (makeCustomJSONError("resourceNotFound", 
-                        "No matching record was found for generation ". $gens ."."));
+                $response_data = (makeCustomJSONError("resourceNotFound",
+                                "No matching record was found for generation " . $gens . "."));
                 $response->getBody()->write($response_data);
                 return $response->withStatus(HTTP_NOT_FOUND);
             }
             $generation_info = $generation_model->delSingleGeneration($gens);
-        } 
-        $response_data = json_encode(array("Message" => "Generation ". $gens ." deleted.", 
-                "Generation information" => $generation_name), JSON_INVALID_UTF8_SUBSTITUTE);
-    }
-    else {
+        }
+        $response_data = json_encode(array("Message" => "Generation " . $gens . " deleted.",
+            "Generation information" => $generation_name), JSON_INVALID_UTF8_SUBSTITUTE);
+    } else {
         $response_data = json_encode(getErrorUnsupportedFormat());
         $response_code = HTTP_UNSUPPORTED_MEDIA_TYPE;
     }
-    
+
     $response->getBody()->write($response_data);
     return $response->withStatus($response_code);
 }
-
-
 
 function handleGetGenerationById(Request $request, Response $response, array $args) {
     $generation_info = array();
@@ -78,70 +75,111 @@ function handleGetGenerationById(Request $request, Response $response, array $ar
 
 function handleCreateGeneration(Request $request, Response $response, array $args) {
     $response_code = HTTP_CREATED;
-    $generations = "";
-    
+
+    $valid_rows = array();
+    $rows_not_added = 0;
+
     $generation_model = new GenerationModel();
     $parsed_body = $request->getParsedBody();
-    
+
+    // checking for request body
+    if (!$parsed_body || !(is_array($parsed_body) && array_is_list($parsed_body)) || empty($parsed_body)) {
+        $response_code = HTTP_BAD_REQUEST;
+        $response_data = json_encode(getErrorBadRequest("Missing or badly formatted request body."));
+        $response->getBody()->write($response_data);
+        return $response->withStatus($response_code);
+    }
+
     $requested_format = $request->getHeader('Accept');
     if (isset($requested_format[0]) && $requested_format[0] === APP_MEDIA_TYPE_JSON) {
-        
+
         foreach ($parsed_body as $single_generation) {
-            // going through each field in a row
-            $generation_id = $single_generation["generation_id"];
-            $generation_pokemon_num = $single_generation["pokemon_number"];
+            if (validateGeneration($single_generation)) {
 
-            $generation_record = array(
-                "generation_id" => $generation_id, 
-                "pokemon_number" => $generation_pokemon_num
-            );
-            $generation_model->createGeneration($generation_record);
+                // going through each field in a row
+                $generation_pokemon_num = $single_generation["pokemon_number"];
 
-            // preparing response message
-            $generations .= ((empty($generations)) ? "Created rows for generation " . $generation_id : ", " . $generation_id);
+                $generation_record = array(
+                    "pokemon_number" => $generation_pokemon_num
+                );
+                $generation_model->createGeneration($generation_record);
+
+                // preparing response message
+                array_push($valid_rows, $generation_record);
+            } else {
+                $rows_not_added++;
+            }
         }
-        
-        $response_data = json_encode(array("message" => $generations, 
-                "generations" => $parsed_body), JSON_INVALID_UTF8_SUBSTITUTE);
-    }
-    else {
+
+        $response_data = json_encode(array("message" =>
+            count($valid_rows) . ((count($valid_rows) == 1) ? " row" : " rows") . " added, " .
+            $rows_not_added . (($rows_not_added == 1) ? " row" : " rows") . " invalid.",
+            "generations" => $valid_rows), JSON_INVALID_UTF8_SUBSTITUTE);
+    } else {
         $response_data = json_encode(getErrorUnsupportedFormat());
         $response_code = HTTP_UNSUPPORTED_MEDIA_TYPE;
     }
-    
+
+    // if all rows were rejected
+    if (empty($valid_rows) && $rows_not_added > 0) {
+        $response_code = HTTP_BAD_REQUEST;
+    }
+
     $response->getBody()->write($response_data);
     return $response->withStatus($response_code);
 }
 
 function handleUpdateGeneration(Request $request, Response $response, array $args) {
     $response_code = HTTP_CREATED;
-    $generations = "";
     
+    $valid_rows = array();
+    $rows_not_added = 0;
+
     $generation_model = new GenerationModel();
     $parsed_body = $request->getParsedBody();
-    
+
+    if (!$parsed_body || !(is_array($parsed_body) && array_is_list($parsed_body)) || empty($parsed_body)) {
+        $response_code = HTTP_BAD_REQUEST;
+        $response_data = json_encode(getErrorBadRequest("Missing or badly formatted request body."));
+        $response->getBody()->write($response_data);
+        return $response->withStatus($response_code);
+    }
+
     $requested_format = $request->getHeader('Accept');
     if (isset($requested_format[0]) && $requested_format[0] === APP_MEDIA_TYPE_JSON) {
-        
+
+
         foreach ($parsed_body as $single_generation) {
-            // going through each field in a row
-            $generation_id = $single_generation["generation_id"];
-            $generation_pokemon_num = $single_generation["pokemon_number"];
+            if (validateGeneration($single_generation)) {
+                // going through each field in a row
+                $generation_id = $single_generation["generation_id"];
+                $pokemon_num = $single_generation["pokemon_number"];
+                
+                $generation_record = array(
+                  "pokemon_number"=>  $pokemon_num
+                );
 
-            $generation_model->updateGeneration(array("pokemon_number"=>$generation_pokemon_num),array("generation_id"=>$generation_id));
-
-            // preparing response message
-            $generations .= ((empty($generations)) ? "Updated rows for generation " . $generation_id : ", " . $generation_id);
+                $generation_model->updateGeneration($generation_record, array("generation_id" => $generation_id));
+                
+                array_push($valid_rows, $generation_record);
+            } else {
+                $rows_not_added++;
+            }
         }
-        
-        $response_data = json_encode(array("message" => $generations, 
-                "generations" => $parsed_body), JSON_INVALID_UTF8_SUBSTITUTE);
-    }
-    else {
+
+        $response_data = json_encode(array("message" =>
+            count($valid_rows) . ((count($valid_rows) == 1) ? " row" : " rows") . " added, " .
+            $rows_not_added . (($rows_not_added == 1) ? " row" : " rows") . " invalid.",
+            "generations" => $valid_rows), JSON_INVALID_UTF8_SUBSTITUTE);
+    } else {
         $response_data = json_encode(getErrorUnsupportedFormat());
         $response_code = HTTP_UNSUPPORTED_MEDIA_TYPE;
     }
-    
+
+    if (empty($valid_rows) && $rows_not_added > 0) {
+        $response_code = HTTP_BAD_REQUEST;
+    }
+
     $response->getBody()->write($response_data);
     return $response->withStatus($response_code);
 }
@@ -159,7 +197,7 @@ function handleGetAllGenerations(Request $request, Response $response, array $ar
         $response->getBody()->write($response_data);
         return $response->withStatus(HTTP_NOT_FOUND);
     }
-    
+
     // Handle serve-side content negotiation and produce the requested representation.    
     $requested_format = $request->getHeader('Accept');
 
@@ -173,4 +211,10 @@ function handleGetAllGenerations(Request $request, Response $response, array $ar
 
     $response->getBody()->write($response_data);
     return $response->withStatus($response_code);
+}
+
+function validateGeneration($single_generation) {
+    return isset($single_generation["pokemon_number"]) &&
+            is_numeric($single_generation["pokemon_number"]) &&
+            $single_generation["pokemon_number"] >= 0;
 }

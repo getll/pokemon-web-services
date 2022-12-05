@@ -8,7 +8,6 @@ use Slim\Factory\AppFactory;
 require_once __DIR__ . './../models/BaseModel.php';
 require_once __DIR__ . './../models/AbilityModel.php';
 
-
 function deleteOneAbility(Request $request, Response $response, array $args) {
     $ability_info = array();
     $response_data = array();
@@ -24,25 +23,23 @@ function deleteOneAbility(Request $request, Response $response, array $args) {
             $ability_info = $ability_model->getAbilityById($abili);
             $ability_name = $ability_model->getAbilityById($abili);
             if (!$ability_info) {
-                $response_data = (makeCustomJSONError("resourceNotFound", 
-                        "No matching record was found for ability ". $abili ."."));
+                $response_data = (makeCustomJSONError("resourceNotFound",
+                                "No matching record was found for ability " . $abili . "."));
                 $response->getBody()->write($response_data);
                 return $response->withStatus(HTTP_NOT_FOUND);
             }
             $ability_info = $ability_model->delSingleAbility($abili);
-        } 
-        $response_data = json_encode(array("Message" => "Ability ". $abili ." deleted.", 
-                "Ability information" => $ability_name), JSON_INVALID_UTF8_SUBSTITUTE);
-    }
-    else {
+        }
+        $response_data = json_encode(array("Message" => "Ability " . $abili . " deleted.",
+            "Ability information" => $ability_name), JSON_INVALID_UTF8_SUBSTITUTE);
+    } else {
         $response_data = json_encode(getErrorUnsupportedFormat());
         $response_code = HTTP_UNSUPPORTED_MEDIA_TYPE;
     }
-    
+
     $response->getBody()->write($response_data);
     return $response->withStatus($response_code);
 }
-
 
 function handleGetAbilityById(Request $request, Response $response, array $args) {
     $ability_info = array();
@@ -78,78 +75,114 @@ function handleGetAbilityById(Request $request, Response $response, array $args)
 
 function handleCreateAbility(Request $request, Response $response, array $args) {
     $response_code = HTTP_CREATED;
-    $abilities = "";
-    
+
+    $valid_rows = array();
+    $rows_not_added = 0;
+
     $ability_model = new AbilityModel();
     $parsed_body = $request->getParsedBody();
-    
+
+    // checking for request body
+    if (!$parsed_body || !(is_array($parsed_body) && array_is_list($parsed_body)) || empty($parsed_body)) {
+        $response_code = HTTP_BAD_REQUEST;
+        $response_data = json_encode(getErrorBadRequest("Missing or badly formatted request body."));
+        $response->getBody()->write($response_data);
+        return $response->withStatus($response_code);
+    }
+
     $requested_format = $request->getHeader('Accept');
     if (isset($requested_format[0]) && $requested_format[0] === APP_MEDIA_TYPE_JSON) {
-        
+
         foreach ($parsed_body as $single_ability) {
-            // going through each field in a row
-            $ability_id = $single_ability["ability_id"];
-            $ability_name = $single_ability["name"];
-            $ability_desc = $single_ability["description"];
+            if (validateAbility($single_ability)) {
+                // going through each field in a row
+                $ability_name = $single_ability["name"];
+                $ability_desc = $single_ability["description"];
 
-            $ability_record = array(
-                "ability_id" => $ability_id, 
-                "name" => $ability_name, 
-                "description" => $ability_desc
-            );
-            $ability_model->createAbility($ability_record);
+                $ability_record = array(
+                    "name" => $ability_name,
+                    "description" => $ability_desc
+                );
+                $ability_model->createAbility($ability_record);
 
-            // preparing response message
-            $abilities .= ((empty($abilities)) ? "Created rows for " . $ability_name : ", " . $ability_name);
+                // preparing response message
+                array_push($valid_rows, $ability_record);
+            } else {
+                $rows_not_added++;
+            }
         }
-        
-        $response_data = json_encode(array("message" => $abilities, 
-                "abilities" => $parsed_body), JSON_INVALID_UTF8_SUBSTITUTE);
-    }
-    else {
+
+        $response_data = json_encode(array("message" =>
+            count($valid_rows) . ((count($valid_rows) == 1) ? " row" : " rows") . " added, " .
+            $rows_not_added . (($rows_not_added == 1) ? " row" : " rows") . " invalid.",
+            "abilities" => $valid_rows), JSON_INVALID_UTF8_SUBSTITUTE);
+    } else {
         $response_data = json_encode(getErrorUnsupportedFormat());
         $response_code = HTTP_UNSUPPORTED_MEDIA_TYPE;
     }
-    
+
+    // if all rows were rejected
+    if (empty($valid_rows) && $rows_not_added > 0) {
+        $response_code = HTTP_BAD_REQUEST;
+    }
+
     $response->getBody()->write($response_data);
     return $response->withStatus($response_code);
 }
 
 function handleUpdateAbility(Request $request, Response $response, array $args) {
     $response_code = HTTP_CREATED;
-    $abilities = "";
     
+    $valid_rows = array();
+    $rows_not_added = 0;
+
     $ability_model = new AbilityModel();
     $parsed_body = $request->getParsedBody();
-    
+
+    if (!$parsed_body || !(is_array($parsed_body) && array_is_list($parsed_body)) || empty($parsed_body)) {
+        $response_code = HTTP_BAD_REQUEST;
+        $response_data = json_encode(getErrorBadRequest("Missing or badly formatted request body."));
+        $response->getBody()->write($response_data);
+        return $response->withStatus($response_code);
+    }
+
     $requested_format = $request->getHeader('Accept');
     if (isset($requested_format[0]) && $requested_format[0] === APP_MEDIA_TYPE_JSON) {
-        
+
         foreach ($parsed_body as $single_ability) {
-            
-            $ability_id = $single_ability["ability_id"];
-            $ability_name = $single_ability["name"];
-            $ability_desc = $single_ability["description"];
+            if (validateAbility($single_ability)) {
 
-            $ability_record = array(
-                "name" => $ability_name, 
-                "description" => $ability_desc
-            );
+                $ability_id = $single_ability["ability_id"];
+                $ability_name = $single_ability["name"];
+                $ability_desc = $single_ability["description"];
 
-            $ability_model->updateAbility($ability_record,array("ability_id "=> $ability_id ));
+                $ability_record = array(
+                    "name" => $ability_name,
+                    "description" => $ability_desc
+                );
 
-            // preparing response message
-           $abilities .= ((empty($abilities)) ? "Updated rows for " . $ability_name : ", " . $ability_name);
+                $ability_model->updateAbility($ability_record, array("ability_id " => $ability_id));
+
+                // preparing response message
+                array_push($valid_rows, $ability_record);
+            } else {
+                $rows_not_added++;
+            }
         }
-        
-        $response_data = json_encode(array("message" => $abilities, 
-                "abilities" => $parsed_body), JSON_INVALID_UTF8_SUBSTITUTE);
-    }
-    else {
+
+        $response_data = json_encode(array("message" =>
+            count($valid_rows) . ((count($valid_rows) == 1) ? " row" : " rows") . " added, " .
+            $rows_not_added . (($rows_not_added == 1) ? " row" : " rows") . " invalid.",
+            "abilitiy" => $valid_rows), JSON_INVALID_UTF8_SUBSTITUTE);
+    } else {
         $response_data = json_encode(getErrorUnsupportedFormat());
         $response_code = HTTP_UNSUPPORTED_MEDIA_TYPE;
     }
-    
+
+    if (empty($valid_rows) && $rows_not_added > 0) {
+        $response_code = HTTP_BAD_REQUEST;
+    }
+
     $response->getBody()->write($response_data);
     return $response->withStatus($response_code);
 }
@@ -159,7 +192,7 @@ function handleGetAllAbilities(Request $request, Response $response, array $args
     $response_data = array();
     $response_code = HTTP_OK;
     $ability_model = new AbilityModel();
-    
+
     $input_page_number = filter_input(INPUT_GET, "page", FILTER_VALIDATE_INT);
     $input_per_page = filter_input(INPUT_GET, "per_page", FILTER_VALIDATE_INT);
 
@@ -169,7 +202,7 @@ function handleGetAllAbilities(Request $request, Response $response, array $args
     $ability_model->setPaginationOptions($page_number, $per_page);
 
     $filter_params = $request->getQueryParams();
-    
+
     // Filtering
     $abilities = $ability_model->getAllAbilitiesFiltered($filter_params);
 
@@ -178,7 +211,7 @@ function handleGetAllAbilities(Request $request, Response $response, array $args
         $response->getBody()->write($response_data);
         return $response->withStatus(HTTP_NOT_FOUND);
     }
-    
+
     // Handle serve-side content negotiation and produce the requested representation.    
     $requested_format = $request->getHeader('Accept');
 
@@ -200,10 +233,9 @@ function handleGetAbilitiesByPokemon(Request $request, Response $response, array
     $response_code = HTTP_OK;
     $ability_model = new AbilityModel();
 
-    
     $pokemonId = $args["pokemonId"];
     if (isset($pokemonId)) {
-          
+
         $abilities = $ability_model->getAllAbilitiesByPokemon($pokemonId);
 
         if (!$abilities) {
@@ -213,7 +245,7 @@ function handleGetAbilitiesByPokemon(Request $request, Response $response, array
             return $response->withStatus(HTTP_NOT_FOUND);
         }
     }
-    
+
     // Handle serve-side content negotiation and produce the requested representation.    
     $requested_format = $request->getHeader('Accept');
 
@@ -227,4 +259,9 @@ function handleGetAbilitiesByPokemon(Request $request, Response $response, array
 
     $response->getBody()->write($response_data);
     return $response->withStatus($response_code);
+}
+
+function validateAbility($single_ability) {
+    return isset($single_ability["name"]) &&
+            isset($single_ability["description"]);
 }
