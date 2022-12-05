@@ -77,33 +77,19 @@ $app->get("/generations/{generationId}/pokemon", "handleGetPokemonsByGeneration"
 $app->get("/pokemon/{pokemonId}/abilities", "handleGetAbilitiesByPokemon");
 $app->get("/pokemon/{pokemonId}/moves", "handleGetMovesByPokemon");
 
-// match these routes to have the uri shown below (lines 95 to 100)
-// add callbacks for 2 routes, "/gyms/{gymId}/trainers/{trainerId}" and "/generations/{generationId}/pokemon/{pokemonId}"
-// change model functions as well
-//
-// this route was already implemented as "/pokemon/{pokemonId}/abilities/{pokemonAbility}", you can use as reference
-// $app->get("/pokemon_ability/{pokebi}", "handleGetPokeAbilityById");
-//
-// $app->get("/games/{gamez}", "handleGetGameById");
-// $app->get("/pokedex/{pokedex}", "handleGetPokedexById");
-// $app->get("/locations/{location}", "handleGetLocationById");
-// $app->get("/gyms/{gyms}", "handleGetGymById");
-// this route needs to be added, "/gyms/{gymId}/trainers/{trainerId}"
-// this route needs to be added, "/generations/{generationId}/pokemon/{pokemonId}"
-
-// uris on top need to be these instead, you can use same callbacks but handle the added id
+// Unsupported operation
 $app->get("/generations/{generationId}/games/{gamez}", "handleUnsupportedOperation");
 $app->get("/trainers/{trainerId}/pokedex/{pokedex}", "handleUnsupportedOperation");
 $app->get("/games/{gameId}/location/{location}", "handleUnsupportedOperation");
 $app->get("/locations/{locationsId}/gyms/{gyms}", "handleUnsupportedOperation");
 $app->get("/gyms/{gymId}/trainers/{trainerId}", "handleUnsupportedOperation");
-$app->get("/generations/{generationId}/pokemon/{pokemonId}", "handleUnsupportedOperation");
 
-// already implemented
+// Complex
+$app->get("/generations/{generationId}/pokemon/{pokemonId}", "handleGetSpecificPokemonRelatedToGeneration");
 $app->get("/pokemon/{pokemonId}/abilities/{pokemonAbility}", "handleGetSpecificAbilitiesRelatedToPokemon");
 $app->get("/pokemon/{pokemonId}/moves/{pokemonMove}", "handleGetSpecificMovesRelatedToPokemon");
 
-// Unsupported operation
+
 
 //-------------------------------------------------------------------------------------------------
 //Delete operations
@@ -127,8 +113,11 @@ $app->delete("/moves/{moves}", "deleteOneMove");
 $app->delete("/pokemonMove/{pokemonMoves}", "deleteOnePokemonMove");
 $app->delete("/pokemon/{pokemonId}/abilities", "deleteAbilityByPokemon");
 $app->delete("/pokemon/{pokemonId}/moves", "deleteMovesByPokemon");
+
+//sub resource with ID
 $app->delete("/pokemon/{pokemonId}/abilities/{abilityId}", "handleDeleteSpecificAbilitiesRelatedToPokemon");
 $app->delete("/pokemon/{pokemonId}/moves/{moveId}", "handleDeleteSpecificMoveRelatedToPokemon");
+$app->delete("/generations/{generationId}/games/{gameId}", "handleDeleteSpecificGameRelatedToGeneration");
 
 $app->delete("/generations/{generationId}/games", "handleUnsupportedOperation");
 $app->delete("/trainers/{trainerId}/pokedex", "handleUnsupportedOperation");
@@ -137,14 +126,12 @@ $app->delete("/games/{gameId}/locations", "handleUnsupportedOperation");
 $app->delete("/locations/{locationId}/gyms", "handleUnsupportedOperation");
 $app->delete("/generations/{generationId}/pokemon", "handleUnsupportedOperation");
 
-$app->delete("/generations/{generationId}/games/{gameId}", "handleUnsupportedOperation");
 $app->delete("/trainers/{trainerId}/pokedex/{pokedexId}", "handleUnsupportedOperation");
 $app->delete("/games/{gameId}/location/{locationId}", "handleUnsupportedOperation");
 $app->delete("/locations/{locationsId}/gyms/{gymId}", "handleUnsupportedOperation");
 $app->delete("/gyms/{gymId}/trainers/{trainerId}", "handleUnsupportedOperation");
 $app->delete("/generations/{generationId}/pokemon/{pokemonId}", "handleUnsupportedOperation");
-//$app->delete("/pokemon/{pokemonId}/abilities/{abilityId}", "handleUnsupportedOperation");
-//$app->delete("/pokemon/{pokemonId}/moves/{moveId}", "handleUnsupportedOperation");
+
 
 //-------------------------------------------------------------------------------------------------
 //post operations 

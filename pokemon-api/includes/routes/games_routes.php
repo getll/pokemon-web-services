@@ -157,3 +157,38 @@ function handleGetGamesByGeneration(Request $request, Response $response, array 
     $response->getBody()->write($response_data);
     return $response->withStatus($response_code);
 }
+
+
+function handleDeleteSpecificGameRelatedToGeneration(Request $request, Response $response, array $args) {
+    $game_spec = array();
+    $response_data = array();
+    $response_code = HTTP_OK;
+    $game_model = new GameModel();
+
+    $requested_format = $request->getHeader('Accept');
+    if (isset($requested_format[0]) && $requested_format[0] === APP_MEDIA_TYPE_JSON) {
+        $gen = $args["generationId"];
+        $gamez = $args['gameId'];
+        $requested_format = $request->getHeader('Accept');
+        if (isset($gen)) {
+            $game_spec = $game_model->getSpecificGameRelatedToGeneration($gen, $gamez);
+            $show = $game_model->getSpecificGameRelatedToGeneration($gen, $gamez);
+            if (!$game_spec) {
+                $response_data = (makeCustomJSONError("resourceNotFound", 
+                        "No matching record was found for ability ". $gamez ." and pokemon ". $gen ."."));
+                $response->getBody()->write($response_data);
+                return $response->withStatus(HTTP_NOT_FOUND);
+            }
+            $game_spec = $game_model->deleteSpecificGameRelatedToGeneration($gen, $gamez);
+        }
+        $response_data = json_encode(array("Message" => "Abilities ". $gamez ." related to Pokemon ". $gen ." is now deleted.", 
+        "Ability related to pokemon information" => $show), JSON_INVALID_UTF8_SUBSTITUTE);
+    
+    //-- We verify the requested resource representation.    
+    } else {
+        $response_data = json_encode(getErrorUnsupportedFormat());
+        $response_code = HTTP_UNSUPPORTED_MEDIA_TYPE;
+    }
+    $response->getBody()->write($response_data);
+    return $response->withStatus($response_code);
+}
