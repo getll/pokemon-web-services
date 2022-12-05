@@ -100,19 +100,20 @@ $app->delete("/abilities", "handleUnsupportedOperation");
 $app->delete("/moves", "handleUnsupportedOperation");
 $app->delete("/trainers", "handleUnsupportedOperation");
 
+$app->delete("/moves/{moves}", "deleteOneMove");
 $app->delete("/pokemon/{pokemonId}", "deleteOnePokemon");
 $app->delete("/abilities/{abili}", "deleteOneAbility");
-$app->delete("/games/{gamez}", "deleteOneGame");
 $app->delete("/generations/{gens}", "deleteOneGeneration");
-$app->delete("/gyms/{gyms}", "deleteOneGym");
-$app->delete("/locations/{location}", "deleteOneLocation");
-$app->delete("/pokedex/{pokedex}", "deleteOnePokedex");
-$app->delete("/pokemon_ability/{pokebi}", "deleteOnePokeAbility");
 $app->delete("/trainers/{trainers}", "deleteOneTrainer");
-$app->delete("/moves/{moves}", "deleteOneMove");
-$app->delete("/pokemonMove/{pokemonMoves}", "deleteOnePokemonMove");
-$app->delete("/pokemon/{pokemonId}/abilities", "deleteAbilityByPokemon");
-$app->delete("/pokemon/{pokemonId}/moves", "deleteMovesByPokemon");
+
+$app->delete("/games/{gamez}", "handleUnsupportedOperation");
+$app->delete("/gyms/{gyms}", "handleUnsupportedOperation");
+$app->delete("/locations/{location}", "handleUnsupportedOperation");
+$app->delete("/pokedex/{pokedex}", "handleUnsupportedOperation");
+$app->delete("/pokemon_ability/{pokebi}", "handleUnsupportedOperation");
+$app->delete("/pokemonMove/{pokemonMoves}", "handleUnsupportedOperation");
+$app->delete("/pokemon/{pokemonId}/abilities", "handleUnsupportedOperation");
+$app->delete("/pokemon/{pokemonId}/moves", "handleUnsupportedOperation");
 
 //sub resource with ID
 $app->delete("/pokemon/{pokemonId}/abilities/{abilityId}", "handleDeleteSpecificAbilitiesRelatedToPokemon");
