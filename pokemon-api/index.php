@@ -12,6 +12,11 @@ require_once './includes/helpers/Paginator.php';
 require_once './includes/helpers/WebServiceInvoker.php';
 require_once './includes/models/BaseModel.php';
 require_once './includes/controllers/PokeAPIController.php';
+require_once './includes/helpers/JWTManager.php';
+
+define('APP_BASE_DIR', __DIR__);
+// IMPORTANT: This file must be added to your .ignore file. 
+define('APP_ENV_CONFIG', 'config.env');
 
 //--Step 1) Instantiate App.
 $app = AppFactory::create();
@@ -29,6 +34,26 @@ $app->addBodyParsingMiddleware();
 // TODO: change the name of the sub directory here. You also need to change it in .htaccess
 $app->setBasePath("/pokemon-api");
 
+
+$jwt_secret = JWTManager::getSecretKey();
+$api_base_path = "/pokemon-api";
+$app->add(new Tuupola\Middleware\JwtAuthentication([
+            'secret' => $jwt_secret,
+            'algorithm' => 'HS256',
+            'secure' => false, // only for localhost for prod and test env set true            
+            "path" => $api_base_path, // the base path of the API
+            "attribute" => "decoded_token_data",
+            "ignore" => ["$api_base_path/token", "$api_base_path/account"],
+            "error" => function ($response, $arguments) {
+                $data["status"] = "error";
+                $data["message"] = $arguments["message"];
+                $response->getBody()->write(
+                        json_encode($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT)
+                );
+                return $response->withHeader("Content-Type", "application/json;charset=utf-8");
+            }
+        ]));
+
 //-- Step 5) Include the files containing the definitions of the callbacks.
 //require_once './includes/routes/artists_routes.php';
 require_once './includes/routes/pokemon_routes.php';
@@ -42,6 +67,7 @@ require_once './includes/routes/pokemon_ability_routes.php';
 require_once './includes/routes/trainers_routes.php';
 require_once './includes/routes/moves_routes.php';
 require_once './includes/routes/pokemon_moves_routes.php';
+require_once './includes/routes/token_routes.php';
 
 //-- Step 6)
 // TODO: And here we define app routes.
@@ -143,6 +169,8 @@ $app->post("/pokemon", "handleCreatePokemon");
 $app->post("/abilities", "handleCreateAbility");
 $app->post("/moves", "handleCreateMove");
 $app->post("/trainers", "handleCreateTrainer");
+$app->post("/token", "handleGetToken");
+$app->post("/account", "handleCreateUserAccount");
 
 //base resources - unsupported operations
 $app->post("/generations/{generationId}", "handleUnsupportedOperation");
