@@ -5,6 +5,11 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 //var_dump($_SERVER["REQUEST_METHOD"]);
 use Slim\Factory\AppFactory;
 
+//By the way use these commands on cmd when using the AA
+// get composer 
+// composer require tuupola/slim-jwt-auth
+// composer require vlucas/phpdotenv
+
 require __DIR__ . '/vendor/autoload.php';
 require_once './includes/app_constants.php';
 require_once './includes/helpers/helper_functions.php';
