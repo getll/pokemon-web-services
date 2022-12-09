@@ -19,9 +19,9 @@ function deleteOnePokedex(Request $request, Response $response, array $args) {
     $requested_format = $request->getHeader('Accept');
     if (isset($requested_format[0]) && $requested_format[0] === APP_MEDIA_TYPE_JSON) {
         $pokedex = $args["pokedex"];
-        //check for artist id
+
         if (isset($pokedex)) {
-            //check if artist exists
+
             $pokedex_info = $pokedex_model->getPokedexById($pokedex);
             $pokedex_name = $pokedex_model->getPokedexById($pokedex);
             if (!$pokedex_info) {
@@ -50,10 +50,10 @@ function handleGetPokedexById(Request $request, Response $response, array $args)
     $pokedex_model = new PokedexModel();
     $pokeapi_controller = new PokeAPIController();
 
-    // Retreive the artist id from the request's URI.
+
     $pokedex = $args["pokedex"];
     if (isset($pokedex)) {
-        // Fetch the info about the specified artist.
+
         $pokedex_info = $pokedex_model->getPokedexById($pokedex);
 
         if (!$pokedex_info) {

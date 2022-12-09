@@ -17,9 +17,9 @@ function deleteOneGame(Request $request, Response $response, array $args) {
     $requested_format = $request->getHeader('Accept');
     if (isset($requested_format[0]) && $requested_format[0] === APP_MEDIA_TYPE_JSON) {
         $gamez = $args["gamez"];
-        //check for artist id
+
         if (isset($gamez)) {
-            //check if artist exists
+
             $game_info = $game_model->getGameById($gamez);
             $game_name = $game_model->getGameById($gamez);
             if (!$game_info) {
@@ -49,10 +49,10 @@ function handleGetGameById(Request $request, Response $response, array $args) {
     $response_code = HTTP_OK;
     $game_model = new GameModel();
 
-    // Retreive the artist id from the request's URI.
+ 
     $gamez = $args["gamez"];
     if (isset($gamez)) {
-        // Fetch the info about the specified artist.
+
         $game_info = $game_model->getGameById($gamez);
         if (!$game_info) {
             // No matches found?

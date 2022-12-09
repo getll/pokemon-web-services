@@ -18,9 +18,9 @@ function deleteOneMove(Request $request, Response $response, array $args) {
     $requested_format = $request->getHeader('Accept');
     if (isset($requested_format[0]) && $requested_format[0] === APP_MEDIA_TYPE_JSON) {
         $moves = $args["moves"];
-        //check for artist id
+
         if (isset($moves)) {
-            //check if artist exists
+
             $moves_info = $moves_model->getMoveById($moves);
             $move_name = $moves_model->getMoveById($moves);
             if (!$moves_info) {
@@ -51,10 +51,10 @@ function handleGetMoveById(Request $request, Response $response, array $args) {
     $response_code = HTTP_OK;
     $moves_model = new MovesModel();
 
-    // Retreive the artist id from the request's URI.
+
     $moves = $args["moves"];
     if (isset($moves)) {
-        // Fetch the info about the specified artist.
+
         $moves_info = $moves_model->getMoveById($moves);
         if (!$moves_info) {
             // No matches found?

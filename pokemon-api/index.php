@@ -42,6 +42,7 @@ $app->setBasePath("/pokemon-api");
 
 $jwt_secret = JWTManager::getSecretKey();
 $api_base_path = "/pokemon-api";
+/*
 $app->add(new Tuupola\Middleware\JwtAuthentication([
             'secret' => $jwt_secret,
             'algorithm' => 'HS256',
@@ -58,7 +59,7 @@ $app->add(new Tuupola\Middleware\JwtAuthentication([
                 return $response->withHeader("Content-Type", "application/json;charset=utf-8");
             }
         ]));
-
+*/
 //-- Step 5) Include the files containing the definitions of the callbacks.
 //require_once './includes/routes/artists_routes.php';
 require_once './includes/routes/pokemon_routes.php';
@@ -137,14 +138,14 @@ $app->delete("/abilities/{abili}", "deleteOneAbility");
 $app->delete("/generations/{gens}", "deleteOneGeneration");
 $app->delete("/trainers/{trainers}", "deleteOneTrainer");
 
-$app->delete("/games/{gamez}", "handleUnsupportedOperation");
-$app->delete("/gyms/{gyms}", "handleUnsupportedOperation");
-$app->delete("/locations/{location}", "handleUnsupportedOperation");
-$app->delete("/pokedex/{pokedex}", "handleUnsupportedOperation");
-$app->delete("/pokemon_ability/{pokebi}", "handleUnsupportedOperation");
-$app->delete("/pokemonMove/{pokemonMoves}", "handleUnsupportedOperation");
-$app->delete("/pokemon/{pokemonId}/abilities", "handleUnsupportedOperation");
-$app->delete("/pokemon/{pokemonId}/moves", "handleUnsupportedOperation");
+$app->delete("/games/{gamez}", "deleteOneGame");
+$app->delete("/gyms/{gyms}", "deleteOneGym");
+$app->delete("/locations/{location}", "deleteOneLocation");
+$app->delete("/pokedex/{pokedex}", "deleteOnePokedex");
+$app->delete("/pokemon_ability/{pokebi}", "deleteOnePokeAbility");
+$app->delete("/pokemonMove/{pokemonMoves}", "deleteOnePokemonMove");
+$app->delete("/pokemon/{pokemonId}/abilities", "deleteAbilityByPokemon");
+$app->delete("/pokemon/{pokemonId}/moves", "deleteMovesByPokemon");
 
 //sub resource with ID
 $app->delete("/pokemon/{pokemonId}/abilities/{abilityId}", "handleDeleteSpecificAbilitiesRelatedToPokemon");

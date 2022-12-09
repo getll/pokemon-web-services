@@ -18,9 +18,9 @@ function deleteOnePokemonMove(Request $request, Response $response, array $args)
     $requested_format = $request->getHeader('Accept');
     if (isset($requested_format[0]) && $requested_format[0] === APP_MEDIA_TYPE_JSON) {
         $pokemonMoves = $args["pokemonMoves"];
-        //check for artist id
+
         if (isset($pokemonMoves)) {
-            //check if artist exists
+
             $pokemon_moves_info = $pokemon_moves_model->getPokemonMovesById($pokemonMoves);
             $pokemon_moves_name = $pokemon_moves_model->getPokemonMovesById($pokemonMoves);
             if (!$pokemon_moves_info) {
@@ -51,10 +51,10 @@ function handleGetPokemonMoveById(Request $request, Response $response, array $a
     $response_code = HTTP_OK;
     $pokemon_moves_model = new PokemonMovesModel();
 
-    // Retreive the artist id from the request's URI.
+
     $pokemonMoves = $args["pokemonMoves"];
     if (isset($pokemonMoves)) {
-        // Fetch the info about the specified artist.
+
         $pokemon_moves_info = $pokemon_moves_model->getPokemonMovesById($pokemonMoves);
         if (!$pokemon_moves_info) {
             // No matches found?
@@ -83,7 +83,7 @@ function handleGetAllMovesRelatedToPokemon(Request $request, Response $response,
     $response_code = HTTP_OK;
     $pokemon_moves_model = new PokemonMovesModel();
 
-    // Retreive the artist id from the request's URI.
+
     $pokemonId = $args["pokemonId"];
 
     $moves_pokemon = $pokemon_moves_model->getMoveRelatedToPokemon($pokemonId);
@@ -112,9 +112,9 @@ function deleteMovesByPokemon(Request $request, Response $response, array $args)
     $requested_format = $request->getHeader('Accept');
     if (isset($requested_format[0]) && $requested_format[0] === APP_MEDIA_TYPE_JSON) {
         $pokemonId = $args["pokemonId"];
-        //check for artist id
+
         if (isset($pokemonId)) {
-            //check if artist exists
+
             $pokemonMove_info = $pokemonMove_model->getMoveRelatedToPokemon($pokemonId);
             $pokemonId_name = $pokemonMove_model->getMoveRelatedToPokemon($pokemonId);
             if (!$pokemonMove_info) {

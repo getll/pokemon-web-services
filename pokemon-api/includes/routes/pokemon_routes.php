@@ -18,9 +18,9 @@ function deleteOnePokemon(Request $request, Response $response, array $args) {
     $requested_format = $request->getHeader('Accept');
     if (isset($requested_format[0]) && $requested_format[0] === APP_MEDIA_TYPE_JSON) {
         $pokemonId = $args["pokemonId"];
-        //check for artist id
+
         if (isset($pokemonId)) {
-            //check if artist exists
+ 
             $pokemon_info = $pokemon_model->getPokemonById($pokemonId);
             $pokemon_name = $pokemon_model->getPokemonById($pokemonId);
             if (!$pokemon_info) {
@@ -51,10 +51,9 @@ function handleGetPokemonById(Request $request, Response $response, array $args)
     $response_code = HTTP_OK;
     $pokemon_model = new PokemonModel();
 
-    // Retreive the artist id from the request's URI.
     $pokemonId = $args["pokemonId"];
     if (isset($pokemonId)) {
-        // Fetch the info about the specified artist.
+
         $pokemon_info = $pokemon_model->getPokemonById($pokemonId);
         if (!$pokemon_info) {
             // No matches found?

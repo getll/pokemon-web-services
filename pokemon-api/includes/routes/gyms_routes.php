@@ -18,9 +18,9 @@ function deleteOneGym(Request $request, Response $response, array $args) {
     $requested_format = $request->getHeader('Accept');
     if (isset($requested_format[0]) && $requested_format[0] === APP_MEDIA_TYPE_JSON) {
         $gyms = $args["gyms"];
-        //check for artist id
+
         if (isset($gyms)) {
-            //check if artist exists
+
             $gym_info = $gym_model->getGymById($gyms);
             $gym_name = $gym_model->getGymById($gyms);
             if (!$gym_info) {
@@ -52,7 +52,7 @@ function handleGetGymById(Request $request, Response $response, array $args) {
     // Retreive the gym id from the request's URI.
     $gyms = $args["gyms"];
     if (isset($gyms)) {
-        // Fetch the info about the specified artist.
+
         $gym_info = $gym_model->getGymById($gyms);
         if (!$gym_info) {
             // No matches found?

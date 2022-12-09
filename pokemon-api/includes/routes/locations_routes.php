@@ -18,9 +18,9 @@ function deleteOneLocation(Request $request, Response $response, array $args) {
     $requested_format = $request->getHeader('Accept');
     if (isset($requested_format[0]) && $requested_format[0] === APP_MEDIA_TYPE_JSON) {
         $location = $args["location"];
-        //check for artist id
+      
         if (isset($location)) {
-            //check if artist exists
+           
             $location_info = $location_model->getLocationById($location);
             $location_name = $location_model->getLocationById($location);
             if (!$location_info) {
@@ -54,7 +54,7 @@ function handleGetLocationById(Request $request, Response $response, array $args
     // Retreive the location id from the request's URI.
     $location = $args["location"];
     if (isset($location)) {
-        // Fetch the info about the specified artist.
+   
         $location_info = $location_model->getLocationById($location);
         if (!$location_info) {
             // No matches found?

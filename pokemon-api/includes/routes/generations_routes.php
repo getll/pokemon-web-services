@@ -17,9 +17,9 @@ function deleteOneGeneration(Request $request, Response $response, array $args) 
     $requested_format = $request->getHeader('Accept');
     if (isset($requested_format[0]) && $requested_format[0] === APP_MEDIA_TYPE_JSON) {
         $gens = $args["gens"];
-        //check for artist id
+ 
         if (isset($gens)) {
-            //check if artist exists
+  
             $generation_info = $generation_model->getGenerationById($gens);
             $generation_name = $generation_model->getGenerationById($gens);
             if (!$generation_info) {
@@ -47,10 +47,9 @@ function handleGetGenerationById(Request $request, Response $response, array $ar
     $response_code = HTTP_OK;
     $generation_model = new GenerationModel();
 
-    // Retreive the artist id from the request's URI.
     $gens = $args["gens"];
     if (isset($gens)) {
-        // Fetch the info about the specified artist.
+ 
         $generation_info = $generation_model->getGenerationById($gens);
         if (!$generation_info) {
             // No matches found?

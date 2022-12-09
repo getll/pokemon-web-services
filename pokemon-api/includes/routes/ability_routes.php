@@ -17,9 +17,9 @@ function deleteOneAbility(Request $request, Response $response, array $args) {
     $requested_format = $request->getHeader('Accept');
     if (isset($requested_format[0]) && $requested_format[0] === APP_MEDIA_TYPE_JSON) {
         $abili = $args["abili"];
-        //check for artist id
+        //check for ability id
         if (isset($abili)) {
-            //check if artist exists
+            //check if ability exists
             $ability_info = $ability_model->getAbilityById($abili);
             $ability_name = $ability_model->getAbilityById($abili);
             if (!$ability_info) {

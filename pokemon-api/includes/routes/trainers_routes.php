@@ -17,9 +17,8 @@ function deleteOneTrainer(Request $request, Response $response, array $args) {
     $requested_format = $request->getHeader('Accept');
     if (isset($requested_format[0]) && $requested_format[0] === APP_MEDIA_TYPE_JSON) {
         $trainers = $args["trainers"];
-        //check for artist id
+
         if (isset($trainers)) {
-            //check if artist exists
             $trainer_info = $trainer_model->getTrainerById($trainers);
             $trainer_name = $trainer_model->getTrainerById($trainers);
             if (!$trainer_info) {
@@ -47,10 +46,10 @@ function handleGetTrainerById(Request $request, Response $response, array $args)
     $response_code = HTTP_OK;
     $trainer_model = new TrainersModel();
 
-    // Retreive the artist id from the request's URI.
+
     $trainers = $args["trainers"];
     if (isset($trainers)) {
-        // Fetch the info about the specified artist.
+
         $trainer_info = $trainer_model->getTrainerById($trainers);
         if (!$trainer_info) {
             // No matches found?

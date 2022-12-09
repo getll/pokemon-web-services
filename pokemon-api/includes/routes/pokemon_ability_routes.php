@@ -18,9 +18,9 @@ function deleteOnePokeAbility(Request $request, Response $response, array $args)
     $requested_format = $request->getHeader('Accept');
     if (isset($requested_format[0]) && $requested_format[0] === APP_MEDIA_TYPE_JSON) {
         $pokebi = $args["pokebi"];
-        //check for artist id
+  
         if (isset($pokebi)) {
-            //check if artist exists
+      
             $pokemonAbility_info = $pokemonAbility_model->getPokeAbiById($pokebi);
             $pokebi_name = $pokemonAbility_model->getPokeAbiById($pokebi);
             if (!$pokemonAbility_info) {
@@ -51,10 +51,10 @@ function handleGetPokeAbilityById(Request $request, Response $response, array $a
     $response_code = HTTP_OK;
     $pokemonAbility_model = new PokemonAbilityModel();
 
-    // Retreive the artist id from the request's URI.
+   
     $pokebi = $args["pokebi"];
     if (isset($pokebi)) {
-        // Fetch the info about the specified artist.
+      
         $pokemonAbility_info = $pokemonAbility_model->getPokeAbiById($pokebi);
         //unset($pokemonAbility_info['is_hidden']);
         if (!$pokemonAbility_info) {
@@ -85,7 +85,7 @@ function handleGetAllAbilitiesRelatedToPokemon(Request $request, Response $respo
     $response_code = HTTP_OK;
     $pokemon_abilities_model = new PokemonAbilityModel();
 
-    // Retreive the artist id from the request's URI.
+
     $pokemonId = $args["pokemonId"];
 
     $ability_pokemon = $pokemon_abilities_model->getAbilityRelatedToPokemon($pokemonId);
@@ -114,9 +114,9 @@ function deleteAbilityByPokemon(Request $request, Response $response, array $arg
     $requested_format = $request->getHeader('Accept');
     if (isset($requested_format[0]) && $requested_format[0] === APP_MEDIA_TYPE_JSON) {
         $pokemonId = $args["pokemonId"];
-        //check for artist id
+
         if (isset($pokemonId)) {
-            //check if artist exists
+    
             $pokemonAbility_info = $pokemonAbility_model->getAbilityRelatedToPokemon($pokemonId);
             $pokemonId_name = $pokemonAbility_model->getAbilityRelatedToPokemon($pokemonId);
             if (!$pokemonAbility_info) {
